@@ -1,0 +1,4 @@
+src/ClinicaFrba/obj/
+src/ClinicaFrba/bin/
+*.suo
+*.user
