@@ -1,0 +1,3 @@
+/*
+Script de creacion inicial
+*/
