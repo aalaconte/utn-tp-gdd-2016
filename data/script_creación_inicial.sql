@@ -2,7 +2,6 @@
 Script de creacion inicial
 */
 
-
 USE [GD2C2016]
 GO
 
@@ -36,7 +35,7 @@ create table pico_y_pala.usuario
 	usu_nombre varchar (255),
 	usu_apellido varchar (255),
 	usu_nro_doc numeric (18,0),
-	usu_tipo_doc varchar (3),  --es necesario? pienso que no
+	usu_tipo_doc varchar (3),  --es necesario? no aclara que haya mas de un tipo de doc.	
 	usu_direccion varchar (255),
 	usu_telefono numeric (18,0),
 	usu_mail varchar (255),
@@ -54,8 +53,10 @@ create table pico_y_pala.rol_usuario
 
 create table pico_y_pala.profesional 
 (
-	pro_username varchar(50) primary key foreign key references pico_y_pala.usuario(usu_username),
-	pro_matricula int --ver como generarlo
+	pro_username varchar(50),
+	pro_matricula int, --ver como generarlo
+	primary key (pro_username),
+	foreign key (pro_username) references pico_y_pala.usuario(usu_username)
 );
 
 create table pico_y_pala.tipo_especialidad
@@ -80,11 +81,12 @@ create table pico_y_pala.profesional_especialidad
 
 create table pico_y_pala.agenda
 (
-	age_id int primary key,
+	age_id int,
 	age_pro_username varchar (50), 
 	age_esp_id int, 
 	age_deste datetime,
 	age_hasta datetime,
+	primary key (age_id,age_pro_username,age_esp_id),
 	foreign key (age_pro_username,age_esp_id) references pico_y_pala.profesional_especialidad (pes_pro_username,pes_esp_id)
 );
 
@@ -97,9 +99,11 @@ create table pico_y_pala.dia
 create table pico_y_pala.dia_por_agenda
 (
 	pes_pro_username varchar (50),
+	pes_age_id int, --agregada
 	pes_esp_id int,
+	pes_dia int foreign key references pico_y_pala.dia (dia_id),
 	primary key (pes_pro_username,pes_esp_id),
-	foreign key (pes_pro_username,pes_esp_id) references pico_y_pala.agenda (age_pro_username,age_esp_id)
+	foreign key (pes_age_id,pes_pro_username,pes_esp_id) references pico_y_pala.agenda (age_id,age_pro_username,age_esp_id)
 );
 
 create table pico_y_pala.estado_civil
@@ -136,7 +140,7 @@ create table pico_y_pala.afiliado
 )
 
 alter table pico_y_pala.grupo_familiar 
-add foreign key references pico_y_pala.afiliado (afi_username)
+add foreign key (gpo_titular) references pico_y_pala.afiliado (afi_username)
 
 create table pico_y_pala.audit_cambio_plan
 (
@@ -187,13 +191,23 @@ create table pico_y_pala.bono_compra
 	primary key (bco_bon_id,bco_com_id)
 );
 
-create table pico_y_pala.consulta
-(
-		
-);
 
 create table pico_y_pala.turno
 (
 	tur_id int primary key,
+	tur_afi_username varchar (50) foreign key references pico_y_pala.afiliado (afi_username),
+	tur_pro_username varchar (50) foreign key references pico_y_pala.profesional (pro_username),
+	tur_fecha_hora datetime,
+	tur_can_id int foreign key references pico_y_pala.cancelacion (can_id)
+);
 
+create table pico_y_pala.consulta
+(
+		con_id int primary key,
+		con_tur_id int foreign key references pico_y_pala.turno (tur_id),
+		con_bono_utilizado int foreign key references pico_y_pala.bono (bon_id),
+		con_fecha_llegada datetime,
+		con_fecha_consulta datetime,
+		con_sintoma varchar (255),
+		con_enfermedad varchar (255)
 );
