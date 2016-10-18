@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -68,12 +69,39 @@
     <Compile Include="Abm Profesional\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\Form1.cs">
+    <Compile Include="AbmRol\AbmRol.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmRol\AbmRol.Designer.cs">
+      <DependentUpon>AbmRol.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmRol\AdministrarRoles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\AdministrarRoles.Designer.cs">
+      <DependentUpon>AdministrarRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\BuscarRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\BuscarRol.Designer.cs">
+      <DependentUpon>BuscarRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\ModificarRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\ModificarRol.Designer.cs">
+      <DependentUpon>ModificarRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\Rol.cs" />
+    <Compile Include="AbmRol\SeleccionRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\SeleccionRol.Designer.cs">
+      <DependentUpon>SeleccionRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BaseDeDatos\Componentes\ManipulacionComponentes.cs" />
+    <Compile Include="BaseDeDatos\Connection.cs" />
     <Compile Include="Cancelar Atencion\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +125,21 @@
     </Compile>
     <Compile Include="Listados\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main\BotonFuncionalidad.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Main\MainPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main\MainPage.Designer.cs">
+      <DependentUpon>MainPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Pedir Turno\Form1.cs">
       <SubType>Form</SubType>
@@ -124,6 +167,31 @@
     <Compile Include="Registro Resultado\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Seguridad\Security.cs" />
+    <Compile Include="Usuario\Usuario.cs" />
+    <Compile Include="Utils\Mensajes.cs" />
+    <Compile Include="Validaciones\ValidacionComponentes.cs" />
+    <EmbeddedResource Include="AbmRol\AbmRol.resx">
+      <DependentUpon>AbmRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\AdministrarRoles.resx">
+      <DependentUpon>AdministrarRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\BuscarRol.resx">
+      <DependentUpon>BuscarRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\ModificarRol.resx">
+      <DependentUpon>ModificarRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\SeleccionRol.resx">
+      <DependentUpon>SeleccionRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main\MainPage.resx">
+      <DependentUpon>MainPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -144,7 +212,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
