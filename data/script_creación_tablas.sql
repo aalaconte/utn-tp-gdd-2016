@@ -1,5 +1,5 @@
 /*
-Script de creacion tablas
+Script de creacion inicial
 */
 
 USE [GD2C2016]
@@ -147,7 +147,7 @@ create table pico_y_pala.gf_afiliado
 )
 
 alter table pico_y_pala.grupo_familiar 
-add foreign key (gpo_titular) references pico_y_pala.afiliado (afi_nro_doc)
+add constraint FK_gpo_afi foreign key (gpo_titular) references pico_y_pala.afiliado (afi_nro_doc)
 
 create table pico_y_pala.audit_cambio_plan
 (
