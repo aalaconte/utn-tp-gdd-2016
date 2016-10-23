@@ -9,141 +9,163 @@ CREATE SCHEMA [pico_y_pala] AUTHORIZATION [gd]
 GO
 
 
-
 create table pico_y_pala.funcionalidad 
 (
-	fun_id numeric (18,0) primary key,
-	fun_desc varchar (100)
+	fun_id numeric (18,0)
+	,fun_desc varchar (100)
+	,constraint PK_fun_id primary key (fun_id)
 );
 
 create table pico_y_pala.rol
 (
-	rol_id numeric (18,0) primary key,
-	rol_nombre varchar (50),
-	rol_habilitado bit
+	rol_id numeric (18,0)
+	,rol_nombre varchar (50)
+	,rol_habilitado bit
+	,constraint PL_rol_id primary key (rol_id)
 );
 
 create table pico_y_pala.rol_funcionalidad
 (
-	rfu_rol_id numeric (18,0) foreign key references pico_y_pala.rol (rol_id),
-	rfu_fun_id numeric (18,0) foreign key references pico_y_pala.funcionalidad(fun_id),
-	primary key (rfu_rol_id,rfu_fun_id)
+	rfu_rol_id numeric (18,0)
+	,rfu_fun_id numeric (18,0) 
+	,constraint PK_rol_funcionalidad primary key (rfu_rol_id,rfu_fun_id)
+	,constraint FK_rfu_rol_id foreign key (rfu_rol_id) references pico_y_pala.rol (rol_id)
+	,constraint FK_rfu_fun_id foreign key (rfu_fun_id) references pico_y_pala.funcionalidad(fun_id)
 );
 
 create table pico_y_pala.usuario
 (
-	usu_nro_doc numeric (18,0) primary key,
-	usu_password varchar (50), --analizar tipo
-	usu_nombre varchar (255),
-	usu_apellido varchar (255),
-	usu_tipo_doc varchar (3),  --es necesario? no aclara que haya mas de un tipo de doc.	
-	usu_direccion varchar (255),
-	usu_telefono numeric (18,0),
-	usu_mail varchar (255),
-	usu_fecha_nac datetime,
-	usu_sexo char (1),   --random?
-	usu_habilitado bit
+	usu_nro_doc numeric (18,0) 
+	,usu_password varchar (50) 
+	,usu_nombre varchar (255)
+	,usu_apellido varchar (255)
+	,usu_tipo_doc varchar (3)
+	,usu_direccion varchar (255)
+	,usu_telefono numeric (18,0)
+	,usu_mail varchar (255)
+	,usu_fecha_nac datetime
+	,usu_sexo char (1)
+	,usu_habilitado bit
+	,constraint PK_usu_nro_doc primary key (usu_nro_doc)
 );
 
 create table pico_y_pala.rol_usuario
 (
-	rfu_rol_id numeric (18,0) foreign key references pico_y_pala.rol (rol_id),
-	rfu_fun_id numeric (18,0) foreign key references pico_y_pala.usuario(usu_nro_doc),
-	primary key (rfu_rol_id,rfu_fun_id)
+	rus_rol_id numeric (18,0) 
+	,rus_fun_id numeric (18,0) 
+	,constraint PK_rol_usuario primary key (rus_rol_id,rus_fun_id)
+	,constraint FK_rus_rol_id foreign key (rus_rol_id) references pico_y_pala.rol (rol_id)
+	,constraint FK_rus_fun_id foreign key (rus_fun_id) references pico_y_pala.usuario(usu_nro_doc)
 );
 
 create table pico_y_pala.profesional 
 (
-	pro_nro_doc numeric (18,0) primary key,
-	pro_matricula numeric (18,0), 
-	foreign key (pro_nro_doc) references pico_y_pala.usuario(usu_nro_doc)
+	pro_nro_doc numeric (18,0) 
+	,pro_matricula numeric (18,0)
+	,constraint PK_pro_nro_doc primary key (pro_nro_doc)
+	,constraint FK_pro_nro_doc foreign key (pro_nro_doc) references pico_y_pala.usuario(usu_nro_doc)
 );
 
 create table pico_y_pala.tipo_especialidad
 (
-	tes_id numeric(18,0) primary key,
-	tes_desc varchar(255)
+	tes_id numeric(18,0)
+	,tes_desc varchar(255)
+	constraint tes_id primary key (tes_id)
 );
 
 create table pico_y_pala.especialidad
 (
-	esp_id numeric (18,0) primary key,
-	esp_desc varchar (255),
-	esp_tes_id numeric (18,0) foreign key references pico_y_pala.tipo_especialidad(tes_id),
+	esp_id numeric (18,0) 
+	,esp_desc varchar (255)
+	,esp_tes_id numeric (18,0) 
+	,constraint PK_esp_id primary key (esp_id)
+	,constraint FK_esp_tes_id foreign key (esp_tes_id) references pico_y_pala.tipo_especialidad(tes_id),
 );
 
 create table pico_y_pala.profesional_especialidad
 (
-	pes_pro_nro_doc numeric (18,0) foreign key references pico_y_pala.profesional(pro_nro_doc),
-	pes_esp_id numeric (18,0) foreign key references pico_y_pala.especialidad (esp_id),
-	primary key (pes_pro_nro_doc, pes_esp_id)
+	pes_pro_nro_doc numeric (18,0) 
+	,pes_esp_id numeric (18,0) 
+	,constraint PK_profesional_especialidad primary key (pes_pro_nro_doc, pes_esp_id)
+	,constraint FK_pes_pro_nro_doc foreign key (pes_pro_nro_doc) references pico_y_pala.profesional(pro_nro_doc)
+	,constraint FK_pes_esp_id foreign key (pes_esp_id) references pico_y_pala.especialidad (esp_id)
 );
 
 create table pico_y_pala.agenda
 (
-	age_id numeric (18,0),
-	age_pro_nro_doc numeric (18,0), 
-	age_esp_id numeric (18,0), 
-	primary key (age_id,age_pro_nro_doc,age_esp_id),
-	foreign key (age_pro_nro_doc,age_esp_id) references pico_y_pala.profesional_especialidad (pes_pro_nro_doc,pes_esp_id)
+	age_id numeric (18,0)
+	,age_pro_nro_doc numeric (18,0)
+	,age_esp_id numeric (18,0)
+	,constraint PK_agenda primary key (age_id,age_pro_nro_doc,age_esp_id)
+	,constraint FK_agenda foreign key (age_pro_nro_doc,age_esp_id) references pico_y_pala.profesional_especialidad (pes_pro_nro_doc,pes_esp_id)
 );
 
 create table pico_y_pala.dia
 (
-	dia_id int primary key,
-	dia_nombre char (10)
+	dia_id int
+	,dia_nombre char (10)
+	,constraint PK_dia_id primary key (dia_id)
 );
 
 create table pico_y_pala.dia_por_agenda
 (
-	dpa_pro_nro_doc numeric (18,0),
-	dpa_age_id numeric (18,0),
-	dpa_esp_id numeric (18,0),
-	dpa_dia int foreign key references pico_y_pala.dia (dia_id),
-	dpa_deste datetime,
-	dpa_hasta datetime,
-	primary key (dpa_pro_nro_doc,dpa_esp_id),
-	foreign key (dpa_age_id,dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_id,age_pro_nro_doc,age_esp_id)
+	dpa_pro_nro_doc numeric (18,0)
+	,dpa_age_id numeric (18,0)
+	,dpa_esp_id numeric (18,0)
+	,dpa_dia int foreign key references pico_y_pala.dia (dia_id)
+	,dpa_deste datetime
+	,dpa_hasta datetime
+	,constraint PK_dia_por_agenda primary key (dpa_pro_nro_doc,dpa_esp_id)
+	,constraint FK_dia_por_agenda foreign key (dpa_age_id,dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_id,age_pro_nro_doc,age_esp_id)
 );
 
 create table pico_y_pala.estado_civil
 (
-	eci_id numeric (18,0) primary key,
-	eci_desc varchar (100)
+	eci_id numeric (18,0)
+	,eci_desc varchar (100)
+	,constraint PK_eci_id primary key (eci_id)
 );
 
 create table pico_y_pala.planes
 (
-	pla_id numeric (18,0) primary key,
-	pla_codigo numeric (18,0),
-	pla_desc varchar (100),
-	pla_precio_consulta numeric (18,0),
-	pla_precio_farmacia numeric (18,0)
+	pla_id numeric (18,0)
+	,pla_codigo numeric (18,0)
+	,pla_desc varchar (100)
+	,pla_precio_consulta numeric (18,0)
+	,pla_precio_farmacia numeric (18,0)
+	constraint PK_pla_id primary key (pla_id)
 );
 
 create table pico_y_pala.grupo_familiar
 (
-	gpo_id numeric (18,0) primary key,
-	gpo_titular numeric (18,0) 
+	gpo_id numeric (18,0)
+	,gpo_titular numeric (18,0)
+	,constraint PL_gpo_id primary key (gpo_id) 
 );
 
 create table pico_y_pala.afiliado
 (
-	afi_nro_doc numeric (18,0) primary key,
-	afi_nro_afiliado numeric (18,0),
-	afi_eci_id numeric (18,0) foreign key references pico_y_pala.estado_civil (eci_id),
-	afi_gpo_id numeric (18,0) foreign key references pico_y_pala.grupo_familiar (gpo_id),
-	afi_pla_id numeric (18,0) foreign key references pico_y_pala.planes (pla_id),
-	afi_nro_consulta numeric (18,0),
-	afi_activo bit,
-	afi_fecha_baja datetime
+	afi_nro_doc numeric (18,0) 
+	,afi_nro_afiliado numeric (18,0)
+	,afi_eci_id numeric (18,0) 
+	,afi_gpo_id numeric (18,0) 
+	,afi_pla_id numeric (18,0)
+	,afi_nro_consulta numeric (18,0)
+	,afi_activo bit
+	,afi_fecha_baja datetime
+	,constraint PK_afi_nro_doc primary key (afi_nro_doc)
+	,constraint FK_afi_eci_id foreign key (afi_eci_id) references pico_y_pala.estado_civil (eci_id)
+	,constraint FK_afi_gpo_id foreign key (afi_gpo_id) references pico_y_pala.grupo_familiar (gpo_id)
+	,constraint FK_afi_pla_id foreign key (afi_pla_id) references pico_y_pala.planes (pla_id)
 )
 
 create table pico_y_pala.gf_afiliado
 (
-	agf_gpo_id numeric (18,0) foreign key references pico_y_pala.grupo_familiar (gpo_id),
-	agf_afi_nro_doc numeric (18,0) foreign key references pico_y_pala.afiliado (afi_nro_doc),
-	primary key (agf_gpo_id,agf_afi_nro_doc)
+	agf_gpo_id numeric (18,0)
+	,agf_afi_nro_doc numeric (18,0) 
+	,constraint PK_gf_afiliado primary key (agf_gpo_id,agf_afi_nro_doc)
+	,constraint FK_agf_gpo_id foreign key (agf_gpo_id) references pico_y_pala.grupo_familiar (gpo_id)
+	,constraint FK_agf_afi_nro_doc foreign key (agf_afi_nro_doc) references pico_y_pala.afiliado (afi_nro_doc)
 )
 
 alter table pico_y_pala.grupo_familiar 
@@ -151,34 +173,38 @@ add constraint FK_gpo_afi foreign key (gpo_titular) references pico_y_pala.afili
 
 create table pico_y_pala.audit_cambio_plan
 (
-	acp_id numeric (18,0) primary key,
-	acp_afiliado numeric (18,0) foreign key references pico_y_pala.afiliado (afi_nro_doc),
-	acp_fecha datetime,
-	acp_motivo varchar (255),
-	acp_plan_anterior numeric (18,0) foreign key references pico_y_pala.planes (pla_id),
-	acp_plan_nuevo numeric (18,0) foreign key references pico_y_pala.planes (pla_id)
+	acp_id numeric (18,0) 
+	,acp_afiliado numeric (18,0) foreign key references pico_y_pala.afiliado (afi_nro_doc)
+	,acp_fecha datetime
+	,acp_motivo varchar (255)
+	,acp_plan_anterior numeric (18,0) foreign key references pico_y_pala.planes (pla_id)
+	,acp_plan_nuevo numeric (18,0) foreign key references pico_y_pala.planes (pla_id)
+	,constraint PK_acp_id primary key (acp_id)
 );
-
 
 create table pico_y_pala.tipo_cancelacion
 (
-	tca_id numeric (18,0) primary key,
-	tca_desc varchar (255),
+	tca_id numeric (18,0)
+	,tca_desc varchar (255)
+	,constraint PK_tca_id primary key (tca_id)
 );
 
 create table pico_y_pala.cancelacion
 (
-	can_id numeric (18,0) primary key,
-	can_tca_id numeric (18,0) foreign key references pico_y_pala.tipo_cancelacion (tca_id),
-	can_motivo varchar (255)
+	can_id numeric (18,0)
+	,can_tca_id numeric (18,0)
+	,can_motivo varchar (255)
+	,constraint PK_can_id primary key (can_id)
+	,constraint FK_can_tca_id foreign key (can_tca_id) references pico_y_pala.tipo_cancelacion (tca_id)
 );
 
 create table pico_y_pala.compra
 (
-	com_id numeric (18,0) primary key,
-	com_cant numeric (18,0),
-	com_precio numeric (18,0),
-	com_fecha datetime
+	com_id numeric (18,0)
+	,com_cant numeric (18,0)
+	,com_precio numeric (18,0)
+	,com_fecha datetime
+	,constraint PK_com_id primary key (com_id)
 );
 
 create table pico_y_pala.bono
@@ -194,45 +220,57 @@ create table pico_y_pala.bono
 
 create table pico_y_pala.turno
 (
-	tur_id numeric (18,0) primary key,
-	tur_afi_username numeric (18,0) foreign key references pico_y_pala.afiliado (afi_nro_doc),
-	tur_pro_username numeric (18,0) foreign key references pico_y_pala.profesional (pro_nro_doc),
-	tur_fecha_hora datetime,
-	tur_can_id numeric (18,0) foreign key references pico_y_pala.cancelacion (can_id)
+	tur_id numeric (18,0)
+	,tur_afi_username numeric (18,0) 
+	,tur_pro_username numeric (18,0) 
+	,tur_fecha_hora datetime
+	,tur_can_id numeric (18,0) foreign key references pico_y_pala.cancelacion (can_id)
+	,constraint PK_tur_id primary key (tur_id)
+	,constraint FK_tur_afi_username foreign key (tur_afi_username) references pico_y_pala.afiliado (afi_nro_doc)
+	,constraint FK_tur_pro_username foreign key (tur_pro_username) references pico_y_pala.profesional (pro_nro_doc)
 );
 
 create table pico_y_pala.consulta
 (
-	con_id numeric (18,0) primary key,
-	con_tur_id numeric (18,0) foreign key references pico_y_pala.turno (tur_id),
-	con_bono_utilizado numeric (18,0) foreign key references pico_y_pala.bono (bon_id),
-	con_fecha_llegada datetime,
-	con_fecha_consulta datetime
+	con_id numeric (18,0)
+	,con_tur_id numeric (18,0) 
+	,con_bono_utilizado numeric (18,0)
+	,con_fecha_llegada datetime
+	,con_fecha_consulta datetime
+	,constraint PK_con_id primary key (con_id)
+	,constraint FK_con_tur_id foreign key (con_tur_id) references pico_y_pala.turno (tur_id)
+	,constraint FK_con_bono_utilizado foreign key (con_bono_utilizado)references pico_y_pala.bono (bon_id)
 );
 
 create table pico_y_pala.sintoma
 (
-	sin_id numeric (18,0) primary key,
-	sin_desc varchar (255)	
+	sin_id numeric (18,0)
+	,sin_desc varchar (255)	
+	,constraint PK_sin_id primary key (sin_id)
 );
 
 create table pico_y_pala.consulta_sintoma
 (
-	csi_con_id numeric (18,0) foreign key references pico_y_pala.consulta (con_id), 
-	csi_sin_id numeric (18,0) foreign key references pico_y_pala.sintoma (sin_id),
-	primary key (csi_con_id,csi_sin_id)
+	csi_con_id numeric (18,0) 
+	,csi_sin_id numeric (18,0) 
+	,constraint PK_consulta_sintoma primary key (csi_con_id,csi_sin_id)
+	,constraint FK_csi_con_id foreign key (csi_con_id) references pico_y_pala.consulta (con_id)
+	,constraint FK_csi_sin_id foreign key (csi_sin_id) references pico_y_pala.sintoma (sin_id)
 );
 
 create table pico_y_pala.enfermedad
 (
-	enf_id numeric (18,0) primary key,
-	enf_desc varchar (255)	
+	enf_id numeric (18,0)
+	,enf_desc varchar (255)	
+	,constraint PK_enf_id primary key (enf_id)
 );
 
 create table pico_y_pala.consulta_enferemedad
 (
-	cen_con_id numeric (18,0) foreign key references pico_y_pala.consulta (con_id), 
-	cen_sin_id numeric (18,0) foreign key references pico_y_pala.enfermedad (enf_id),
-	primary key (cen_con_id,cen_sin_id)
+	cen_con_id numeric (18,0) 
+	,cen_sin_id numeric (18,0) 
+	,constraint PK_consulta_enfermedad primary key (cen_con_id,cen_sin_id)
+	,constraint FK_cen_con_id foreign key (cen_con_id) references pico_y_pala.consulta (con_id)
+	,constraint FK_cen_sin_id foreign key (cen_sin_id) references pico_y_pala.enfermedad (enf_id)
 );
 
