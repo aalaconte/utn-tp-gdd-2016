@@ -228,14 +228,14 @@ create table pico_y_pala.bono
 
 create table pico_y_pala.turno
 (
-	tur_id numeric (18,0) identity (1,1)
-	,tur_afi_username numeric (18,0) 
-	,tur_pro_username numeric (18,0) 
+	tur_id numeric (18,0)
+	,tur_afi_nro_doc numeric (18,0) 
+	,tur_pro_nro_doc numeric (18,0) 
 	,tur_fecha_hora datetime
-	,tur_can_id numeric (18,0) foreign key references pico_y_pala.cancelacion (can_id)
+	,tur_can_id numeric (18,0) 
 	,constraint PK_tur_id primary key (tur_id)
-	,constraint FK_tur_afi_username foreign key (tur_afi_username) references pico_y_pala.afiliado (afi_nro_doc)
-	,constraint FK_tur_pro_username foreign key (tur_pro_username) references pico_y_pala.profesional (pro_nro_doc)
+	,constraint FK_tur_afi_username foreign key (tur_afi_nro_doc) references pico_y_pala.afiliado (afi_nro_doc)
+	,constraint FK_tur_pro_username foreign key (tur_pro_nro_doc) references pico_y_pala.profesional (pro_nro_doc)
 );
 
 create table pico_y_pala.consulta
