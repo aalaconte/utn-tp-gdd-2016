@@ -68,14 +68,14 @@ create table pico_y_pala.profesional
 
 create table pico_y_pala.tipo_especialidad
 (
-	tes_id int identity (1,1)
+	tes_id int
 	,tes_desc varchar(255)
 	constraint tes_id primary key (tes_id)
 );
 
 create table pico_y_pala.especialidad
 (
-	esp_id int identity (1,1) 
+	esp_id int
 	,esp_desc varchar (255)
 	,esp_tes_id int 
 	,constraint PK_esp_id primary key (esp_id)
