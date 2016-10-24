@@ -5,7 +5,7 @@ script para dropear todas las tablas de pico_y_pala y el esquema
 USE [GD2C2016]
 GO
 
-drop table pico_y_pala.consulta_enferemedad
+drop table pico_y_pala.consulta_enfermedad
 go
 drop table pico_y_pala.enfermedad
 go
