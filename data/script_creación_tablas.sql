@@ -11,14 +11,14 @@ GO
 
 create table pico_y_pala.funcionalidad 
 (
-	fun_id numeric (18,0)
+	fun_id int identity (1,1)
 	,fun_desc varchar (100)
 	,constraint PK_fun_id primary key (fun_id)
 );
 
 create table pico_y_pala.rol
 (
-	rol_id numeric (18,0)
+	rol_id int identity (1,1)
 	,rol_nombre varchar (50)
 	,rol_habilitado bit
 	,constraint PL_rol_id primary key (rol_id)
@@ -26,8 +26,8 @@ create table pico_y_pala.rol
 
 create table pico_y_pala.rol_funcionalidad
 (
-	rfu_rol_id numeric (18,0)
-	,rfu_fun_id numeric (18,0) 
+	rfu_rol_id int
+	,rfu_fun_id int 
 	,constraint PK_rol_funcionalidad primary key (rfu_rol_id,rfu_fun_id)
 	,constraint FK_rfu_rol_id foreign key (rfu_rol_id) references pico_y_pala.rol (rol_id)
 	,constraint FK_rfu_fun_id foreign key (rfu_fun_id) references pico_y_pala.funcionalidad(fun_id)
@@ -51,11 +51,11 @@ create table pico_y_pala.usuario
 
 create table pico_y_pala.rol_usuario
 (
-	rus_rol_id numeric (18,0) 
-	,rus_fun_id numeric (18,0) 
-	,constraint PK_rol_usuario primary key (rus_rol_id,rus_fun_id)
-	,constraint FK_rus_rol_id foreign key (rus_rol_id) references pico_y_pala.rol (rol_id)
-	,constraint FK_rus_fun_id foreign key (rus_fun_id) references pico_y_pala.usuario(usu_nro_doc)
+	rus_rol_id int 
+	,rus_usu_nro_doc numeric (18,0) 
+	,constraint PK_rol_usuario primary key (rus_rol_id,rus_usu_nro_doc)
+	,constraint FK_rus_usu_nro_doc foreign key (rus_usu_nro_doc) references pico_y_pala.usuario(usu_nro_doc)
+	,constraint FK_rus_fun_id foreign key (rus_rol_id) references pico_y_pala.rol (rol_id)
 );
 
 create table pico_y_pala.profesional 
@@ -68,16 +68,16 @@ create table pico_y_pala.profesional
 
 create table pico_y_pala.tipo_especialidad
 (
-	tes_id numeric(18,0)
+	tes_id int identity (1,1)
 	,tes_desc varchar(255)
 	constraint tes_id primary key (tes_id)
 );
 
 create table pico_y_pala.especialidad
 (
-	esp_id numeric (18,0) 
+	esp_id int identity (1,1) 
 	,esp_desc varchar (255)
-	,esp_tes_id numeric (18,0) 
+	,esp_tes_id int 
 	,constraint PK_esp_id primary key (esp_id)
 	,constraint FK_esp_tes_id foreign key (esp_tes_id) references pico_y_pala.tipo_especialidad(tes_id),
 );
@@ -85,7 +85,7 @@ create table pico_y_pala.especialidad
 create table pico_y_pala.profesional_especialidad
 (
 	pes_pro_nro_doc numeric (18,0) 
-	,pes_esp_id numeric (18,0) 
+	,pes_esp_id int 
 	,constraint PK_profesional_especialidad primary key (pes_pro_nro_doc, pes_esp_id)
 	,constraint FK_pes_pro_nro_doc foreign key (pes_pro_nro_doc) references pico_y_pala.profesional(pro_nro_doc)
 	,constraint FK_pes_esp_id foreign key (pes_esp_id) references pico_y_pala.especialidad (esp_id)
@@ -93,16 +93,16 @@ create table pico_y_pala.profesional_especialidad
 
 create table pico_y_pala.agenda
 (
-	age_id numeric (18,0)
+	age_id numeric (18,0) identity (1,1)
 	,age_pro_nro_doc numeric (18,0)
-	,age_esp_id numeric (18,0)
+	,age_esp_id int
 	,constraint PK_agenda primary key (age_id,age_pro_nro_doc,age_esp_id)
 	,constraint FK_agenda foreign key (age_pro_nro_doc,age_esp_id) references pico_y_pala.profesional_especialidad (pes_pro_nro_doc,pes_esp_id)
 );
 
 create table pico_y_pala.dia
 (
-	dia_id int
+	dia_id int identity (1,1)
 	,dia_nombre char (10)
 	,constraint PK_dia_id primary key (dia_id)
 );
@@ -111,7 +111,7 @@ create table pico_y_pala.dia_por_agenda
 (
 	dpa_pro_nro_doc numeric (18,0)
 	,dpa_age_id numeric (18,0)
-	,dpa_esp_id numeric (18,0)
+	,dpa_esp_id int
 	,dpa_dia int 
 	,dpa_deste datetime
 	,dpa_hasta datetime
@@ -122,7 +122,7 @@ create table pico_y_pala.dia_por_agenda
 
 create table pico_y_pala.estado_civil
 (
-	eci_id numeric (18,0)
+	eci_id int identity (1,1)
 	,eci_desc varchar (100)
 	,constraint PK_eci_id primary key (eci_id)
 );
@@ -140,7 +140,7 @@ create table pico_y_pala.planes
 
 create table pico_y_pala.grupo_familiar
 (
-	gpo_id numeric (18,0)
+	gpo_id numeric (18,0) identity (1,1)
 	,gpo_titular numeric (18,0)
 	,constraint PL_gpo_id primary key (gpo_id) 
 );
@@ -149,7 +149,7 @@ create table pico_y_pala.afiliado
 (
 	afi_nro_doc numeric (18,0) 
 	,afi_nro_afiliado numeric (18,0)
-	,afi_eci_id numeric (18,0) 
+	,afi_eci_id int 
 	,afi_gpo_id numeric (18,0) 
 	,afi_pla_codigo numeric (18,0)
 	,afi_nro_consulta numeric (18,0)
@@ -175,7 +175,7 @@ add constraint FK_gpo_afi foreign key (gpo_titular) references pico_y_pala.afili
 
 create table pico_y_pala.audit_cambio_plan
 (
-	acp_id numeric (18,0) 
+	acp_id numeric (18,0) identity (1,1)
 	,acp_afiliado numeric (18,0) 
 	,acp_fecha datetime
 	,acp_motivo varchar (255)
@@ -189,15 +189,15 @@ create table pico_y_pala.audit_cambio_plan
 
 create table pico_y_pala.tipo_cancelacion
 (
-	tca_id numeric (18,0)
+	tca_id int identity (1,1)
 	,tca_desc varchar (255)
 	,constraint PK_tca_id primary key (tca_id)
 );
 
 create table pico_y_pala.cancelacion
 (
-	can_id numeric (18,0)
-	,can_tca_id numeric (18,0)
+	can_id numeric (18,0) identity (1,1)
+	,can_tca_id int
 	,can_motivo varchar (255)
 	,constraint PK_can_id primary key (can_id)
 	,constraint FK_can_tca_id foreign key (can_tca_id) references pico_y_pala.tipo_cancelacion (tca_id)
@@ -230,7 +230,7 @@ create table pico_y_pala.bono
 
 create table pico_y_pala.turno
 (
-	tur_id numeric (18,0)
+	tur_id numeric (18,0) identity (1,1)
 	,tur_afi_username numeric (18,0) 
 	,tur_pro_username numeric (18,0) 
 	,tur_fecha_hora datetime
@@ -242,7 +242,7 @@ create table pico_y_pala.turno
 
 create table pico_y_pala.consulta
 (
-	con_id numeric (18,0)
+	con_id numeric (18,0) identity (1,1)
 	,con_tur_id numeric (18,0) 
 	,con_bono_utilizado numeric (18,0)
 	,con_fecha_llegada datetime
@@ -254,7 +254,7 @@ create table pico_y_pala.consulta
 
 create table pico_y_pala.sintoma
 (
-	sin_id numeric (18,0)
+	sin_id numeric (18,0) identity (1,1)
 	,sin_desc varchar (255)	
 	,constraint PK_sin_id primary key (sin_id)
 );
@@ -270,7 +270,7 @@ create table pico_y_pala.consulta_sintoma
 
 create table pico_y_pala.enfermedad
 (
-	enf_id numeric (18,0)
+	enf_id numeric (18,0) identity (1,1)
 	,enf_desc varchar (255)	
 	,constraint PK_enf_id primary key (enf_id)
 );
