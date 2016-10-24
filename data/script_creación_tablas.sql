@@ -112,11 +112,12 @@ create table pico_y_pala.dia_por_agenda
 	dpa_pro_nro_doc numeric (18,0)
 	,dpa_age_id numeric (18,0)
 	,dpa_esp_id numeric (18,0)
-	,dpa_dia int foreign key references pico_y_pala.dia (dia_id)
+	,dpa_dia int 
 	,dpa_deste datetime
 	,dpa_hasta datetime
 	,constraint PK_dia_por_agenda primary key (dpa_pro_nro_doc,dpa_esp_id)
 	,constraint FK_dia_por_agenda foreign key (dpa_age_id,dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_id,age_pro_nro_doc,age_esp_id)
+	,constraint FK_dpa_dia foreign key (dpa_dia) references pico_y_pala.dia (dia_id)
 );
 
 create table pico_y_pala.estado_civil
@@ -128,12 +129,13 @@ create table pico_y_pala.estado_civil
 
 create table pico_y_pala.planes
 (
-	pla_id numeric (18,0)
-	,pla_codigo numeric (18,0)
+	--pla_id numeric (18,0)
+	pla_codigo numeric (18,0)
 	,pla_desc varchar (100)
 	,pla_precio_consulta numeric (18,0)
 	,pla_precio_farmacia numeric (18,0)
-	constraint PK_pla_id primary key (pla_id)
+	--constraint PK_pla_id primary key (pla_id)
+	constraint PK_pla_id primary key (pla_codigo)
 );
 
 create table pico_y_pala.grupo_familiar
@@ -149,14 +151,14 @@ create table pico_y_pala.afiliado
 	,afi_nro_afiliado numeric (18,0)
 	,afi_eci_id numeric (18,0) 
 	,afi_gpo_id numeric (18,0) 
-	,afi_pla_id numeric (18,0)
+	,afi_pla_codigo numeric (18,0)
 	,afi_nro_consulta numeric (18,0)
 	,afi_activo bit
 	,afi_fecha_baja datetime
 	,constraint PK_afi_nro_doc primary key (afi_nro_doc)
 	,constraint FK_afi_eci_id foreign key (afi_eci_id) references pico_y_pala.estado_civil (eci_id)
 	,constraint FK_afi_gpo_id foreign key (afi_gpo_id) references pico_y_pala.grupo_familiar (gpo_id)
-	,constraint FK_afi_pla_id foreign key (afi_pla_id) references pico_y_pala.planes (pla_id)
+	,constraint FK_afi_pla_id foreign key (afi_pla_codigo) references pico_y_pala.planes (pla_codigo)
 )
 
 create table pico_y_pala.gf_afiliado
@@ -174,12 +176,15 @@ add constraint FK_gpo_afi foreign key (gpo_titular) references pico_y_pala.afili
 create table pico_y_pala.audit_cambio_plan
 (
 	acp_id numeric (18,0) 
-	,acp_afiliado numeric (18,0) foreign key references pico_y_pala.afiliado (afi_nro_doc)
+	,acp_afiliado numeric (18,0) 
 	,acp_fecha datetime
 	,acp_motivo varchar (255)
-	,acp_plan_anterior numeric (18,0) foreign key references pico_y_pala.planes (pla_id)
-	,acp_plan_nuevo numeric (18,0) foreign key references pico_y_pala.planes (pla_id)
+	,acp_plan_anterior numeric (18,0)
+	,acp_plan_nuevo numeric (18,0) 
 	,constraint PK_acp_id primary key (acp_id)
+	,constraint FK_acp_afiliado foreign key (acp_afiliado) references pico_y_pala.afiliado (afi_nro_doc)
+	,constraint FK_acp_plan_anterior foreign key (acp_plan_anterior) references pico_y_pala.planes (pla_codigo)
+	,constraint FK_acp_plan_nuevo foreign key (acp_plan_nuevo) references pico_y_pala.planes (pla_codigo)
 );
 
 create table pico_y_pala.tipo_cancelacion
@@ -209,13 +214,18 @@ create table pico_y_pala.compra
 
 create table pico_y_pala.bono
 (
-	bon_id numeric (18,0) primary key,
-	bon_afiliado_compra numeric (18,0) foreign key references pico_y_pala.afiliado (afi_nro_doc),
-	bon_pla_id numeric (18,0) foreign key references pico_y_pala.planes (pla_id),
-	bon_nro_consultas_afiliado numeric (18,0),
-	bon_afiliado_utilizo numeric (18,0) foreign key references pico_y_pala.afiliado (afi_nro_doc),
-	bon_fecha_utilizo datetime,
-	bon_com_id numeric (18,0) foreign key references pico_y_pala.compra (com_id)
+	bon_id numeric (18,0) 
+	,bon_afiliado_compra numeric (18,0) 
+	,bon_pla_id numeric (18,0) 
+	,bon_nro_consultas_afiliado numeric (18,0)
+	,bon_afiliado_utilizo numeric (18,0) 
+	,bon_fecha_utilizo datetime
+	,bon_com_id numeric (18,0) 
+	,constraint PK_bon_id primary key (bon_id)
+	,constraint FK_bon_afiliado_compra foreign key (bon_afiliado_compra) references pico_y_pala.afiliado (afi_nro_doc)
+	,constraint FK_bon_pla_id foreign key (bon_pla_id) references pico_y_pala.planes (pla_codigo)
+	,constraint FK_bon_afiliado_utilizo foreign key (bon_afiliado_utilizo) references pico_y_pala.afiliado (afi_nro_doc)
+	,constraint FK_bon_com_id foreign key (bon_com_id) references pico_y_pala.compra (com_id)
 );
 
 create table pico_y_pala.turno
