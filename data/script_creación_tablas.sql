@@ -61,7 +61,7 @@ create table pico_y_pala.rol_usuario
 create table pico_y_pala.profesional 
 (
 	pro_nro_doc numeric (18,0) 
-	,pro_matricula numeric (18,0)
+	,pro_matricula numeric (18,0) identity (1,1)
 	,constraint PK_pro_nro_doc primary key (pro_nro_doc)
 	,constraint FK_pro_nro_doc foreign key (pro_nro_doc) references pico_y_pala.usuario(usu_nro_doc)
 );
@@ -148,16 +148,14 @@ create table pico_y_pala.grupo_familiar
 create table pico_y_pala.afiliado
 (
 	afi_nro_doc numeric (18,0) 
-	,afi_nro_afiliado numeric (18,0)
-	,afi_eci_id int 
-	,afi_gpo_id numeric (18,0) 
+	,afi_nro_afiliado numeric (18,0) identity (1,1)
+	,afi_eci_id int  
 	,afi_pla_codigo numeric (18,0)
 	,afi_nro_consulta numeric (18,0)
 	,afi_activo bit
-	,afi_fecha_baja datetime
+	,afi_fecha_baja datetime 
 	,constraint PK_afi_nro_doc primary key (afi_nro_doc)
 	,constraint FK_afi_eci_id foreign key (afi_eci_id) references pico_y_pala.estado_civil (eci_id)
-	,constraint FK_afi_gpo_id foreign key (afi_gpo_id) references pico_y_pala.grupo_familiar (gpo_id)
 	,constraint FK_afi_pla_id foreign key (afi_pla_codigo) references pico_y_pala.planes (pla_codigo)
 )
 
