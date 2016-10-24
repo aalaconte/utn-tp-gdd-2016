@@ -221,3 +221,20 @@ from pico_y_pala.profesional prof, pico_y_pala.rol roles
 where roles.rol_nombre = 'Profesional'
 --faltan los administrativos!
 print ('rol_usuario ok')
+
+--TURNO
+insert into pico_y_pala.turno
+	(
+	tur_id
+	,tur_afi_nro_doc
+	,tur_pro_nro_doc
+	,tur_fecha_hora
+	)
+select distinct
+	maestra.Turno_Numero
+	,maestra.paciente_dni
+	,maestra.Medico_Dni
+	,maestra.Turno_Fecha
+from gd_esquema.Maestra maestra
+	where maestra.Turno_Numero is not null
+print ('turno ok');
