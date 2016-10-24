@@ -117,7 +117,6 @@ insert into pico_y_pala.funcionalidad (fun_desc) values ('Cancelar atencion medi
 insert into pico_y_pala.funcionalidad (fun_desc) values ('Listado Estadistico')
 print ('funcionalidad ok');
 
-
 --ROL_FUNCIONALIDAD
 insert into pico_y_pala.rol_funcionalidad
 	(
@@ -132,12 +131,7 @@ where
 	roles.rol_nombre = 'Administrativo'
 	and fun.fun_desc in ('ABM de Rol','Login y Seguridad','Registro de Usuario','Abm Afiliado','Abm Profesional'
 	,'Abm Especialidades Medicas','Abm de Planes','Registro de llegadas para atención médica','Listado Estadistico')
-
-insert into pico_y_pala.rol_funcionalidad
-	(
-	rfu_rol_id,
-	rfu_fun_id
-	)
+union
 select 
 	roles.rol_id,
 	fun.fun_id
@@ -145,12 +139,7 @@ select
 where
 	roles.rol_nombre = 'Afiliado'
 	and fun.fun_desc in ('Login y Seguridad','Comprar Bonos','Pedir Turno','Cancelar atencion medica')
-
-insert into pico_y_pala.rol_funcionalidad
-	(
-	rfu_rol_id,
-	rfu_fun_id
-	)
+union
 select 
 	roles.rol_id,
 	fun.fun_id
@@ -187,3 +176,48 @@ from gd_esquema.Maestra
 where medico_dni is not null
 order by 1
 print ('profesional_especialidad ok')
+
+--AFILIADO
+insert into pico_y_pala.afiliado
+	(
+	afi_nro_doc
+	,afi_eci_id
+	,afi_pla_codigo
+	,afi_nro_consulta
+	,afi_activo
+	,afi_fecha_baja
+	)
+select distinct
+	maestra.Paciente_Dni
+	,ecivil.eci_id
+	,maestra.plan_med_codigo
+	,0 nro_consultas  --analizar!
+	,1 activo
+	,null
+from 
+	gd_esquema.Maestra maestra
+	,pico_y_pala.estado_civil ecivil	
+where 
+	ecivil.eci_desc = 'Soltero'
+order by 1
+print ('afiliado ok')
+
+--ROL_USUARIO (faltan administrativos)
+insert into pico_y_pala.rol_usuario
+	(
+		rus_rol_id,
+		rus_usu_nro_doc
+	)
+select distinct
+	roles.rol_id,
+	afi.afi_nro_doc --usar tabla afialiado
+from pico_y_pala.afiliado afi, pico_y_pala.rol roles
+where roles.rol_nombre = 'Afiliado'
+union
+select distinct
+	roles.rol_id,
+	prof.pro_nro_doc
+from pico_y_pala.profesional prof, pico_y_pala.rol roles
+where roles.rol_nombre = 'Profesional'
+--faltan los administrativos!
+print ('rol_usuario ok')
