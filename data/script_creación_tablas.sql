@@ -275,12 +275,12 @@ create table pico_y_pala.enfermedad
 	,constraint PK_enf_id primary key (enf_id)
 );
 
-create table pico_y_pala.consulta_enferemedad
+create table pico_y_pala.consulta_enfermedad
 (
 	cen_con_id numeric (18,0) 
-	,cen_sin_id numeric (18,0) 
-	,constraint PK_consulta_enfermedad primary key (cen_con_id,cen_sin_id)
+	,cen_enf_id numeric (18,0) 
+	,constraint PK_consulta_enfermedad primary key (cen_con_id,cen_enf_id)
 	,constraint FK_cen_con_id foreign key (cen_con_id) references pico_y_pala.consulta (con_id)
-	,constraint FK_cen_sin_id foreign key (cen_sin_id) references pico_y_pala.enfermedad (enf_id)
+	,constraint FK_cen_sin_id foreign key (cen_enf_id) references pico_y_pala.enfermedad (enf_id)
 );
 
