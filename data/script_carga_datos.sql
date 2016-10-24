@@ -285,6 +285,25 @@ where Bono_Consulta_Numero is not null
 order by 1
 print ('bono ok');
 
+--CONSULTA
+insert into pico_y_pala.consulta
+	(
+	con_tur_id
+	,con_bono_utilizado
+	,con_fecha_llegada
+	,con_fecha_consulta
+	)
+select
+	Turno_Numero
+	,Bono_Consulta_Numero
+	,Turno_Fecha
+	,Turno_Fecha				--ANALIZAR
+from gd_esquema.Maestra
+where Turno_Numero is not null 
+	and Bono_Consulta_Numero is not null
+order by 1
+print ('consulta ok')
+
 --SINTOMA
 insert into pico_y_pala.sintoma	
 	(
@@ -307,6 +326,30 @@ from gd_esquema.Maestra
 where consulta_enfermedades is not null
 print ('enfermedad ok')
 
---CONSULTA
+--CONSULTA_SINTOMA
+insert into pico_y_pala.consulta_sintoma
+	(
+	csi_con_id
+	,csi_sin_id
+	)
+select
+	con.con_id
+	,sint.sin_id
+from gd_esquema.Maestra
+inner join pico_y_pala.sintoma sint on sint.sin_desc = Consulta_Sintomas
+inner join pico_y_pala.consulta con on con_tur_id = Turno_Numero
+print ('consulta_sintoma ok')
 
-
+--CONSULTA_ENFERMEDAD
+insert into pico_y_pala.consulta_enfermedad
+	(
+	cen_con_id
+	,cen_enf_id
+	)
+select
+	con.con_id
+	,enf.enf_id
+from gd_esquema.Maestra
+inner join pico_y_pala.enfermedad enf on enf.enf_desc = Consulta_Enfermedades
+inner join pico_y_pala.consulta con on con_tur_id = Turno_Numero
+print ('consulta_enfermedad ok')
