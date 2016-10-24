@@ -161,3 +161,29 @@ where
 	'Registrar resultado para atencion medica')
 
 print ('rol_funcionalidad ok');
+
+--PROFESIONAL
+insert into pico_y_pala.profesional	
+	(
+	pro_nro_doc
+	)
+select distinct
+	medico_dni
+from gd_esquema.Maestra
+where medico_dni is not null
+order by 1
+print ('profesional ok')
+
+--PROFESIONAL_ESPECIALIDAD
+insert into pico_y_pala.profesional_especialidad
+	(
+	pes_pro_nro_doc,
+	pes_esp_id
+	)
+select distinct
+	medico_dni,
+	Especialidad_Codigo
+from gd_esquema.Maestra
+where medico_dni is not null
+order by 1
+print ('profesional_especialidad ok')
