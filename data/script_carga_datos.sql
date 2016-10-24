@@ -238,3 +238,75 @@ select distinct
 from gd_esquema.Maestra maestra
 	where maestra.Turno_Numero is not null
 print ('turno ok');
+
+--COMPRA
+insert into pico_y_pala.compra
+	(
+	com_afi_compro
+	,com_cant
+	,com_precio
+	,com_fecha
+	)
+select 
+	Paciente_Dni
+	,count (*)
+	,0 precio					--ANALIZAR
+	,Compra_Bono_Fecha
+from gd_esquema.Maestra
+where compra_bono_fecha is not null
+group by Paciente_Dni
+	,Compra_Bono_Fecha
+order by 1,4
+print ('compra ok');
+
+--BONO
+insert into pico_y_pala.bono
+	(
+		bon_id
+		,bon_afiliado_compra
+		,bon_pla_id
+		,bon_nro_consultas_afiliado
+		,bon_afiliado_utilizo
+		,bon_fecha_utilizo
+		,bon_com_id
+	)
+select 
+	Bono_Consulta_Numero
+	,Paciente_Dni
+	,Plan_Med_Codigo
+	,0 consultas				--ANALIZAR
+	,Paciente_Dni
+	,Bono_Consulta_Fecha_Impresion
+	,comp.com_id
+from gd_esquema.Maestra
+	inner join pico_y_pala.compra comp on comp.com_afi_compro = paciente_dni
+										and comp.com_fecha = Compra_Bono_Fecha
+where Bono_Consulta_Numero is not null
+order by 1
+print ('bono ok');
+
+--SINTOMA
+insert into pico_y_pala.sintoma	
+	(
+	sin_desc
+	)
+select distinct
+	consulta_sintomas
+from gd_esquema.Maestra
+where consulta_sintomas is not null
+print ('sintoma ok')
+
+--ENFERMEDAD
+insert into pico_y_pala.enfermedad	
+	(
+	enf_desc
+	)
+select distinct
+	consulta_enfermedades
+from gd_esquema.Maestra
+where consulta_enfermedades is not null
+print ('enfermedad ok')
+
+--CONSULTA
+
+
