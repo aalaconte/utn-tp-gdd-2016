@@ -203,11 +203,13 @@ create table pico_y_pala.cancelacion
 
 create table pico_y_pala.compra
 (
-	com_id numeric (18,0)
+	com_id numeric (18,0) identity (1,1)
+	,com_afi_compro numeric (18,0)
 	,com_cant numeric (18,0)
 	,com_precio numeric (18,0)
 	,com_fecha datetime
 	,constraint PK_com_id primary key (com_id)
+	,constraint FK_com_afi_compro foreign key (com_afi_compro) references pico_y_pala.afiliado (afi_nro_doc)
 );
 
 create table pico_y_pala.bono
