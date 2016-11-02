@@ -57,11 +57,26 @@ namespace ClinicaFrba.Main
         private void btn_logout_Click(object sender, EventArgs e)
         {
             this.Close();
+            Login.Login login = new Login.Login();
+            login.Show();
         }
 
         private void setearFuncionalidadesBotones()
         {
             btn_abm_rol.Funcionalidad = (int)funcionalidades.ABMRol;
+            btn_LoginSeguridad.Funcionalidad = (int)funcionalidades.LoginSeguridad;
+            btn_RegistroUsuario.Funcionalidad = (int)funcionalidades.RegistroUsuario;
+            btn_ABMAfiliado.Funcionalidad = (int)funcionalidades.ABMAfiliado;
+            btn_ABMProfesional.Funcionalidad = (int)funcionalidades.ABMProfesional;
+            btn_ABMEspecialidadesMedicas.Funcionalidad = (int)funcionalidades.ABMEspecialidadesMedicas;
+            btn_ComprarBonos.Funcionalidad = (int)funcionalidades.AMBPlan;
+            btn_PedidoTurno.Funcionalidad = (int)funcionalidades.RegistrarAgenda;
+            btn_ComprarBonos.Funcionalidad = (int)funcionalidades.ComprarBonos;
+            btn_PedidoTurno.Funcionalidad = (int)funcionalidades.PedidoTurno;
+            btn_RegistroLlegadaAtMedica.Funcionalidad = (int)funcionalidades.RegistroLlegadaAtMedica;
+            btn_RegistroResultadoAtMedica.Funcionalidad = (int)funcionalidades.RegistroResultadoAtMedica;
+            btn_CancelarAtencion.Funcionalidad = (int)funcionalidades.CancelarAtencion;
+            btn_ListadoEstadistico.Funcionalidad = (int)funcionalidades.ListadoEstadistico;
         }
 
         private void visibilizarComponentesSegunRol()

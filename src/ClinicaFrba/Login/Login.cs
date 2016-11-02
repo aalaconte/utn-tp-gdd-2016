@@ -44,6 +44,7 @@ namespace ClinicaFrba.Login
                 sqlCmd.CommandType = CommandType.StoredProcedure;
                 sqlCmd.Parameters.Add("@user", SqlDbType.VarChar).Value = this.txt_usuario.Text;
                 sqlCmd.Parameters.Add("@pass", SqlDbType.VarChar).Value = Seguridad.Security.encrypt(this.txt_password.Text);
+                string passwd = Seguridad.Security.encrypt(this.txt_password.Text);
                 sqlCmd.Parameters.Add("@ok", SqlDbType.Bit).Direction = ParameterDirection.Output;
                 sqlCmd.Parameters.Add("@enabled", SqlDbType.Bit).Direction = ParameterDirection.Output;
                 sqlCmd.ExecuteNonQuery();
@@ -99,6 +100,17 @@ namespace ClinicaFrba.Login
                 MessageBox.Show(exception.Message);
                 return;
             }
+        }
+
+        private void btn_salir_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            Application.Exit();
+        }
+
+        private void Login_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

@@ -35,6 +35,7 @@
             this.lbl_bienvenido = new System.Windows.Forms.Label();
             this.btn_login = new System.Windows.Forms.Button();
             this.lnk_recuperar_contrasenia = new System.Windows.Forms.LinkLabel();
+            this.btn_salir = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbl_username
@@ -82,7 +83,7 @@
             // 
             // btn_login
             // 
-            this.btn_login.Location = new System.Drawing.Point(172, 132);
+            this.btn_login.Location = new System.Drawing.Point(172, 111);
             this.btn_login.Name = "btn_login";
             this.btn_login.Size = new System.Drawing.Size(75, 23);
             this.btn_login.TabIndex = 5;
@@ -93,18 +94,29 @@
             // lnk_recuperar_contrasenia
             // 
             this.lnk_recuperar_contrasenia.AutoSize = true;
-            this.lnk_recuperar_contrasenia.Location = new System.Drawing.Point(18, 137);
+            this.lnk_recuperar_contrasenia.Location = new System.Drawing.Point(12, 137);
             this.lnk_recuperar_contrasenia.Name = "lnk_recuperar_contrasenia";
             this.lnk_recuperar_contrasenia.Size = new System.Drawing.Size(113, 13);
             this.lnk_recuperar_contrasenia.TabIndex = 6;
             this.lnk_recuperar_contrasenia.TabStop = true;
             this.lnk_recuperar_contrasenia.Text = "Recuperar contraseña";
             // 
+            // btn_salir
+            // 
+            this.btn_salir.Location = new System.Drawing.Point(172, 137);
+            this.btn_salir.Name = "btn_salir";
+            this.btn_salir.Size = new System.Drawing.Size(75, 23);
+            this.btn_salir.TabIndex = 7;
+            this.btn_salir.Text = "Salir";
+            this.btn_salir.UseVisualStyleBackColor = true;
+            this.btn_salir.Click += new System.EventHandler(this.btn_salir_Click);
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(269, 167);
+            this.Controls.Add(this.btn_salir);
             this.Controls.Add(this.lnk_recuperar_contrasenia);
             this.Controls.Add(this.btn_login);
             this.Controls.Add(this.lbl_bienvenido);
@@ -114,6 +126,7 @@
             this.Controls.Add(this.lbl_username);
             this.Name = "Login";
             this.Text = "Login";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Login_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -128,5 +141,6 @@
         private System.Windows.Forms.Label lbl_bienvenido;
         private System.Windows.Forms.Button btn_login;
         private System.Windows.Forms.LinkLabel lnk_recuperar_contrasenia;
+        private System.Windows.Forms.Button btn_salir;
     }
 }
