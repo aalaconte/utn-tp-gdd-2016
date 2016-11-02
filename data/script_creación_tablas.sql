@@ -35,8 +35,9 @@ create table pico_y_pala.rol_funcionalidad
 
 create table pico_y_pala.usuario
 (
-	usu_nro_doc numeric (18,0) 
-	,usu_password varchar (50) 
+	usu_username varchar (50) 
+	,usu_nro_doc numeric (18,0) unique
+	,usu_password varchar (64) 
 	,usu_nombre varchar (255)
 	,usu_apellido varchar (255)
 	,usu_tipo_doc varchar (3)
@@ -46,15 +47,16 @@ create table pico_y_pala.usuario
 	,usu_fecha_nac datetime
 	,usu_sexo char (1)
 	,usu_habilitado bit
-	,constraint PK_usu_nro_doc primary key (usu_nro_doc)
+	,usu_intentos_fallidos int
+	,constraint PK_usu_username primary key (usu_username)
 );
 
 create table pico_y_pala.rol_usuario
 (
 	rus_rol_id int 
-	,rus_usu_nro_doc numeric (18,0) 
-	,constraint PK_rol_usuario primary key (rus_rol_id,rus_usu_nro_doc)
-	,constraint FK_rus_usu_nro_doc foreign key (rus_usu_nro_doc) references pico_y_pala.usuario(usu_nro_doc)
+	,rus_usu_username varchar (50) 
+	,constraint PK_rol_usuario primary key (rus_rol_id,rus_usu_username)
+	,constraint FK_rus_usu_username foreign key (rus_usu_username) references pico_y_pala.usuario(usu_username)
 	,constraint FK_rus_fun_id foreign key (rus_rol_id) references pico_y_pala.rol (rol_id)
 );
 
@@ -155,6 +157,7 @@ create table pico_y_pala.afiliado
 	,afi_activo bit
 	,afi_fecha_baja datetime 
 	,constraint PK_afi_nro_doc primary key (afi_nro_doc)
+	,constraint FK_afi_nro_doc foreign key (afi_nro_doc) references pico_y_pala.usuario(usu_nro_doc)
 	,constraint FK_afi_eci_id foreign key (afi_eci_id) references pico_y_pala.estado_civil (eci_id)
 	,constraint FK_afi_pla_id foreign key (afi_pla_codigo) references pico_y_pala.planes (pla_codigo)
 )
@@ -283,4 +286,36 @@ create table pico_y_pala.consulta_enfermedad
 	,constraint FK_cen_con_id foreign key (cen_con_id) references pico_y_pala.consulta (con_id)
 	,constraint FK_cen_sin_id foreign key (cen_enf_id) references pico_y_pala.enfermedad (enf_id)
 );
+GO
+--STORE PROCEDURES
 
+CREATE PROCEDURE PICO_Y_PALA.checkLoginAndUpdateFailures(@user VARCHAR(50), @pass VARCHAR(64), @ok BIT OUTPUT, @enabled BIT OUTPUT)
+AS
+BEGIN
+	DECLARE @passReal VARCHAR(64), @intentosFallidos TINYINT;
+	SET @ok = 0;
+	SELECT @passReal=usu_password, @enabled=usu_habilitado, @intentosFallidos=usu_intentos_fallidos FROM PICO_Y_PALA.usuario WHERE USU_USERNAME=@user;
+	IF @passReal IS NOT NULL AND @passReal <> ''
+		BEGIN
+			IF @enabled = 1
+				BEGIN
+					IF @passReal=@pass
+						BEGIN
+							SET @ok=1;
+							UPDATE PICO_Y_PALA.usuario SET usu_intentos_fallidos=0 WHERE usu_username=@user;
+						END
+					ELSE
+						BEGIN
+							IF @intentosFallidos=2
+								BEGIN
+									UPDATE PICO_Y_PALA.usuario SET usu_habilitado=0 WHERE usu_username=@user;
+									SET @enabled=0;
+								END;
+							UPDATE PICO_Y_PALA.usuario SET usu_intentos_fallidos=@intentosFallidos+1 WHERE usu_username=@user;
+						END
+				END
+		END
+	ELSE
+		SET @enabled = 1 --Si entra por esta rama, no existe el usuario. Se devuelve por defecto enabled=true
+END;
+GO

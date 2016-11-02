@@ -30,7 +30,9 @@ print ('especialidad ok');
 --USUARIO
 insert into pico_y_pala.usuario
 	(
+	usu_username,
 	usu_nro_doc,
+	usu_password,
 	usu_apellido,
 	usu_nombre,
 	usu_tipo_doc,
@@ -39,10 +41,13 @@ insert into pico_y_pala.usuario
 	usu_mail,
 	usu_fecha_nac,
 	usu_sexo,
-	usu_habilitado
+	usu_habilitado,
+	usu_intentos_fallidos
 	)
 select distinct
+	Paciente_Dni USERNAME,
 	Paciente_Dni DNI,
+	'A1159E9DF3670D549D04524532629F5477CEB7DEEC9B45E47E8C009506ECB2C8' PASSWORD,
 	Paciente_Apellido APELLIDO,
 	Paciente_Nombre NOMBRE,
 	'DNI' TIPO_DOC,
@@ -51,12 +56,15 @@ select distinct
 	Paciente_Mail MAIL,
 	Paciente_Fecha_Nac FECHA_NAC,
 	'M' SEXO,
-	1 HABILITADO
+	1 HABILITADO,
+	0 INTENTOS_FALLIDOS
 from gd_esquema.Maestra
 where paciente_apellido is not null
 union 
 select distinct	
 	medico_dni,
+	medico_dni,
+	'A1159E9DF3670D549D04524532629F5477CEB7DEEC9B45E47E8C009506ECB2C8',
 	Medico_Apellido,
 	medico_nombre,
 	'DNI' TIPO_DOC,
@@ -65,11 +73,26 @@ select distinct
 	Medico_Mail,
 	Medico_Fecha_Nac,
 	'F',
-	1
+	1,
+	0
 from gd_esquema.Maestra
 	where medico_apellido is not null
 print ('usuario ok');
-
+--Administrador
+insert into pico_y_pala.usuario
+	(
+	usu_username,
+	usu_password,
+	usu_habilitado,
+	usu_intentos_fallidos
+	) values
+	(
+	'admin',
+	'E6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7',
+	1,
+	0
+	)
+print ('admin ok');
 --PLAN
 insert into pico_y_pala.planes
 		(
@@ -95,6 +118,7 @@ insert into pico_y_pala.estado_civil (eci_desc) values ('Viudo')
 print ('estado_civil ok');
 
 --ROL
+insert into pico_y_pala.rol (rol_nombre,rol_habilitado) values ('Administrador',1)
 insert into pico_y_pala.rol (rol_nombre,rol_habilitado) values ('Administrativo',1)
 insert into pico_y_pala.rol (rol_nombre,rol_habilitado) values ('Afiliado',1)
 insert into pico_y_pala.rol (rol_nombre,rol_habilitado) values ('Profesional',1)
@@ -118,11 +142,21 @@ insert into pico_y_pala.funcionalidad (fun_desc) values ('Listado Estadistico')
 print ('funcionalidad ok');
 
 --ROL_FUNCIONALIDAD
+
 insert into pico_y_pala.rol_funcionalidad
 	(
 	rfu_rol_id,
 	rfu_fun_id
 	)
+select 
+	roles.rol_id,
+	fun.fun_id
+	from pico_y_pala.rol roles, pico_y_pala.funcionalidad fun
+where
+	roles.rol_nombre = 'Administrador'
+	and fun.fun_desc in ('ABM de Rol','Login y Seguridad','Registro de Usuario','Abm Afiliado','Abm Profesional'
+	,'Abm Especialidades Medicas','Abm de Planes','Registrar Agenda del Medico','Comprar Bonos','Pedir Turno','Registro de llegadas para atención médica','Registrar resultado para atencion medica','Cancelar atencion medica','Listado Estadistico')
+union
 select 
 	roles.rol_id,
 	fun.fun_id
@@ -206,19 +240,25 @@ print ('afiliado ok')
 insert into pico_y_pala.rol_usuario
 	(
 		rus_rol_id,
-		rus_usu_nro_doc
+		rus_usu_username
 	)
 select distinct
 	roles.rol_id,
-	afi.afi_nro_doc --usar tabla afialiado
+	CAST(afi.afi_nro_doc as varchar(50))--usar tabla afialiado
 from pico_y_pala.afiliado afi, pico_y_pala.rol roles
 where roles.rol_nombre = 'Afiliado'
 union
 select distinct
 	roles.rol_id,
-	prof.pro_nro_doc
+	CAST(prof.pro_nro_doc as varchar(50))
 from pico_y_pala.profesional prof, pico_y_pala.rol roles
 where roles.rol_nombre = 'Profesional'
+union
+select distinct
+	roles.rol_id,
+	'admin'
+from pico_y_pala.rol roles
+where roles.rol_nombre = 'Administrador'
 --faltan los administrativos!
 print ('rol_usuario ok')
 

@@ -63,5 +63,7 @@ drop table pico_y_pala.rol
 go
 drop table pico_y_pala.funcionalidad
 go
+drop procedure pico_y_pala.checkLoginAndUpdateFailures
+go
 
 drop schema pico_y_pala
