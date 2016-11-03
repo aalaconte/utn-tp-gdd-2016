@@ -319,3 +319,60 @@ BEGIN
 		SET @enabled = 1 --Si entra por esta rama, no existe el usuario. Se devuelve por defecto enabled=true
 END;
 GO
+
+--Crea un rol y lo relaciona con la funcionalidad base de Login
+CREATE PROCEDURE PICO_Y_PALA.crearRol (@rol_nombre VARCHAR(255))
+AS
+BEGIN
+	IF exists (SELECT * FROM PICO_Y_PALA.rol WHERE rol_nombre=@rol_nombre)
+	BEGIN
+		RAISERROR('Ya hay un rol con el nombre solicitado',16,1)
+		RETURN
+	END
+	INSERT INTO PICO_Y_PALA.rol(rol_habilitado,rol_nombre) VALUES (1,@rol_nombre)
+	INSERT INTO PICO_Y_PALA.rol_funcionalidad(rfu_fun_id,rfu_rol_id) VALUES (1,(SELECT rol_id FROM PICO_Y_PALA.rol WHERE rol_nombre = @rol_nombre));
+END
+GO
+
+--Crea un asociacion rol_funcionalidad
+CREATE PROCEDURE PICO_Y_PALA.crearRolFuncionalidad (@rol_nombre VARCHAR(255), @fun_nombre VARCHAR(255))
+AS
+BEGIN
+	DECLARE @rol_id INT, @fun_id INT,@message VARCHAR(255)
+	SELECT @rol_id = rol_id FROM PICO_Y_PALA.rol WHERE rol_nombre = @rol_nombre
+	SELECT @fun_id = fun_id FROM PICO_Y_PALA.funcionalidad WHERE fun_desc = @fun_nombre
+	INSERT INTO PICO_Y_PALA.rol_funcionalidad(rfu_fun_id,rfu_rol_id) VALUES (@fun_id,@rol_id)
+END
+GO
+
+CREATE PROCEDURE PICO_Y_PALA.borrarRolFuncionalidad (@rol_nombre VARCHAR(255), @fun_nombre VARCHAR(255))
+AS
+BEGIN
+	DECLARE @rol_id INT, @fun_id INT,@message VARCHAR(255)
+	SELECT @rol_id = rol_id FROM PICO_Y_PALA.rol WHERE rol_nombre = @rol_nombre
+	SELECT @fun_id = fun_id FROM PICO_Y_PALA.funcionalidad WHERE fun_desc = @fun_nombre
+	DELETE FROM PICO_Y_PALA.rol_funcionalidad WHERE rfu_fun_id = @fun_id AND rfu_rol_id = @rol_id
+END
+GO
+
+CREATE PROCEDURE PICO_Y_PALA.deshabilitarRol (@idRol INT)
+AS
+BEGIN
+	UPDATE PICO_Y_PALA.rol SET rol_habilitado=0 WHERE rol_id = @idRol;
+	DELETE FROM PICO_Y_PALA.rol_usuario WHERE rus_rol_id = @idRol;
+END
+GO
+
+CREATE PROCEDURE PICO_Y_PALA.habilitarRol (@idRol INT)
+AS
+BEGIN
+	UPDATE PICO_Y_PALA.rol SET rol_habilitado=1 WHERE rol_id = @idRol;
+END
+GO
+
+CREATE PROCEDURE PICO_Y_PALA.cambiarNombreRol (@idRol INT, @rol_nombre_nuevo VARCHAR(255))
+AS
+BEGIN
+	UPDATE PICO_Y_PALA.rol SET rol_nombre=@rol_nombre_nuevo WHERE rol_id = @idRol;
+END
+GO

@@ -35,7 +35,7 @@
             // 
             // btn_crear
             // 
-            this.btn_crear.Location = new System.Drawing.Point(80, 42);
+            this.btn_crear.Location = new System.Drawing.Point(55, 25);
             this.btn_crear.Name = "btn_crear";
             this.btn_crear.Size = new System.Drawing.Size(120, 35);
             this.btn_crear.TabIndex = 0;
@@ -45,7 +45,7 @@
             // 
             // btn_modificar
             // 
-            this.btn_modificar.Location = new System.Drawing.Point(80, 105);
+            this.btn_modificar.Location = new System.Drawing.Point(55, 75);
             this.btn_modificar.Name = "btn_modificar";
             this.btn_modificar.Size = new System.Drawing.Size(120, 35);
             this.btn_modificar.TabIndex = 1;
@@ -55,18 +55,19 @@
             // 
             // btn_atras
             // 
-            this.btn_atras.Location = new System.Drawing.Point(22, 181);
+            this.btn_atras.Location = new System.Drawing.Point(76, 146);
             this.btn_atras.Name = "btn_atras";
             this.btn_atras.Size = new System.Drawing.Size(75, 23);
             this.btn_atras.TabIndex = 2;
             this.btn_atras.Text = "Atrás";
             this.btn_atras.UseVisualStyleBackColor = true;
+            this.btn_atras.Click += new System.EventHandler(this.btn_atras_Click);
             // 
             // AdministrarRoles
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 225);
+            this.ClientSize = new System.Drawing.Size(235, 181);
             this.Controls.Add(this.btn_atras);
             this.Controls.Add(this.btn_modificar);
             this.Controls.Add(this.btn_crear);

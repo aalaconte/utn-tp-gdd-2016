@@ -33,10 +33,7 @@ namespace ClinicaFrba.AbmRol
         {
             accion = accionDeseada;
             InitializeComponent();
-            if (accion.Equals("Eliminar"))
-            {
-                this.btn_seleccionar.Text = "Eliminar";
-            }
+
         }
 
         private void btn_limpiar_Click(object sender, EventArgs e)
@@ -216,12 +213,19 @@ namespace ClinicaFrba.AbmRol
 
         private void btn_seleccionar_Click(object sender, EventArgs e)
         {
-            Rol rol = new Rol((int)this.dgv_roles.SelectedRows[0].Cells[0].Value,
-                    this.dgv_roles.SelectedRows[0].Cells[1].Value.ToString(),
-                    (bool)(this.dgv_roles.SelectedRows[0].Cells[2].Value.Equals("Sí")));
-            this.Close();
-            AbmRol modificar = new AbmRol(rol);
-            modificar.ShowDialog();
+            if (this.dgv_roles.DisplayedRowCount(true)==0)
+            {
+                MessageBox.Show("Seleccione un rol de la lista", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else
+            {
+                Rol rol = new Rol((int)this.dgv_roles.SelectedRows[0].Cells[0].Value,
+                        this.dgv_roles.SelectedRows[0].Cells[1].Value.ToString(),
+                        (bool)(this.dgv_roles.SelectedRows[0].Cells[2].Value.Equals("Sí")));
+                this.Close();
+                AbmRol modificar = new AbmRol(rol);
+                modificar.ShowDialog();
+            }
         }
 
         private void btn_atras_Click(object sender, EventArgs e)

@@ -33,5 +33,16 @@ namespace ClinicaFrba.AbmRol
             AbmRol crear = new AbmRol();
             crear.ShowDialog();
         }
+
+        private void btn_borrar_Click(object sender, EventArgs e)
+        {
+            BuscarRol buscarEliminar = new BuscarRol("Eliminar");
+            buscarEliminar.ShowDialog();
+        }
+
+        private void btn_atras_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

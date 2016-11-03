@@ -42,11 +42,11 @@ namespace ClinicaFrba.AbmRol
         {
             try
             {
-                ManipulacionComponentes.llenarComboBox(this.cmb_funcionalidad, "select fun_descr from PICO_Y_PALA.funcionalidad where fun_id <> 1", "fun_descr");
+                ManipulacionComponentes.llenarComboBox(this.cmb_funcionalidad, "select fun_desc from PICO_Y_PALA.funcionalidad where fun_id <> 1", "fun_desc");
                 this.txt_rol.Text = this.rol.getNombre();
                 this.chk_habilitado.Checked = this.rol.getHabilitado();
-                ManipulacionComponentes.llenarListBox(this.lst_funcionalidades_a_asignar, ConfigurationManager.AppSettings["query.abm.rol.funcionalidades"].Replace("{0}", this.rol.getNombre()), "fun_descr");
-                ManipulacionComponentes.llenarListBox(this.lst_funcionalidades_asignadas, ConfigurationManager.AppSettings["query.abm.rol.funcionalidades"].Replace("{0}", this.rol.getNombre()), "fun_descr");
+                ManipulacionComponentes.llenarListBox(this.lst_funcionalidades_a_asignar, ConfigurationManager.AppSettings["query.abm.rol.funcionalidades"].Replace("{0}", this.rol.getNombre()), "fun_desc");
+                ManipulacionComponentes.llenarListBox(this.lst_funcionalidades_asignadas, ConfigurationManager.AppSettings["query.abm.rol.funcionalidades"].Replace("{0}", this.rol.getNombre()), "fun_desc");
             }
             catch (Exception ex)
             {
@@ -129,6 +129,13 @@ namespace ClinicaFrba.AbmRol
                     SqlTransaction tx = cx.BeginTransaction();
                     try
                     {
+                        if (!this.rol.Equals(txt_rol.Text))
+                        {
+                            cambiarNombreRol(this.rol.getId(), txt_rol.Text, cx, tx);
+
+                        }
+
+
                         foreach (String funcionalidad in this.lst_funcionalidades_a_asignar.Items)
                         {
                             //Si no era una funcionalidad ya asignada, se crea la relación Rol-Funcionalidad
@@ -271,6 +278,25 @@ namespace ClinicaFrba.AbmRol
                 sqlCmd = new SqlCommand("PICO_Y_PALA.deshabilitarRol", cx, tx);
                 sqlCmd.CommandType = CommandType.StoredProcedure;
                 sqlCmd.Parameters.Add("@idRol", SqlDbType.Int).Value = idRol;
+                sqlCmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                sqlCmd.Dispose();
+                throw ex;
+            }
+        }
+
+        private void cambiarNombreRol(int idRol, string nuevoNombre, SqlConnection cx, SqlTransaction tx)
+        {
+            SqlCommand sqlCmd = null;
+            try
+            {
+                sqlCmd = new SqlCommand("PICO_Y_PALA.cambiarNombreRol", cx, tx);
+                sqlCmd.CommandType = CommandType.StoredProcedure;
+                sqlCmd.Parameters.Add("@idRol", SqlDbType.Int).Value = idRol;
+                sqlCmd.Parameters.Add("@rol_nombre_nuevo", SqlDbType.VarChar).Value = this.txt_rol.Text;
+
                 sqlCmd.ExecuteNonQuery();
             }
             catch (Exception ex)

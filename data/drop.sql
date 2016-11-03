@@ -63,7 +63,19 @@ drop table pico_y_pala.rol
 go
 drop table pico_y_pala.funcionalidad
 go
+--Store Procedures
 drop procedure pico_y_pala.checkLoginAndUpdateFailures
 go
-
+drop procedure pico_y_pala.crearRol
+go
+drop procedure pico_y_pala.crearRolFuncionalidad 
+go
+drop procedure pico_y_pala.borrarRolFuncionalidad
+GO
+drop procedure pico_y_pala.deshabilitarRol
+go
+drop procedure pico_y_pala.habilitarRol
+go
+drop procedure pico_y_pala.cambiarNombreRol
+go
 drop schema pico_y_pala
