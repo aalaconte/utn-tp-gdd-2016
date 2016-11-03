@@ -23,15 +23,15 @@ namespace ClinicaFrba.Main
         enum funcionalidades
         {
             ABMRol = 1,
-            ABMAfiliado = 2,
-            ABMProfesional = 3,
-            RegistrarAgenda = 4,
-            ComprarBonos = 5,
-            PedidoTurno = 6,
-            RegistroLlegadaAtMedica = 7,
-            RegistroResultadoAtMedica = 8,
-            CancelarAtencion = 9,
-            ListadoEstadistico = 10
+            ABMAfiliado = 4,
+            ABMProfesional = 5,
+            RegistrarAgenda = 8,
+            ComprarBonos = 9,
+            PedidoTurno = 10,
+            RegistroLlegadaAtMedica = 11,
+            RegistroResultadoAtMedica = 12,
+            CancelarAtencion = 13,
+            ListadoEstadistico = 14
         };
 
         public MainPage()
@@ -64,13 +64,13 @@ namespace ClinicaFrba.Main
             btn_abm_rol.Funcionalidad = (int)funcionalidades.ABMRol;
             btn_ABMAfiliado.Funcionalidad = (int)funcionalidades.ABMAfiliado;
             btn_ABMProfesional.Funcionalidad = (int)funcionalidades.ABMProfesional;
-            btn_PedidoTurno.Funcionalidad = (int)funcionalidades.RegistrarAgenda;
             btn_ComprarBonos.Funcionalidad = (int)funcionalidades.ComprarBonos;
             btn_PedidoTurno.Funcionalidad = (int)funcionalidades.PedidoTurno;
             btn_RegistroLlegadaAtMedica.Funcionalidad = (int)funcionalidades.RegistroLlegadaAtMedica;
             btn_RegistroResultadoAtMedica.Funcionalidad = (int)funcionalidades.RegistroResultadoAtMedica;
             btn_CancelarAtencion.Funcionalidad = (int)funcionalidades.CancelarAtencion;
             btn_ListadoEstadistico.Funcionalidad = (int)funcionalidades.ListadoEstadistico;
+            btn_registrar_agenda.Funcionalidad = (int)funcionalidades.RegistrarAgenda;
         }
 
         private void visibilizarComponentesSegunRol()

@@ -39,6 +39,7 @@
             this.btn_ABMProfesional = new ClinicaFrba.Main.BotonFuncionalidad();
             this.btn_ABMAfiliado = new ClinicaFrba.Main.BotonFuncionalidad();
             this.btn_abm_rol = new ClinicaFrba.Main.BotonFuncionalidad();
+            this.btn_registrar_agenda = new ClinicaFrba.Main.BotonFuncionalidad();
             this.SuspendLayout();
             // 
             // lbl_username
@@ -161,11 +162,22 @@
             this.btn_abm_rol.Visible = false;
             this.btn_abm_rol.Click += new System.EventHandler(this.btn_abm_rol_Click);
             // 
+            // btn_registrar_agenda
+            // 
+            this.btn_registrar_agenda.Funcionalidad = null;
+            this.btn_registrar_agenda.Location = new System.Drawing.Point(247, 223);
+            this.btn_registrar_agenda.Name = "btn_registrar_agenda";
+            this.btn_registrar_agenda.Size = new System.Drawing.Size(195, 38);
+            this.btn_registrar_agenda.TabIndex = 14;
+            this.btn_registrar_agenda.Text = "Registrar Agenda Profesional";
+            this.btn_registrar_agenda.UseVisualStyleBackColor = true;
+            // 
             // MainPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(468, 285);
+            this.Controls.Add(this.btn_registrar_agenda);
             this.Controls.Add(this.btn_CancelarAtencion);
             this.Controls.Add(this.btn_ListadoEstadistico);
             this.Controls.Add(this.btn_RegistroLlegadaAtMedica);
@@ -198,5 +210,6 @@
         private BotonFuncionalidad btn_RegistroResultadoAtMedica;
         private BotonFuncionalidad btn_CancelarAtencion;
         private BotonFuncionalidad btn_ListadoEstadistico;
+        private BotonFuncionalidad btn_registrar_agenda;
     }
 }
