@@ -126,12 +126,8 @@ print ('rol ok');
 
 --FUNCIONALIDAD
 insert into pico_y_pala.funcionalidad (fun_desc) values ('ABM de Rol')
-insert into pico_y_pala.funcionalidad (fun_desc) values ('Login y Seguridad')
-insert into pico_y_pala.funcionalidad (fun_desc) values ('Registro de Usuario')
 insert into pico_y_pala.funcionalidad (fun_desc) values ('Abm Afiliado')
 insert into pico_y_pala.funcionalidad (fun_desc) values ('Abm Profesional')
-insert into pico_y_pala.funcionalidad (fun_desc) values ('Abm Especialidades Medicas')
-insert into pico_y_pala.funcionalidad (fun_desc) values ('Abm de Planes')
 insert into pico_y_pala.funcionalidad (fun_desc) values ('Registrar Agenda del Medico')
 insert into pico_y_pala.funcionalidad (fun_desc) values ('Comprar Bonos')
 insert into pico_y_pala.funcionalidad (fun_desc) values ('Pedir Turno')

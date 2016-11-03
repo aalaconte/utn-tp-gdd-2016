@@ -45,11 +45,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abm Afiliado\Form1.cs">
+    <Compile Include="Abm Afiliado\AdministrarAfiliados.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Afiliado\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Afiliado\AdministrarAfiliados.Designer.cs">
+      <DependentUpon>AdministrarAfiliados.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Afiliado\Afiliado.cs" />
+    <Compile Include="Abm Afiliado\AltaAfiliado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\AltaAfiliado.Designer.cs">
+      <DependentUpon>AltaAfiliado.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Especialidades Medicas\Form1.cs">
       <SubType>Form</SubType>
@@ -171,6 +178,12 @@
     <Compile Include="Usuario\Usuario.cs" />
     <Compile Include="Utils\Mensajes.cs" />
     <Compile Include="Validaciones\ValidacionComponentes.cs" />
+    <EmbeddedResource Include="Abm Afiliado\AdministrarAfiliados.resx">
+      <DependentUpon>AdministrarAfiliados.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\AltaAfiliado.resx">
+      <DependentUpon>AltaAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\AbmRol.resx">
       <DependentUpon>AbmRol.cs</DependentUpon>
     </EmbeddedResource>

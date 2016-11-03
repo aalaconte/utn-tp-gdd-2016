@@ -1,4 +1,6 @@
-﻿using ClinicaFrba.AbmRol;
+﻿using ClinicaFrba;
+using ClinicaFrba.Abm_Afiliado;
+using ClinicaFrba.AbmRol;
 using ClinicaFrba.BaseDeDatos;
 using System;
 using System.Collections.Generic;
@@ -21,19 +23,15 @@ namespace ClinicaFrba.Main
         enum funcionalidades
         {
             ABMRol = 1,
-            LoginSeguridad = 2,
-            RegistroUsuario = 3,
-            ABMAfiliado = 4,
-            ABMProfesional = 5,
-            ABMEspecialidadesMedicas = 6,
-            AMBPlan = 7,
-            RegistrarAgenda = 8,
-            ComprarBonos = 9,
-            PedidoTurno = 10,
-            RegistroLlegadaAtMedica = 11,
-            RegistroResultadoAtMedica = 12,
-            CancelarAtencion = 13,
-            ListadoEstadistico = 14
+            ABMAfiliado = 2,
+            ABMProfesional = 3,
+            RegistrarAgenda = 4,
+            ComprarBonos = 5,
+            PedidoTurno = 6,
+            RegistroLlegadaAtMedica = 7,
+            RegistroResultadoAtMedica = 8,
+            CancelarAtencion = 9,
+            ListadoEstadistico = 10
         };
 
         public MainPage()
@@ -64,12 +62,8 @@ namespace ClinicaFrba.Main
         private void setearFuncionalidadesBotones()
         {
             btn_abm_rol.Funcionalidad = (int)funcionalidades.ABMRol;
-            btn_LoginSeguridad.Funcionalidad = (int)funcionalidades.LoginSeguridad;
-            btn_RegistroUsuario.Funcionalidad = (int)funcionalidades.RegistroUsuario;
             btn_ABMAfiliado.Funcionalidad = (int)funcionalidades.ABMAfiliado;
             btn_ABMProfesional.Funcionalidad = (int)funcionalidades.ABMProfesional;
-            btn_ABMEspecialidadesMedicas.Funcionalidad = (int)funcionalidades.ABMEspecialidadesMedicas;
-            btn_ComprarBonos.Funcionalidad = (int)funcionalidades.AMBPlan;
             btn_PedidoTurno.Funcionalidad = (int)funcionalidades.RegistrarAgenda;
             btn_ComprarBonos.Funcionalidad = (int)funcionalidades.ComprarBonos;
             btn_PedidoTurno.Funcionalidad = (int)funcionalidades.PedidoTurno;
@@ -117,6 +111,12 @@ namespace ClinicaFrba.Main
         {
             AdministrarRoles abmRol = new AbmRol.AdministrarRoles();
             abmRol.ShowDialog();
+        }
+
+        private void btn_ABMAfiliado_Click(object sender, EventArgs e)
+        {
+            AdministrarAfiliados abmAfi = new Abm_Afiliado.AdministrarAfiliados();
+            abmAfi.ShowDialog();
         }
 
     }
