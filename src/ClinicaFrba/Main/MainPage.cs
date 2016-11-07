@@ -2,6 +2,7 @@
 using ClinicaFrba.Abm_Afiliado;
 using ClinicaFrba.AbmRol;
 using ClinicaFrba.BaseDeDatos;
+using ClinicaFrba.Registrar_Agenta_Medico;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -117,6 +118,12 @@ namespace ClinicaFrba.Main
         {
             AdministrarAfiliados abmAfi = new Abm_Afiliado.AdministrarAfiliados();
             abmAfi.ShowDialog();
+        }
+
+        private void btn_registrar_agenda_Click(object sender, EventArgs e)
+        {
+            RegistrarAgenda registrarAgenda = new Registrar_Agenta_Medico.RegistrarAgenda();
+            registrarAgenda.ShowDialog();
         }
 
     }

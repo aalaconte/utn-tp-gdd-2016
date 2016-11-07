@@ -171,6 +171,8 @@
             this.btn_registrar_agenda.TabIndex = 14;
             this.btn_registrar_agenda.Text = "Registrar Agenda Profesional";
             this.btn_registrar_agenda.UseVisualStyleBackColor = true;
+            this.btn_registrar_agenda.Visible = false;
+            this.btn_registrar_agenda.Click += new System.EventHandler(this.btn_registrar_agenda_Click);
             // 
             // MainPage
             // 
