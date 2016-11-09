@@ -28,5 +28,10 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
+        private void btn_atras_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
     }
 }
