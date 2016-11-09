@@ -211,6 +211,7 @@ print ('profesional_especialidad ok')
 insert into pico_y_pala.afiliado
 	(
 	afi_nro_doc
+	,afi_nro_afiliado
 	,afi_eci_id
 	,afi_pla_codigo
 	,afi_nro_consulta
@@ -219,6 +220,7 @@ insert into pico_y_pala.afiliado
 	)
 select distinct
 	maestra.Paciente_Dni
+	,(maestra.Paciente_Dni*100+1) --Nro de afiliado = DNI+01(todos titulares de Grupo Familiar)
 	,ecivil.eci_id
 	,maestra.plan_med_codigo
 	,0 nro_consultas  --analizar!
@@ -231,6 +233,35 @@ where
 	ecivil.eci_desc = 'Soltero'
 order by 1
 print ('afiliado ok')
+
+--Creo Grupo Familiar con todos como titular
+insert into pico_y_pala.grupo_familiar
+	(
+	gpo_titular
+	)
+select distinct
+	maestra.Paciente_Dni
+from 
+	gd_esquema.Maestra maestra
+order by 1
+print ('grupo familiar ok')
+
+--Asocio Afiliado con grupo familiar
+insert into pico_y_pala.gf_afiliado
+	(
+	agf_afi_nro_doc,
+	agf_gpo_id
+	)
+select distinct
+	maestra.Paciente_Dni
+	,gf.gpo_id
+from 
+	gd_esquema.Maestra maestra
+	,pico_y_pala.grupo_familiar gf
+where 
+	maestra.Paciente_Dni = gf.gpo_titular
+order by 1
+print ('gf_afiliado ok')
 
 --ROL_USUARIO (faltan administrativos)
 insert into pico_y_pala.rol_usuario

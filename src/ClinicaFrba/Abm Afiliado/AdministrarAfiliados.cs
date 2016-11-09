@@ -19,7 +19,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btn_crear_Click(object sender, EventArgs e)
         {
-
+            AltaAfiliado altaAfi = new Abm_Afiliado.AltaAfiliado();
+            altaAfi.ShowDialog();
         }
 
         private void btn_modificar_Click(object sender, EventArgs e)
