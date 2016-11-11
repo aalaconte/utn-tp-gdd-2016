@@ -179,6 +179,7 @@
             this.Controls.Add(this.btn_abm_rol);
             this.Name = "MainPage";
             this.Text = "Menú";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainPage_FormClosed);
             this.Load += new System.EventHandler(this.MainPage_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

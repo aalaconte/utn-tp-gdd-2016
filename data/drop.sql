@@ -82,4 +82,7 @@ drop procedure PICO_Y_PALA.altaAfiliado
 go
 drop procedure PICO_Y_PALA.altaAfiliadoAGrupoFamiliar
 go
+drop procedure PICO_Y_PALA.modificarAfiliado
+go
+
 drop schema pico_y_pala

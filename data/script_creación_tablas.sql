@@ -432,12 +432,11 @@ BEGIN
 		RAISERROR('Ya existe el nombre de usuario ingresado',16,1)
 		RETURN
 	END
-	IF NOT (exists (SELECT * FROM PICO_Y_PALA.afiliado WHERE afi_nro_doc = @afi_DocAfiTitular))
+	IF NOT (exists (SELECT * FROM PICO_Y_PALA.afiliado WHERE afi_nro_doc = @afi_DocAfiTitular and afi_activo=0))
 	BEGIN
-		RAISERROR('No existe el Afiliado Titular ingresado',16,1)
+		RAISERROR('No existe el Afiliado Titular ingresado o ha sido dado de baja',16,1)
 		RETURN
 	END
-	
 	SELECT @afi_planID = pla_codigo FROM PICO_Y_PALA.planes WHERE pla_desc = @afi_plan
 	SELECT @afi_eciID = eci_id FROM PICO_Y_PALA.estado_civil WHERE eci_desc = @afi_eci
 
@@ -466,5 +465,25 @@ BEGIN
 	insert into pico_y_pala.gf_afiliado
 	(agf_afi_nro_doc,agf_gpo_id)
 	values(@afi_nro_doc,@afi_gfID)
+END
+GO
+
+CREATE PROCEDURE PICO_Y_PALA.modificarAfiliado (@afi_Doc numeric(18,0), @cambioPlan int, @afi_MotivoCambio varchar(255), @afi_planNuevo varchar(255), @afi_planViejo varchar(255),@afi_direccion varchar(255),@afi_telefono numeric(18,0),@afi_mail varchar(255))
+AS
+BEGIN
+	DECLARE @afi_planID_Nuevo NUMERIC (18,0), @afi_planID_Viejo NUMERIC (18,0)
+	SELECT @afi_planID_Nuevo = pla_codigo FROM PICO_Y_PALA.planes WHERE pla_desc = @afi_planNuevo
+	SELECT @afi_planID_Viejo = pla_codigo FROM PICO_Y_PALA.planes WHERE pla_desc = @afi_planViejo
+	IF (@cambioPlan = 1)
+	BEGIN
+		update pico_y_pala.afiliado set afi_pla_codigo = @afi_planID_Nuevo where afi_nro_doc=@afi_Doc
+		update pico_y_pala.usuario set usu_direccion = @afi_direccion, usu_mail=@afi_mail, usu_telefono=@afi_telefono where usu_nro_doc=@afi_Doc
+		insert into pico_y_pala.audit_cambio_plan (acp_afiliado,acp_fecha,acp_motivo,acp_plan_anterior,acp_plan_nuevo) values (@afi_Doc,GETDATE(),@afi_MotivoCambio,@afi_planID_Viejo,@afi_planID_Nuevo)
+		RETURN
+	END
+	ELSE
+	BEGIN
+		update pico_y_pala.usuario set usu_direccion = @afi_direccion, usu_mail=@afi_mail, usu_telefono=@afi_telefono where usu_nro_doc=@afi_Doc
+	END
 END
 GO

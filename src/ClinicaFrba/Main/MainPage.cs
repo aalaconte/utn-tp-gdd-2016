@@ -119,5 +119,10 @@ namespace ClinicaFrba.Main
             abmAfi.ShowDialog();
         }
 
+        private void MainPage_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
     }
 }

@@ -25,7 +25,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btn_modificar_Click(object sender, EventArgs e)
         {
-
+            BuscarAfiliado modifAfi = new Abm_Afiliado.BuscarAfiliado();
+            modifAfi.ShowDialog();
         }
 
         private void btn_atras_Click(object sender, EventArgs e)

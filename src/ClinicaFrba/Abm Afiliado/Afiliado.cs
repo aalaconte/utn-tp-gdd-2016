@@ -6,39 +6,37 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
-    class Afiliado
+    public class Afiliado
     {
         public Afiliado() { }
-        public Afiliado(String unUsername, String unaPassword, String unNombre, String unApellido, String unaDireccion, int unTelefono, String unMail, String unaFechaNac, char unSexo, String unEstadoCivil, int unaCantHijosFam, String unPlan)
+        public Afiliado(String unUsername, String unNroAfi, String unNombre, String unApellido,String unDoc, String unaDireccion, String unTelefono, String unMail, String unaFechaNac, String unPlan, bool unHabilitado)
         {
             this.username = unUsername;
-            this.password = unaPassword;
+            this.nroAfiliado = unNroAfi;
             this.apellido = unApellido;
             this.nombre = unNombre;
             this.direccion = unaDireccion;
             this.telefono = unTelefono;
             this.mail = unMail;
             this.fechaNac = unaFechaNac;
-            this.cantHijosFam = unaCantHijosFam;
-            this.estadoCivil = unEstadoCivil;
             this.plan = unPlan;
-            this.sexo = unSexo;
-            this.habilitado = true;
+            this.documento = unDoc;
+            this.habilitado = unHabilitado;
         }
         private int iDAfiliado;
+        private String documento;
         private String username;
         private String password;
         private String nombre;
         private String apellido;
         private String direccion;
-        private int telefono;
+        private String telefono;
         private String mail;
         private String fechaNac;
-        private char sexo;
+        private String sexo;
         private String estadoCivil;
-        private int cantHijosFam;
         private String plan;
-        private int nroAfiliado;
+        private String nroAfiliado;
         private bool habilitado;
 
         public bool getHabilitado()
@@ -51,14 +49,24 @@ namespace ClinicaFrba.Abm_Afiliado
             this.habilitado = estado;
         }
 
-        public int getNroAfiliado()
+        public String getNroAfiliado()
         {
             return this.nroAfiliado;
         }
 
-        public void setNroAfiliado(int unNroAfiliado)
+        public void setNroAfiliado(String unNroAfiliado)
         {
             this.nroAfiliado = unNroAfiliado;
+        }
+
+        public String getDocumento()
+        {
+            return this.documento;
+        }
+
+        public void setDocumento(String unDoc)
+        {
+            this.documento = unDoc;
         }
 
         public String getPlan()
@@ -81,12 +89,12 @@ namespace ClinicaFrba.Abm_Afiliado
             this.estadoCivil = unEstadoCivil;
         }
 
-        public char getSexo()
+        public String getSexo()
         {
             return this.sexo;
         }
 
-        public void setSexo(char unSexo)
+        public void setSexo(String unSexo)
         {
             this.sexo = unSexo;
         }
@@ -112,12 +120,12 @@ namespace ClinicaFrba.Abm_Afiliado
             this.mail = unMail;
         }
 
-        public int getTelefono()
+        public String getTelefono()
         {
             return this.telefono;
         }
 
-        public void setDireccion(int unTel)
+        public void setTelefono(String unTel)
         {
             this.telefono = unTel;
         }
