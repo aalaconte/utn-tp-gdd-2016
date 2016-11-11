@@ -25,13 +25,19 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btn_modificar_Click(object sender, EventArgs e)
         {
-            BuscarAfiliado modifAfi = new Abm_Afiliado.BuscarAfiliado();
+            BuscarAfiliado modifAfi = new Abm_Afiliado.BuscarAfiliado("Seleccionar");
             modifAfi.ShowDialog();
         }
 
         private void btn_atras_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btn_baja_Click(object sender, EventArgs e)
+        {
+            BuscarAfiliado bajaAfi = new Abm_Afiliado.BuscarAfiliado("Dar de Baja");
+            bajaAfi.ShowDialog();
         }
 
     }

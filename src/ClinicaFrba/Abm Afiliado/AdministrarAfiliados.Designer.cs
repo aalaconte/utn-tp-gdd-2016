@@ -72,6 +72,7 @@
             this.btn_baja.TabIndex = 6;
             this.btn_baja.Text = "Baja Afiliado";
             this.btn_baja.UseVisualStyleBackColor = true;
+            this.btn_baja.Click += new System.EventHandler(this.btn_baja_Click);
             // 
             // AdministrarAfiliados
             // 

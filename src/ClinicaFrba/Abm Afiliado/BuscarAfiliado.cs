@@ -16,9 +16,10 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class BuscarAfiliado : Form
     {
-        public BuscarAfiliado()
+        public BuscarAfiliado(string operacion)
         {
             InitializeComponent();
+            this.btn_seleccionar.Text = operacion;
         }
 
         private DataSet pagingDS;
@@ -60,7 +61,7 @@ namespace ClinicaFrba.Abm_Afiliado
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                MessageBox.Show("Se ha producido un error al buscar los roles: " + ex.Message, "Error inesperado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Se ha producido un error al buscar los afiliados: " + ex.Message, "Error inesperado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
         }
@@ -198,15 +199,23 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             if (this.dgv_Afiliados.DisplayedRowCount(true) == 0)
             {
-                MessageBox.Show("Seleccione un rol de la lista", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Seleccione un afiliado de la lista", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
             {
-                Afiliado afi = new Abm_Afiliado.Afiliado(this.dgv_Afiliados.SelectedRows[0].Cells[0].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[4].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[2].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[1].Value.ToString(),this.dgv_Afiliados.SelectedRows[0].Cells[3].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[5].Value.ToString(),
+                if (btn_seleccionar.Text.Equals("Seleccionar"))
+                {
+                    Afiliado afi = new Abm_Afiliado.Afiliado(this.dgv_Afiliados.SelectedRows[0].Cells[0].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[4].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[2].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[1].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[3].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[5].Value.ToString(),
                     this.dgv_Afiliados.SelectedRows[0].Cells[6].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[7].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[8].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[10].Value.ToString(), (bool)(this.dgv_Afiliados.SelectedRows[0].Cells[12].Value.ToString().Equals("SI")));
-                this.Close();
-                ModificarAfiliado modificar = new ModificarAfiliado(afi);
-                modificar.ShowDialog();
+                    this.Close();
+                    ModificarAfiliado modificar = new ModificarAfiliado(afi);
+                    modificar.ShowDialog();
+                }
+                else
+                {
+                    //Baja Afiliado
+                }
+
             }
         }
 
