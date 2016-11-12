@@ -34,7 +34,7 @@ namespace ClinicaFrba.AbmRol
                 StringBuilder query = new StringBuilder();
                 query.Append("select rol_id,rol_nombre from pico_y_pala.usuario us, pico_y_pala.rol_usuario rus, pico_y_pala.rol rol");
                 query.Append(" where usu_username='").Append(Program.user).Append("'");
-                query.Append(" and usu_username = rus_usuario and rus_rol = rol_id");
+                query.Append(" and usu_username = rus_usu_username and rus_rol_id = rol_id");
                 query.Append(" and rol_habilitado=1");
                 ManipulacionComponentes.llenarComboBox(this.cmb_rol, query.ToString(), "rol_nombre");
             }
