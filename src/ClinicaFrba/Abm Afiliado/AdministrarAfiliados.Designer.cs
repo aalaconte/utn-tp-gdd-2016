@@ -42,6 +42,7 @@
             this.btn_atras.TabIndex = 5;
             this.btn_atras.Text = "Atrás";
             this.btn_atras.UseVisualStyleBackColor = true;
+            this.btn_atras.Click += new System.EventHandler(this.btn_atras_Click);
             // 
             // btn_modificar
             // 
@@ -71,6 +72,7 @@
             this.btn_baja.TabIndex = 6;
             this.btn_baja.Text = "Baja Afiliado";
             this.btn_baja.UseVisualStyleBackColor = true;
+            this.btn_baja.Click += new System.EventHandler(this.btn_baja_Click);
             // 
             // AdministrarAfiliados
             // 

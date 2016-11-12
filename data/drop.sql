@@ -78,4 +78,11 @@ drop procedure pico_y_pala.habilitarRol
 go
 drop procedure pico_y_pala.cambiarNombreRol
 go
+drop procedure PICO_Y_PALA.altaAfiliado
+go
+drop procedure PICO_Y_PALA.altaAfiliadoAGrupoFamiliar
+go
+drop procedure PICO_Y_PALA.modificarAfiliado
+go
+
 drop schema pico_y_pala

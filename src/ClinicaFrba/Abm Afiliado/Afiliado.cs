@@ -6,16 +6,25 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
-    class Afiliado
+    public class Afiliado
     {
         public Afiliado() { }
-        public Afiliado(int unId, String unNombre, String unApellido)
+        public Afiliado(String unUsername, String unNroAfi, String unNombre, String unApellido,String unDoc, String unaDireccion, String unTelefono, String unMail, String unaFechaNac, String unPlan, bool unHabilitado)
         {
-            this.iDAfiliado = unId;
+            this.username = unUsername;
+            this.nroAfiliado = unNroAfi;
             this.apellido = unApellido;
             this.nombre = unNombre;
+            this.direccion = unaDireccion;
+            this.telefono = unTelefono;
+            this.mail = unMail;
+            this.fechaNac = unaFechaNac;
+            this.plan = unPlan;
+            this.documento = unDoc;
+            this.habilitado = unHabilitado;
         }
         private int iDAfiliado;
+        private String documento;
         private String username;
         private String password;
         private String nombre;
@@ -24,14 +33,132 @@ namespace ClinicaFrba.Abm_Afiliado
         private String telefono;
         private String mail;
         private String fechaNac;
-        private char sexo;
+        private String sexo;
         private String estadoCivil;
-        private String cantHijosFam;
         private String plan;
-        private int nroAfiliado;
+        private String nroAfiliado;
         private bool habilitado;
 
+        public bool getHabilitado()
+        {
+            return this.habilitado;
+        }
 
+        public void setHabilitado(bool estado)
+        {
+            this.habilitado = estado;
+        }
+
+        public String getNroAfiliado()
+        {
+            return this.nroAfiliado;
+        }
+
+        public void setNroAfiliado(String unNroAfiliado)
+        {
+            this.nroAfiliado = unNroAfiliado;
+        }
+
+        public String getDocumento()
+        {
+            return this.documento;
+        }
+
+        public void setDocumento(String unDoc)
+        {
+            this.documento = unDoc;
+        }
+
+        public String getPlan()
+        {
+            return this.plan;
+        }
+
+        public void setPlan(String unPlan)
+        {
+            this.plan = unPlan;
+        }
+
+        public String getEstadoCivil()
+        {
+            return this.estadoCivil;
+        }
+
+        public void setEstadoCivil(String unEstadoCivil)
+        {
+            this.estadoCivil = unEstadoCivil;
+        }
+
+        public String getSexo()
+        {
+            return this.sexo;
+        }
+
+        public void setSexo(String unSexo)
+        {
+            this.sexo = unSexo;
+        }
+
+        public String getFechaNac()
+        {
+            return this.fechaNac;
+        }
+
+        public void setFechaNac(String unafechaNac)
+        {
+            this.fechaNac = unafechaNac;
+        }
+
+
+        public String getMail()
+        {
+            return this.mail;
+        }
+
+        public void setMail(String unMail)
+        {
+            this.mail = unMail;
+        }
+
+        public String getTelefono()
+        {
+            return this.telefono;
+        }
+
+        public void setTelefono(String unTel)
+        {
+            this.telefono = unTel;
+        }
+
+        public String getDireccion()
+        {
+            return this.direccion;
+        }
+
+        public void setDireccion(String unaDirec)
+        {
+            this.direccion = unaDirec;
+        }
+
+        public String getPassword()
+        {
+            return this.password;
+        }
+
+        public void setPassword(String unaPass)
+        {
+            this.password = unaPass;
+        }
+
+        public String getUsername()
+        {
+            return this.username;
+        }
+
+        public void setUsername(String unUsername)
+        {
+            this.username = unUsername;
+        }
 
         public int getId()
         {

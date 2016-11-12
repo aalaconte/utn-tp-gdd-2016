@@ -107,5 +107,13 @@ namespace ClinicaFrba.BaseDeDatos.Componentes
                 control.Enabled = true;
             }
         }
+
+        public static void vaciarTextos(List<Control> controles)
+        {
+            foreach (Control control in controles)
+            {
+                control.Text = "";
+            }
+        }
     }
 }

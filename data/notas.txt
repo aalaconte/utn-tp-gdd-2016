@@ -1,0 +1,42 @@
+Notas carga de datos:
+
+1) usuario:
+Password para todos los usuarios.
+Sexo: pacientes default 'M', doctores default 'F'
+
+2) afiliado:
+Nro de afiliado = DNI+01(todos titulares de Grupo Familiar)
+nro_consultas=0  deberian deducirse en base a los bonos?
+estado_civil default 'Soltero'
+
+3)grupo_familiar
+Se crea un grupo familiar por afiliado y se asigna al mismo como titular.
+
+4) rol_usuario
+faltan administrativos, ya que no sabemos quienes van a cumplir ese rol_usuario
+creamos alguno?
+
+5) compra
+precio = 0 para todas las compras. existe ese dato??
+
+Creo que este sería el dato:
+select 
+	Paciente_Dni
+	,count (*) cantidad_consultas
+	,sum (Plan_Med_Precio_Bono_Consulta) precio
+	,Compra_Bono_Fecha
+from gd_esquema.Maestra
+where compra_bono_fecha is not null 
+--and not Plan_Med_Precio_Bono_Consulta = 0
+group by Paciente_Dni
+	,Compra_Bono_Fecha
+order by 1,4
+
+6) bonos
+consultas = 0 para todos los bonos. existe el dato?
+
+
+
+
+
+

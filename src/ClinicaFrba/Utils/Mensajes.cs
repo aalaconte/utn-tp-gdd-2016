@@ -18,5 +18,10 @@ namespace ClinicaFrba.Utils
         {
             return MessageBox.Show("¿Confirma los cambios?", "Atención", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
+
+        public static bool agregarConyugue()
+        {
+            return MessageBox.Show("¿Desea agregar a su Esposa/Conyugue a su Grupo Familiar?", "Consulta", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+        }
     }
 }

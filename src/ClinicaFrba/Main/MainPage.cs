@@ -126,5 +126,11 @@ namespace ClinicaFrba.Main
             registrarAgenda.ShowDialog();
         }
 
+        private void MainPage_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+
+        }
+
     }
 }

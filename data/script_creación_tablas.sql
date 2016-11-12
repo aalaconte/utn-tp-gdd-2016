@@ -150,7 +150,7 @@ create table pico_y_pala.grupo_familiar
 create table pico_y_pala.afiliado
 (
 	afi_nro_doc numeric (18,0) 
-	,afi_nro_afiliado numeric (18,0) identity (1,1)
+	,afi_nro_afiliado numeric (18,0) unique
 	,afi_eci_id int  
 	,afi_pla_codigo numeric (18,0)
 	,afi_nro_consulta numeric (18,0)
@@ -374,5 +374,116 @@ CREATE PROCEDURE PICO_Y_PALA.cambiarNombreRol (@idRol INT, @rol_nombre_nuevo VAR
 AS
 BEGIN
 	UPDATE PICO_Y_PALA.rol SET rol_nombre=@rol_nombre_nuevo WHERE rol_id = @idRol;
+END
+GO
+
+CREATE PROCEDURE PICO_Y_PALA.altaAfiliado (@afi_nroAfi numeric(18,0), @afi_username VARCHAR(50),@afi_nro_doc numeric(18,0),@afi_password varchar(64) ,@afi_nombre varchar(255),@afi_apellido varchar(255),@afi_tipo_doc varchar(3),@afi_direccion varchar(255),@afi_telefono numeric(18,0),@afi_mail varchar(255),@afi_fecha_nac datetime,@afi_sexo char(1), @afi_plan varchar(255), @afi_eci varchar (100))
+AS
+BEGIN
+	DECLARE @afi_planID NUMERIC (18,0), @afi_eciID INT,@afi_gfID NUMERIC (18,0)
+	SELECT @afi_planID = pla_codigo FROM PICO_Y_PALA.planes WHERE pla_desc = @afi_plan
+	SELECT @afi_eciID = eci_id FROM PICO_Y_PALA.estado_civil WHERE eci_desc = @afi_eci
+	IF exists (SELECT * FROM PICO_Y_PALA.usuario WHERE usu_nro_doc=@afi_nro_doc)
+	BEGIN
+		RAISERROR('Ya hay un usuario con el Documento Ingresado',16,1)
+		RETURN
+	END
+	IF exists (SELECT * FROM PICO_Y_PALA.usuario WHERE usu_username=@afi_username)
+	BEGIN
+		RAISERROR('Ya existe el nombre de usuario ingresado',16,1)
+		RETURN
+	END
+--Creo el Usuario
+	insert into pico_y_pala.usuario
+	(usu_username,usu_nro_doc,usu_password,usu_apellido,usu_nombre,usu_tipo_doc,usu_direccion,usu_telefono,usu_mail,usu_fecha_nac,usu_sexo,usu_habilitado,usu_intentos_fallidos)
+	values (@afi_username,@afi_nro_doc,@afi_password,@afi_apellido,@afi_nombre,@afi_tipo_doc,@afi_direccion,@afi_telefono,@afi_mail,@afi_fecha_nac,@afi_sexo,1,0)
+--Asigno Rol a usuario
+	insert into pico_y_pala.rol_usuario
+	(rus_rol_id,rus_usu_username)
+	values(3,@afi_username)
+--Creo el Afiliado 
+	insert into pico_y_pala.afiliado
+	(afi_nro_doc,afi_nro_afiliado,afi_eci_id,afi_pla_codigo,afi_nro_consulta,afi_activo,afi_fecha_baja) 
+	values (@afi_nro_doc,@afi_nroAfi,@afi_eciID,@afi_planID,0,1,null)
+--Creo el Grupo Familiar como Titular
+	insert into pico_y_pala.grupo_familiar
+	(gpo_titular)
+	values(@afi_nro_doc)
+--Asocio el Grupo Familiar con el Afiliado
+	SELECT @afi_gfID = gpo_id FROM PICO_Y_PALA.grupo_familiar WHERE gpo_titular = @afi_nro_doc
+	insert into pico_y_pala.gf_afiliado
+	(agf_afi_nro_doc,agf_gpo_id)
+	values(@afi_nro_doc,@afi_gfID)
+END
+GO
+
+CREATE PROCEDURE PICO_Y_PALA.altaAfiliadoAGrupoFamiliar (@afi_DocAfiTitular numeric(18,0) ,@afi_nroAfi numeric(18,0), @afi_username VARCHAR(50),@afi_nro_doc numeric(18,0),@afi_password varchar(64) ,@afi_nombre varchar(255),@afi_apellido varchar(255),@afi_tipo_doc varchar(3),@afi_direccion varchar(255),@afi_telefono numeric(18,0),@afi_mail varchar(255),@afi_fecha_nac datetime,@afi_sexo char(1), @afi_plan varchar(255), @afi_eci varchar (100))
+AS
+BEGIN
+	DECLARE @afi_planID NUMERIC (18,0), @afi_eciID INT,@afi_gfID NUMERIC (18,0)
+	
+	IF exists (SELECT * FROM PICO_Y_PALA.usuario WHERE usu_nro_doc=@afi_nro_doc)
+	BEGIN
+		RAISERROR('Ya hay un usuario con el Documento Ingresado',16,1)
+		RETURN
+	END
+	IF exists (SELECT * FROM PICO_Y_PALA.usuario WHERE usu_username=@afi_username)
+	BEGIN
+		RAISERROR('Ya existe el nombre de usuario ingresado',16,1)
+		RETURN
+	END
+	IF NOT (exists (SELECT * FROM PICO_Y_PALA.afiliado WHERE afi_nro_doc = @afi_DocAfiTitular and afi_activo=0))
+	BEGIN
+		RAISERROR('No existe el Afiliado Titular ingresado o ha sido dado de baja',16,1)
+		RETURN
+	END
+	SELECT @afi_planID = pla_codigo FROM PICO_Y_PALA.planes WHERE pla_desc = @afi_plan
+	SELECT @afi_eciID = eci_id FROM PICO_Y_PALA.estado_civil WHERE eci_desc = @afi_eci
+
+-- Verifico que exista un Grupo Familiar con el el Titular ingresado como titular del grupo	
+	IF NOT (exists (SELECT * FROM PICO_Y_PALA.grupo_familiar WHERE gpo_titular = @afi_DocAfiTitular))
+	BEGIN
+		RAISERROR('El Nro de Afiliado ingresado no es titular de ningun Grupo Familiar',16,1)
+		RETURN
+	END
+
+--Creo el Usuario
+	insert into pico_y_pala.usuario
+	(usu_username,usu_nro_doc,usu_password,usu_apellido,usu_nombre,usu_tipo_doc,usu_direccion,usu_telefono,usu_mail,usu_fecha_nac,usu_sexo,usu_habilitado,usu_intentos_fallidos)
+	values (@afi_username,@afi_nro_doc,@afi_password,@afi_apellido,@afi_nombre,@afi_tipo_doc,@afi_direccion,@afi_telefono,@afi_mail,@afi_fecha_nac,@afi_sexo,1,0)
+--Asigno Rol a usuario
+	insert into pico_y_pala.rol_usuario
+	(rus_rol_id,rus_usu_username)
+	values(3,@afi_username)
+--Creo el Afiliado 
+	insert into pico_y_pala.afiliado
+	(afi_nro_doc,afi_nro_afiliado,afi_eci_id,afi_pla_codigo,afi_nro_consulta,afi_activo,afi_fecha_baja) 
+	values (@afi_nro_doc,@afi_nroAfi,@afi_eciID,@afi_planID,0,1,null)
+--Asocio el Grupo Familiar con el Afiliado
+	SELECT @afi_gfID = gpo_id FROM PICO_Y_PALA.grupo_familiar WHERE gpo_titular = @afi_DocAfiTitular
+	
+	insert into pico_y_pala.gf_afiliado
+	(agf_afi_nro_doc,agf_gpo_id)
+	values(@afi_nro_doc,@afi_gfID)
+END
+GO
+
+CREATE PROCEDURE PICO_Y_PALA.modificarAfiliado (@afi_Doc numeric(18,0), @cambioPlan int, @afi_MotivoCambio varchar(255), @afi_planNuevo varchar(255), @afi_planViejo varchar(255),@afi_direccion varchar(255),@afi_telefono numeric(18,0),@afi_mail varchar(255))
+AS
+BEGIN
+	DECLARE @afi_planID_Nuevo NUMERIC (18,0), @afi_planID_Viejo NUMERIC (18,0)
+	SELECT @afi_planID_Nuevo = pla_codigo FROM PICO_Y_PALA.planes WHERE pla_desc = @afi_planNuevo
+	SELECT @afi_planID_Viejo = pla_codigo FROM PICO_Y_PALA.planes WHERE pla_desc = @afi_planViejo
+	IF (@cambioPlan = 1)
+	BEGIN
+		update pico_y_pala.afiliado set afi_pla_codigo = @afi_planID_Nuevo where afi_nro_doc=@afi_Doc
+		update pico_y_pala.usuario set usu_direccion = @afi_direccion, usu_mail=@afi_mail, usu_telefono=@afi_telefono where usu_nro_doc=@afi_Doc
+		insert into pico_y_pala.audit_cambio_plan (acp_afiliado,acp_fecha,acp_motivo,acp_plan_anterior,acp_plan_nuevo) values (@afi_Doc,GETDATE(),@afi_MotivoCambio,@afi_planID_Viejo,@afi_planID_Nuevo)
+		RETURN
+	END
+	ELSE
+	BEGIN
+		update pico_y_pala.usuario set usu_direccion = @afi_direccion, usu_mail=@afi_mail, usu_telefono=@afi_telefono where usu_nro_doc=@afi_Doc
+	END
 END
 GO
