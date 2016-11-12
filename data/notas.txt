@@ -19,6 +19,19 @@ creamos alguno?
 5) compra
 precio = 0 para todas las compras. existe ese dato??
 
+Creo que este sería el dato:
+select 
+	Paciente_Dni
+	,count (*) cantidad_consultas
+	,sum (Plan_Med_Precio_Bono_Consulta) precio
+	,Compra_Bono_Fecha
+from gd_esquema.Maestra
+where compra_bono_fecha is not null 
+--and not Plan_Med_Precio_Bono_Consulta = 0
+group by Paciente_Dni
+	,Compra_Bono_Fecha
+order by 1,4
+
 6) bonos
 consultas = 0 para todos los bonos. existe el dato?
 
