@@ -39,8 +39,15 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
 
         private void btn_buscar_profesional_Click(object sender, EventArgs e)
         {
-            BuscarProfesionales buscarProfesional = new BuscarProfesionales();
-            buscarProfesional.ShowDialog();
+            using (BuscarProfesionales buscarProfesional = new BuscarProfesionales())
+            {
+                if (buscarProfesional.ShowDialog().Equals(DialogResult.OK))
+                {
+                    this.profesional = buscarProfesional.ProfesionalReturn;
+                    this.txt_profesional.Text = this.profesional.Apellido + ", " + this.profesional.Nombre;
+                }
+            }
+            
         }
     }
 }

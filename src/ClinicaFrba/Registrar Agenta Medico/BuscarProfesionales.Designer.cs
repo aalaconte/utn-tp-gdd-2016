@@ -51,12 +51,16 @@
             this.lbl_nro_pagina = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lbl_nro_profesionales = new System.Windows.Forms.Label();
+            this.lbl_error_nro_doc = new System.Windows.Forms.Label();
+            this.lbl_error_nro_matricula = new System.Windows.Forms.Label();
             this.gpb_filtros_busqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_profesionales)).BeginInit();
             this.SuspendLayout();
             // 
             // gpb_filtros_busqueda
             // 
+            this.gpb_filtros_busqueda.Controls.Add(this.lbl_error_nro_matricula);
+            this.gpb_filtros_busqueda.Controls.Add(this.lbl_error_nro_doc);
             this.gpb_filtros_busqueda.Controls.Add(this.txt_especialidad);
             this.gpb_filtros_busqueda.Controls.Add(this.lbl_especialidad);
             this.gpb_filtros_busqueda.Controls.Add(this.txt_nro_documento);
@@ -67,16 +71,16 @@
             this.gpb_filtros_busqueda.Controls.Add(this.lbl_apellido);
             this.gpb_filtros_busqueda.Controls.Add(this.txt_nombre);
             this.gpb_filtros_busqueda.Controls.Add(this.lbl_nombre);
-            this.gpb_filtros_busqueda.Location = new System.Drawing.Point(25, 12);
+            this.gpb_filtros_busqueda.Location = new System.Drawing.Point(25, 4);
             this.gpb_filtros_busqueda.Name = "gpb_filtros_busqueda";
-            this.gpb_filtros_busqueda.Size = new System.Drawing.Size(592, 133);
+            this.gpb_filtros_busqueda.Size = new System.Drawing.Size(605, 141);
             this.gpb_filtros_busqueda.TabIndex = 0;
             this.gpb_filtros_busqueda.TabStop = false;
             this.gpb_filtros_busqueda.Text = "Filtros";
             // 
             // txt_especialidad
             // 
-            this.txt_especialidad.Location = new System.Drawing.Point(403, 61);
+            this.txt_especialidad.Location = new System.Drawing.Point(403, 64);
             this.txt_especialidad.Name = "txt_especialidad";
             this.txt_especialidad.Size = new System.Drawing.Size(132, 20);
             this.txt_especialidad.TabIndex = 9;
@@ -84,7 +88,7 @@
             // lbl_especialidad
             // 
             this.lbl_especialidad.AutoSize = true;
-            this.lbl_especialidad.Location = new System.Drawing.Point(330, 64);
+            this.lbl_especialidad.Location = new System.Drawing.Point(330, 67);
             this.lbl_especialidad.Name = "lbl_especialidad";
             this.lbl_especialidad.Size = new System.Drawing.Size(67, 13);
             this.lbl_especialidad.TabIndex = 9;
@@ -109,7 +113,7 @@
             // lbl_matricula
             // 
             this.lbl_matricula.AutoSize = true;
-            this.lbl_matricula.Location = new System.Drawing.Point(6, 100);
+            this.lbl_matricula.Location = new System.Drawing.Point(6, 106);
             this.lbl_matricula.Name = "lbl_matricula";
             this.lbl_matricula.Size = new System.Drawing.Size(52, 13);
             this.lbl_matricula.TabIndex = 6;
@@ -117,14 +121,14 @@
             // 
             // txt_matricula
             // 
-            this.txt_matricula.Location = new System.Drawing.Point(64, 97);
+            this.txt_matricula.Location = new System.Drawing.Point(64, 103);
             this.txt_matricula.Name = "txt_matricula";
             this.txt_matricula.Size = new System.Drawing.Size(132, 20);
             this.txt_matricula.TabIndex = 5;
             // 
             // txt_apellido
             // 
-            this.txt_apellido.Location = new System.Drawing.Point(64, 61);
+            this.txt_apellido.Location = new System.Drawing.Point(64, 64);
             this.txt_apellido.Name = "txt_apellido";
             this.txt_apellido.Size = new System.Drawing.Size(132, 20);
             this.txt_apellido.TabIndex = 4;
@@ -132,7 +136,7 @@
             // lbl_apellido
             // 
             this.lbl_apellido.AutoSize = true;
-            this.lbl_apellido.Location = new System.Drawing.Point(6, 64);
+            this.lbl_apellido.Location = new System.Drawing.Point(6, 67);
             this.lbl_apellido.Name = "lbl_apellido";
             this.lbl_apellido.Size = new System.Drawing.Size(44, 13);
             this.lbl_apellido.TabIndex = 3;
@@ -166,7 +170,7 @@
             // 
             // btn_buscar
             // 
-            this.btn_buscar.Location = new System.Drawing.Point(542, 151);
+            this.btn_buscar.Location = new System.Drawing.Point(555, 151);
             this.btn_buscar.Name = "btn_buscar";
             this.btn_buscar.Size = new System.Drawing.Size(75, 23);
             this.btn_buscar.TabIndex = 2;
@@ -187,7 +191,7 @@
             this.dgv_profesionales.Name = "dgv_profesionales";
             this.dgv_profesionales.ReadOnly = true;
             this.dgv_profesionales.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv_profesionales.Size = new System.Drawing.Size(592, 170);
+            this.dgv_profesionales.Size = new System.Drawing.Size(605, 170);
             this.dgv_profesionales.TabIndex = 4;
             // 
             // btn_primera
@@ -222,7 +226,7 @@
             // 
             // btn_ultima
             // 
-            this.btn_ultima.Location = new System.Drawing.Point(542, 393);
+            this.btn_ultima.Location = new System.Drawing.Point(555, 393);
             this.btn_ultima.Name = "btn_ultima";
             this.btn_ultima.Size = new System.Drawing.Size(75, 23);
             this.btn_ultima.TabIndex = 8;
@@ -232,7 +236,7 @@
             // 
             // btn_siguiente
             // 
-            this.btn_siguiente.Location = new System.Drawing.Point(461, 393);
+            this.btn_siguiente.Location = new System.Drawing.Point(474, 393);
             this.btn_siguiente.Name = "btn_siguiente";
             this.btn_siguiente.Size = new System.Drawing.Size(75, 23);
             this.btn_siguiente.TabIndex = 9;
@@ -242,7 +246,7 @@
             // 
             // btn_seleccionar
             // 
-            this.btn_seleccionar.Location = new System.Drawing.Point(542, 422);
+            this.btn_seleccionar.Location = new System.Drawing.Point(555, 422);
             this.btn_seleccionar.Name = "btn_seleccionar";
             this.btn_seleccionar.Size = new System.Drawing.Size(75, 23);
             this.btn_seleccionar.TabIndex = 10;
@@ -275,11 +279,31 @@
             this.lbl_nro_profesionales.Size = new System.Drawing.Size(0, 13);
             this.lbl_nro_profesionales.TabIndex = 13;
             // 
+            // lbl_error_nro_doc
+            // 
+            this.lbl_error_nro_doc.AutoSize = true;
+            this.lbl_error_nro_doc.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error_nro_doc.Location = new System.Drawing.Point(400, 49);
+            this.lbl_error_nro_doc.Name = "lbl_error_nro_doc";
+            this.lbl_error_nro_doc.Size = new System.Drawing.Size(195, 13);
+            this.lbl_error_nro_doc.TabIndex = 10;
+            this.lbl_error_nro_doc.Text = "El nro de documento debe ser numérico";
+            // 
+            // lbl_error_nro_matricula
+            // 
+            this.lbl_error_nro_matricula.AutoSize = true;
+            this.lbl_error_nro_matricula.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error_nro_matricula.Location = new System.Drawing.Point(61, 125);
+            this.lbl_error_nro_matricula.Name = "lbl_error_nro_matricula";
+            this.lbl_error_nro_matricula.Size = new System.Drawing.Size(186, 13);
+            this.lbl_error_nro_matricula.TabIndex = 11;
+            this.lbl_error_nro_matricula.Text = "El nro de matrícula debe ser numérico";
+            // 
             // BuscarProfesionales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(649, 457);
+            this.ClientSize = new System.Drawing.Size(657, 457);
             this.Controls.Add(this.lbl_nro_profesionales);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lbl_nro_pagina);
@@ -329,5 +353,7 @@
         private System.Windows.Forms.Label lbl_nro_pagina;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lbl_nro_profesionales;
+        private System.Windows.Forms.Label lbl_error_nro_doc;
+        private System.Windows.Forms.Label lbl_error_nro_matricula;
     }
 }

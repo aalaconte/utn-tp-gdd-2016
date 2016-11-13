@@ -1,10 +1,13 @@
-﻿using ClinicaFrba.BaseDeDatos.Componentes;
+﻿using ClinicaFrba.Abm_Profesional;
+using ClinicaFrba.BaseDeDatos;
+using ClinicaFrba.BaseDeDatos.Componentes;
 using ClinicaFrba.Validaciones;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -21,8 +24,10 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
         private int nroPagina;
         private int cantPaginas;
         private StringBuilder sql = new StringBuilder();
+        private StringBuilder sqlCount = new StringBuilder();
         private StringBuilder sqlWhere = new StringBuilder("");
         private static readonly int CANT_POR_PAGINA = int.Parse(ConfigurationManager.AppSettings["valor.paginacion"]);
+        public Profesional ProfesionalReturn { get; set; }
 
         public BuscarProfesionales()
         {
@@ -33,22 +38,43 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
         {
             try
             {
-                ManipulacionComponentes.habilitarComponentes(new List<Control>(){this.btn_primera,this.btn_anterior,this.btn_siguiente,this.btn_ultima,
+                this.lbl_error_nro_matricula.Visible = false;
+                this.lbl_error_nro_doc.Visible = false;
+                ManipulacionComponentes.vaciarGrid(this.dgv_profesionales);
+                ManipulacionComponentes.deshabilitarComponentes(new List<Control>(){this.btn_primera,this.btn_anterior,this.btn_siguiente,this.btn_ultima,
                                                                               this.btn_seleccionar});
-                armarQuery();
-                pagingDS = new DataSet();
-                ManipulacionComponentes.llenarGrid(dgv_profesionales, sql.ToString(), pagingDS, scrollVal, CANT_POR_PAGINA, "Profesionales");
-                dgv_profesionales.DataSource = pagingDS;
-                dgv_profesionales.DataMember = "Profesionales";
-                cantProfesionales = (dgv_profesionales.Rows.Count == 0) ? 1 : dgv_profesionales.Rows.Count;
-                lbl_nro_profesionales.Text = dgv_profesionales.Rows.Count.ToString();
-                cantPaginas = cantProfesionales / CANT_POR_PAGINA;
-                nroPagina = 1;
-                if (cantProfesionales % CANT_POR_PAGINA > 0)
+                this.lbl_nro_pagina.Text = "";
+                this.lbl_nro_profesionales.Text = "";
+
+                if (validar())
                 {
-                    cantPaginas = cantPaginas + 1;
+                    ManipulacionComponentes.habilitarComponentes(new List<Control>(){this.btn_primera,this.btn_anterior,this.btn_siguiente,this.btn_ultima,
+                                                                              this.btn_seleccionar});
+                    armarQuery();
+                    pagingDS = new DataSet();
+                    ManipulacionComponentes.llenarGrid(dgv_profesionales, sql.ToString(), pagingDS, scrollVal, CANT_POR_PAGINA, "Profesionales");
+                    dgv_profesionales.DataSource = pagingDS;
+                    dgv_profesionales.DataMember = "Profesionales";
+                    cantProfesionales = calcularFilasTotal();
+                    lbl_nro_profesionales.Text = cantProfesionales.ToString();
+                    if (cantProfesionales == 0)
+                    {
+                        cantPaginas = 1;
+                        ManipulacionComponentes.deshabilitarComponentes(new List<Control>(){this.btn_primera,this.btn_anterior,this.btn_siguiente,this.btn_ultima,
+                                                                              this.btn_seleccionar});
+                    }
+                    else
+                    {
+                        cantPaginas = cantProfesionales / CANT_POR_PAGINA;
+                    }
+                    nroPagina = 1;
+                    if (cantProfesionales % CANT_POR_PAGINA > 0)
+                    {
+                        cantPaginas = cantPaginas + 1;
+                    }
+                    lbl_nro_pagina.Text = "Página " + nroPagina + " de " + cantPaginas;
                 }
-                lbl_nro_pagina.Text = "Página " + nroPagina + " de " + cantPaginas;
+
             }
             catch (Exception ex)
             {
@@ -58,10 +84,28 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             }
         }
 
+        private bool validar()
+        {
+            bool validacion = true;
+            if (!ValidacionComponentes.validarNumericoPositivo(this.txt_matricula) && ValidacionComponentes.textBoxLlenoCampo(this.txt_matricula))
+            {
+                this.lbl_error_nro_matricula.Visible = true;
+                validacion = false;
+            }
+            if (!ValidacionComponentes.validarNumericoPositivo(this.txt_nro_documento) && ValidacionComponentes.textBoxLlenoCampo(this.txt_nro_documento))
+            {
+                this.lbl_error_nro_doc.Visible = true;
+                validacion = false;
+            }
+            return validacion;
+        }
+
         private void armarQuery()
         {
             sql.Clear();
+            sqlCount.Clear();
             sql.Append(ConfigurationManager.AppSettings["query.obtener.profesionales.select"]);
+            sqlCount.Append(ConfigurationManager.AppSettings["query.obtener.profesionales.count"]);
             //Armamos el where
             sqlWhere.Clear();
             sqlWhere.Append(" WHERE");
@@ -81,6 +125,8 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             }
 
             sql.Append(sqlWhere);
+            sqlCount.Append(sqlWhere);
+            sql.Append(ConfigurationManager.AppSettings["query.obtener.profesionales.group.by"]);
         }
 
         private void btn_limpiar_Click(object sender, EventArgs e)
@@ -179,7 +225,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
                 {
                     scrollVal = cantProfesionales - CANT_POR_PAGINA;
                 }
-                ManipulacionComponentes.llenarGrid(dgv_profesionales, sql.ToString(), pagingDS, scrollVal, CANT_POR_PAGINA, "Roles");
+                ManipulacionComponentes.llenarGrid(dgv_profesionales, sql.ToString(), pagingDS, scrollVal, CANT_POR_PAGINA, "Profesionales");
                 nroPagina = cantPaginas;
                 lbl_nro_pagina.Text = "Página " + nroPagina + " de " + cantPaginas;
             }
@@ -197,6 +243,8 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             {
                 ManipulacionComponentes.deshabilitarComponentes(new List<Control>(){this.btn_primera,this.btn_anterior,this.btn_siguiente,this.btn_ultima,
                                                                               this.btn_seleccionar});
+                this.lbl_error_nro_doc.Visible = false;
+                this.lbl_error_nro_matricula.Visible = false;
             }
             catch (Exception ex)
             {
@@ -215,19 +263,41 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             else
             {
                 //TODO guardar los datos del profesional y pasarlos al Dialog parent (RegistrarAgenda)
+                this.ProfesionalReturn = new Profesional(this.dgv_profesionales.SelectedRows[0].Cells[0].Value.ToString(),
+                                                         this.dgv_profesionales.SelectedRows[0].Cells[1].Value.ToString(),
+                                                         this.dgv_profesionales.SelectedRows[0].Cells[2].Value.ToString(),
+                                                         Convert.ToInt32(this.dgv_profesionales.SelectedRows[0].Cells[3].Value),
+                                                         Convert.ToInt32(this.dgv_profesionales.SelectedRows[0].Cells[4].Value));
+                this.DialogResult = DialogResult.OK;
+                this.Close();
 
-                //Rol rol = new Rol((int)this.dgv_roles.SelectedRows[0].Cells[0].Value,
-                //        this.dgv_roles.SelectedRows[0].Cells[1].Value.ToString(),
-                //        (bool)(this.dgv_roles.SelectedRows[0].Cells[2].Value.Equals("Sí")));
-                //this.Close();
-                //AbmRol modificar = new AbmRol(rol);
-                //modificar.ShowDialog();
             }
         }
 
         private void btn_atras_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
+        }
+
+        private int calcularFilasTotal()
+        {
+            using (SqlConnection cx = Connection.getConnection())
+            {
+                try
+                {
+                    SqlCommand sqlCmd = new SqlCommand(sqlCount.ToString(), cx);
+                    cx.Open();
+                    SqlDataReader sqlReader = sqlCmd.ExecuteReader();
+                    sqlReader.Read();
+                    return Int32.Parse(sqlReader["total_profesionales"].ToString());
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    throw ex;
+                }
+            }
         }
     }
 }

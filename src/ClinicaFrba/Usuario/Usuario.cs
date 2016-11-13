@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Usuario
 {
-    class Usuario
+    public class Usuario
     {
         public int NroDoc { get; set; }
         public String Nombre { get; set; }

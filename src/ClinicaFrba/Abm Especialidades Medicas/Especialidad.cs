@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Abm_Especialidades_Medicas
 {
-    class Especialidad
+    public class Especialidad
     {
         public int Id { get; set; }
         public String Descripcion { get; set; }

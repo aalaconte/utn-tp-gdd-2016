@@ -44,8 +44,8 @@ namespace ClinicaFrba.Abm_Afiliado
                 ManipulacionComponentes.llenarGrid(dgv_Afiliados, sql.ToString(), pagingDS, scrollVal, CANT_POR_PAGINA, "Afiliados");
                 dgv_Afiliados.DataSource = pagingDS;
                 dgv_Afiliados.DataMember = "Afiliados";
-                //cantAfiliados = (dgv_Afiliados.Rows.Count == 0) ? 1 : dgv_Afiliados.Rows.Count;
-                cantAfiliados = calcularFilasTotal();
+                cantAfiliados = (dgv_Afiliados.Rows.Count == 0) ? 1 : dgv_Afiliados.Rows.Count;
+                //cantAfiliados = calcularFilasTotal();
                 lbl_nroAfi.Text = dgv_Afiliados.Rows.Count.ToString();
                 cantPaginas = cantAfiliados / CANT_POR_PAGINA;
                 nroPagina = 1;

@@ -148,6 +148,7 @@
             this.txt_profesional.Enabled = false;
             this.txt_profesional.Location = new System.Drawing.Point(80, 33);
             this.txt_profesional.Name = "txt_profesional";
+            this.txt_profesional.ReadOnly = true;
             this.txt_profesional.Size = new System.Drawing.Size(131, 20);
             this.txt_profesional.TabIndex = 12;
             // 
