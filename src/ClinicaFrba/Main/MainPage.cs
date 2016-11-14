@@ -2,6 +2,7 @@
 using ClinicaFrba.Abm_Afiliado;
 using ClinicaFrba.AbmRol;
 using ClinicaFrba.BaseDeDatos;
+using ClinicaFrba.Compra_Bono;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -121,7 +122,21 @@ namespace ClinicaFrba.Main
 
         private void MainPage_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Application.Exit();
+            //Application.Exit();
+        }
+
+        private void btn_ComprarBonos_Click(object sender, EventArgs e)
+        {
+            if (Program.rol.Equals("Administrativo")||Program.rol.Equals("Administrador"))
+            {
+                CompraBonos compraBono = new Compra_Bono.CompraBonos();
+                compraBono.ShowDialog();
+            }
+            else
+            {
+                CompraBonos compraBono = new Compra_Bono.CompraBonos(Program.user);
+                compraBono.ShowDialog();
+            }
         }
 
     }

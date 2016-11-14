@@ -327,6 +327,7 @@ order by 1,4
 print ('compra ok');
 
 --BONO
+set IDENTITY_INSERT pico_y_pala.bono ON
 insert into pico_y_pala.bono
 	(
 		bon_id
@@ -350,6 +351,7 @@ from gd_esquema.Maestra
 										and comp.com_fecha = Compra_Bono_Fecha
 where Bono_Consulta_Numero is not null
 order by 1
+set IDENTITY_INSERT pico_y_pala.bono OFF
 print ('bono ok');
 
 --CONSULTA
