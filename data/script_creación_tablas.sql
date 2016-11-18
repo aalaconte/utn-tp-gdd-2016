@@ -95,16 +95,17 @@ create table pico_y_pala.profesional_especialidad
 
 create table pico_y_pala.agenda
 (
-	age_id numeric (18,0) identity (1,1)
-	,age_pro_nro_doc numeric (18,0)
+	--age_id numeric (18,0) identity (1,1)
+	age_pro_nro_doc numeric (18,0)
 	,age_esp_id int
-	,constraint PK_agenda primary key (age_id,age_pro_nro_doc,age_esp_id)
+	--,constraint PK_agenda primary key (age_id,age_pro_nro_doc,age_esp_id)
+	,constraint PK_agenda primary key (age_pro_nro_doc,age_esp_id)
 	,constraint FK_agenda foreign key (age_pro_nro_doc,age_esp_id) references pico_y_pala.profesional_especialidad (pes_pro_nro_doc,pes_esp_id)
 );
 
 create table pico_y_pala.dia
 (
-	dia_id int identity (1,1)
+	dia_id int --identity (1,1)
 	,dia_nombre char (10)
 	,constraint PK_dia_id primary key (dia_id)
 );
@@ -112,13 +113,16 @@ create table pico_y_pala.dia
 create table pico_y_pala.dia_por_agenda
 (
 	dpa_pro_nro_doc numeric (18,0)
-	,dpa_age_id numeric (18,0)
+	--,dpa_age_id numeric (18,0)
 	,dpa_esp_id int
 	,dpa_dia int 
-	,dpa_deste datetime
-	,dpa_hasta datetime
-	,constraint PK_dia_por_agenda primary key (dpa_pro_nro_doc,dpa_esp_id)
-	,constraint FK_dia_por_agenda foreign key (dpa_age_id,dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_id,age_pro_nro_doc,age_esp_id)
+	--,dpa_deste datetime
+	--,dpa_hasta datetime
+	,dpa_desde int
+	,dpa_hasta int
+	,constraint PK_dia_por_agenda primary key (dpa_pro_nro_doc,dpa_esp_id,dpa_dia)
+	--,constraint FK_dia_por_agenda foreign key (dpa_age_id,dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_id,age_pro_nro_doc,age_esp_id)
+	,constraint FK_dia_por_agenda foreign key (dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_pro_nro_doc,age_esp_id)
 	,constraint FK_dpa_dia foreign key (dpa_dia) references pico_y_pala.dia (dia_id)
 );
 

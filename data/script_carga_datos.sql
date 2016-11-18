@@ -422,3 +422,55 @@ from gd_esquema.Maestra
 inner join pico_y_pala.enfermedad enf on enf.enf_desc = Consulta_Enfermedades
 inner join pico_y_pala.consulta con on con_tur_id = Turno_Numero
 print ('consulta_enfermedad ok')
+
+
+--DIA
+insert into pico_y_pala.dia (dia_id,dia_nombre) values (1,'Domingo')
+insert into pico_y_pala.dia (dia_id,dia_nombre) values (2,'Lunes')
+insert into pico_y_pala.dia (dia_id,dia_nombre) values (3,'Martes')
+insert into pico_y_pala.dia (dia_id,dia_nombre) values (4,'Miercoles')
+insert into pico_y_pala.dia (dia_id,dia_nombre) values (5,'Jueves')
+insert into pico_y_pala.dia (dia_id,dia_nombre) values (6,'Viernes')
+insert into pico_y_pala.dia (dia_id,dia_nombre) values (7,'Sabado')
+print ('dia ok');
+
+--Agenda
+insert into pico_y_pala.agenda
+	(
+		age_pro_nro_doc
+		,age_esp_id
+	)
+select distinct
+	maestra.Medico_Dni
+	,maestra.Especialidad_Codigo
+from gd_esquema.Maestra
+where maestra.Medico_Dni is not null
+order by 1,2
+print ('agenda ok');
+
+--dia_por_agenda
+insert into pico_y_pala.dia_por_agenda
+	(
+		dpa_pro_nro_doc
+		,dpa_esp_id
+		,dpa_dia
+		,dpa_desde
+		,dpa_hasta
+	)
+select 
+	maestra.Medico_Dni
+	,maestra.Especialidad_Codigo
+	,dia.dia_id
+	,min (datepart (hh,maestra.Turno_Fecha)) horamin
+	,max (datepart (hh,maestra.Turno_Fecha)) horamax
+from gd_esquema.Maestra maestra
+inner join pico_y_pala.dia dia on dia.dia_id = datepart (weekday , maestra.Turno_Fecha)
+group by 
+	dia.dia_id
+	,maestra.Medico_Dni
+	,maestra.Especialidad_Codigo
+order by 
+	maestra.Medico_Dni
+	,maestra.Especialidad_Codigo
+	,dia.dia_id
+print ('dia_por_agenda ok');
