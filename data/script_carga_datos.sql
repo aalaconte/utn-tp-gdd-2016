@@ -110,6 +110,16 @@ from gd_esquema.Maestra
 order by 1
 print ('planes ok');
 
+--DIA
+insert into pico_y_pala.dia(dia_nombre) values ('Lunes')
+insert into pico_y_pala.dia(dia_nombre) values ('Martes')
+insert into pico_y_pala.dia(dia_nombre) values ('Miercoles')
+insert into pico_y_pala.dia(dia_nombre) values ('Jueves')
+insert into pico_y_pala.dia(dia_nombre) values ('Viernes')
+insert into pico_y_pala.dia(dia_nombre) values ('Sabado')
+go
+print ('dia ok');
+
 --ESTADO_CIVIL
 insert into pico_y_pala.estado_civil (eci_desc) values ('Soltero')
 insert into pico_y_pala.estado_civil (eci_desc) values ('Casado')

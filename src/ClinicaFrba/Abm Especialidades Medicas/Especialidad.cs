@@ -12,5 +12,14 @@ namespace ClinicaFrba.Abm_Especialidades_Medicas
         public String Descripcion { get; set; }
         public TipoEspecialidad TipoEspecialidad { get; set; }
 
+        public Especialidad() { }
+
+        public Especialidad(int unId, String unaDescripcion)
+        {
+            Id = unId;
+            Descripcion = unaDescripcion;
+
+        }
+
     }
 }

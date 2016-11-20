@@ -115,5 +115,19 @@ namespace ClinicaFrba.BaseDeDatos.Componentes
                 control.Text = "";
             }
         }
+
+        public static int obtenerDropDownMaxWidthCombo(ComboBox unCombo)
+        {
+            int maxWidth = 0, temp = 0;
+            foreach (var obj in unCombo.Items)
+            {
+                temp = TextRenderer.MeasureText(obj.ToString(), unCombo.Font).Width;
+                if (temp > maxWidth)
+                {
+                    maxWidth = temp;
+                }
+            }
+            return maxWidth;
+        }
     }
 }
