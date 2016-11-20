@@ -108,6 +108,14 @@ namespace ClinicaFrba.BaseDeDatos.Componentes
             }
         }
 
+        public static void verComponentes(List<Control> controles)
+        {
+            foreach (Control control in controles)
+            {
+                control.Visible = true;
+            }
+        }
+
         public static void vaciarTextos(List<Control> controles)
         {
             foreach (Control control in controles)

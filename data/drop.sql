@@ -4,7 +4,11 @@ script para dropear todas las tablas de pico_y_pala y el esquema
 
 USE [GD2C2016]
 GO
+--Triggers
+drop trigger PICO_Y_PALA.trigger_agregarBonos
+go
 
+--Tablas
 drop table pico_y_pala.consulta_enfermedad
 go
 drop table pico_y_pala.enfermedad
@@ -83,6 +87,8 @@ go
 drop procedure PICO_Y_PALA.altaAfiliadoAGrupoFamiliar
 go
 drop procedure PICO_Y_PALA.modificarAfiliado
+go
+drop procedure PICO_Y_PALA.compraBonos
 go
 
 drop schema pico_y_pala

@@ -115,6 +115,7 @@
             this.btn_ComprarBonos.Text = "Comprar Bonos";
             this.btn_ComprarBonos.UseVisualStyleBackColor = true;
             this.btn_ComprarBonos.Visible = false;
+            this.btn_ComprarBonos.Click += new System.EventHandler(this.btn_ComprarBonos_Click);
             // 
             // btn_PedidoTurno
             // 

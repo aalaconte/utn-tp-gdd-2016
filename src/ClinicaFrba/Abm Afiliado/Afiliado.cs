@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ClinicaFrba.BaseDeDatos;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -189,6 +191,33 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             this.nombre = unNombre;
         }
+
+        public static long buscarNroAfiporUser(String username)
+        {
+            long numeroAfi = 0;
+            String unaQuery = "select afi_nro_afiliado as NroAfiliado from pico_y_pala.afiliado afi join pico_y_pala.usuario usu on afi.afi_nro_doc=usu.usu_nro_doc where usu.usu_username='"+username+"'";
+            using (SqlConnection cx = Connection.getConnection())
+            {
+                try
+                {
+                    SqlCommand sqlCmd = new SqlCommand(unaQuery, cx);
+                    cx.Open();
+                    SqlDataReader sqlReader = sqlCmd.ExecuteReader();
+                    while (sqlReader.Read())
+                    {
+                        numeroAfi = Int64.Parse(sqlReader["NroAfiliado"].ToString());
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            return numeroAfi;
+        }
+
 
     }
 }

@@ -95,16 +95,17 @@ create table pico_y_pala.profesional_especialidad
 
 create table pico_y_pala.agenda
 (
-	age_id numeric (18,0) identity (1,1)
-	,age_pro_nro_doc numeric (18,0)
+	--age_id numeric (18,0) identity (1,1)
+	age_pro_nro_doc numeric (18,0)
 	,age_esp_id int
-	,constraint PK_agenda primary key (age_id,age_pro_nro_doc,age_esp_id)
+	--,constraint PK_agenda primary key (age_id,age_pro_nro_doc,age_esp_id)
+	,constraint PK_agenda primary key (age_pro_nro_doc,age_esp_id)
 	,constraint FK_agenda foreign key (age_pro_nro_doc,age_esp_id) references pico_y_pala.profesional_especialidad (pes_pro_nro_doc,pes_esp_id)
 );
 
 create table pico_y_pala.dia
 (
-	dia_id int identity (1,1)
+	dia_id int --identity (1,1)
 	,dia_nombre char (10)
 	,constraint PK_dia_id primary key (dia_id)
 );
@@ -112,13 +113,16 @@ create table pico_y_pala.dia
 create table pico_y_pala.dia_por_agenda
 (
 	dpa_pro_nro_doc numeric (18,0)
-	,dpa_age_id numeric (18,0)
+	--,dpa_age_id numeric (18,0)
 	,dpa_esp_id int
 	,dpa_dia int 
-	,dpa_deste datetime
-	,dpa_hasta datetime
-	,constraint PK_dia_por_agenda primary key (dpa_pro_nro_doc,dpa_esp_id)
-	,constraint FK_dia_por_agenda foreign key (dpa_age_id,dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_id,age_pro_nro_doc,age_esp_id)
+	--,dpa_deste datetime
+	--,dpa_hasta datetime
+	,dpa_desde int
+	,dpa_hasta int
+	,constraint PK_dia_por_agenda primary key (dpa_pro_nro_doc,dpa_esp_id,dpa_dia)
+	--,constraint FK_dia_por_agenda foreign key (dpa_age_id,dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_id,age_pro_nro_doc,age_esp_id)
+	,constraint FK_dia_por_agenda foreign key (dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_pro_nro_doc,age_esp_id)
 	,constraint FK_dpa_dia foreign key (dpa_dia) references pico_y_pala.dia (dia_id)
 );
 
@@ -135,8 +139,8 @@ create table pico_y_pala.planes
 	pla_codigo numeric (18,0)
 	,pla_desc varchar (100)
 	,pla_precio_consulta numeric (18,0)
-	,pla_precio_farmacia numeric (18,0)
-	--constraint PK_pla_id primary key (pla_id)
+	,pla_precio_farmacia numeric (18,0) 
+	constraint UNIQUE_pla_precio unique (pla_precio_consulta,pla_precio_farmacia),
 	constraint PK_pla_id primary key (pla_codigo)
 );
 
@@ -217,7 +221,7 @@ create table pico_y_pala.compra
 
 create table pico_y_pala.bono
 (
-	bon_id numeric (18,0) 
+	bon_id numeric (18,0) identity
 	,bon_afiliado_compra numeric (18,0) 
 	,bon_pla_id numeric (18,0) 
 	,bon_nro_consultas_afiliado numeric (18,0)
@@ -432,7 +436,7 @@ BEGIN
 		RAISERROR('Ya existe el nombre de usuario ingresado',16,1)
 		RETURN
 	END
-	IF NOT (exists (SELECT * FROM PICO_Y_PALA.afiliado WHERE afi_nro_doc = @afi_DocAfiTitular and afi_activo=0))
+	IF NOT (exists (SELECT * FROM PICO_Y_PALA.afiliado WHERE afi_nro_doc = @afi_DocAfiTitular and afi_activo=1))
 	BEGIN
 		RAISERROR('No existe el Afiliado Titular ingresado o ha sido dado de baja',16,1)
 		RETURN
@@ -485,5 +489,36 @@ BEGIN
 	BEGIN
 		update pico_y_pala.usuario set usu_direccion = @afi_direccion, usu_mail=@afi_mail, usu_telefono=@afi_telefono where usu_nro_doc=@afi_Doc
 	END
+END
+GO
+
+CREATE PROCEDURE PICO_Y_PALA.compraBonos (@afi_NroAfi numeric(18,0), @cantBonos int, @precioBonos int)
+AS
+BEGIN
+DECLARE @afiNroDoc NUMERIC (18,0)
+	IF NOT (exists (SELECT * FROM PICO_Y_PALA.afiliado WHERE afi_nro_afiliado = @afi_NroAfi and afi_activo=1))
+	BEGIN
+		RAISERROR('No se puede realizar la compra, el Afiliado no esta activo.',16,1)
+		RETURN
+	END
+	SELECT @afiNroDoc=afi.afi_nro_doc from pico_y_pala.afiliado afi where afi.afi_nro_afiliado=@afi_NroAfi
+	INSERT INTO pico_y_pala.compra (com_afi_compro,com_cant,com_fecha,com_precio)values(@afiNroDoc,@cantBonos,GETDATE(),(@cantBonos*@precioBonos))
+END
+GO
+
+CREATE TRIGGER PICO_Y_PALA.trigger_agregarBonos ON pico_y_pala.compra FOR INSERT
+AS
+BEGIN
+DECLARE @planID NUMERIC (18,0),@cantBonos NUMERIC (18,0),@precioBonos NUMERIC (18,0), @afiCompro NUMERIC (18,0), @idCompra NUMERIC (18,0)
+select @idCompra=ins.com_id,@afiCompro=ins.com_afi_compro, @cantBonos=ins.com_cant,@precioBonos=(ins.com_precio/ins.com_cant) from inserted ins
+select @planID=pla.pla_codigo from pico_y_pala.planes pla where pla.pla_precio_consulta=@precioBonos
+DECLARE @i int
+SET @i =1
+
+WHILE @i <= @cantBonos  
+	BEGIN  
+	INSERT INTO pico_y_pala.bono (bon_afiliado_compra,bon_com_id,bon_pla_id) values(@afiCompro,@idCompra,@planID)
+	set @i= @i+1
+	END 
 END
 GO
