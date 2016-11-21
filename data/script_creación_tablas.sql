@@ -116,10 +116,8 @@ create table pico_y_pala.dia_por_agenda
 	--,dpa_age_id numeric (18,0)
 	,dpa_esp_id int
 	,dpa_dia int 
-	--,dpa_deste datetime
-	--,dpa_hasta datetime
-	,dpa_desde int
-	,dpa_hasta int
+	,dpa_desde time
+	,dpa_hasta time
 	,constraint PK_dia_por_agenda primary key (dpa_pro_nro_doc,dpa_esp_id,dpa_dia)
 	--,constraint FK_dia_por_agenda foreign key (dpa_age_id,dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_id,age_pro_nro_doc,age_esp_id)
 	,constraint FK_dia_por_agenda foreign key (dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_pro_nro_doc,age_esp_id)
