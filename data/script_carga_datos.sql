@@ -110,16 +110,6 @@ from gd_esquema.Maestra
 order by 1
 print ('planes ok');
 
---DIA
-insert into pico_y_pala.dia(dia_nombre) values ('Lunes')
-insert into pico_y_pala.dia(dia_nombre) values ('Martes')
-insert into pico_y_pala.dia(dia_nombre) values ('Miercoles')
-insert into pico_y_pala.dia(dia_nombre) values ('Jueves')
-insert into pico_y_pala.dia(dia_nombre) values ('Viernes')
-insert into pico_y_pala.dia(dia_nombre) values ('Sabado')
-go
-print ('dia ok');
-
 --ESTADO_CIVIL
 insert into pico_y_pala.estado_civil (eci_desc) values ('Soltero')
 insert into pico_y_pala.estado_civil (eci_desc) values ('Casado')
@@ -471,8 +461,8 @@ select
 	maestra.Medico_Dni
 	,maestra.Especialidad_Codigo
 	,dia.dia_id
-	,min (datepart (hh,maestra.Turno_Fecha)) horamin
-	,max (datepart (hh,maestra.Turno_Fecha)) horamax
+	,cast (min (maestra.turno_fecha) as time (0)) horamin
+	,cast (max (maestra.turno_fecha) as time (0)) horamax
 from gd_esquema.Maestra maestra
 inner join pico_y_pala.dia dia on dia.dia_id = datepart (weekday , maestra.Turno_Fecha)
 group by 
@@ -484,3 +474,7 @@ order by
 	,maestra.Especialidad_Codigo
 	,dia.dia_id
 print ('dia_por_agenda ok');
+
+--tipo_cancelacion
+insert into pico_y_pala.tipo_cancelacion (tca_desc) values ('Ausencia doctor')
+insert into pico_y_pala.tipo_cancelacion (tca_desc) values ('Ausencia paciente')
