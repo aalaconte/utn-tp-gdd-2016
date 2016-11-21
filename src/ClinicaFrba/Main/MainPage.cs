@@ -129,11 +129,7 @@ namespace ClinicaFrba.Main
 
         private void MainPage_FormClosed(object sender, FormClosedEventArgs e)
         {
-<<<<<<< HEAD
             Application.Exit();
-
-=======
-            //Application.Exit();
         }
 
         private void btn_ComprarBonos_Click(object sender, EventArgs e)
@@ -148,7 +144,6 @@ namespace ClinicaFrba.Main
                 CompraBonos compraBono = new Compra_Bono.CompraBonos(Program.user);
                 compraBono.ShowDialog();
             }
->>>>>>> master
         }
 
     }

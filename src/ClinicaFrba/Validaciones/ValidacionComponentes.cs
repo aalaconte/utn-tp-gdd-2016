@@ -15,6 +15,18 @@ namespace ClinicaFrba.Validaciones
             return (!unCombo.SelectedIndex.Equals(-1));
         }
 
+        public static bool comboBoxSelecOpciones(List<ComboBox> combos)
+        {
+            foreach (ComboBox unCombo in combos)
+            {
+                if (unCombo.SelectedIndex.Equals(-1))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public static bool listBoxSeleccionoOpciones(ListBox unList)
         {
             return (unList.Items.Count > 0);

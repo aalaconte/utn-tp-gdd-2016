@@ -90,5 +90,8 @@ drop procedure PICO_Y_PALA.modificarAfiliado
 go
 drop procedure PICO_Y_PALA.compraBonos
 go
+drop procedure PICO_Y_PALA.registrarAgenda
+go
+drop function PICO_Y_PALA.cantHorasSemanaProf
 
 drop schema pico_y_pala

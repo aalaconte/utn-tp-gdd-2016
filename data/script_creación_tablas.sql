@@ -112,13 +112,13 @@ create table pico_y_pala.dia
 
 create table pico_y_pala.dia_por_agenda
 (
-	dpa_pro_nro_doc numeric (18,0)
-	--,dpa_age_id numeric (18,0)
+	dpa_id int identity(1,1)
+	,dpa_pro_nro_doc numeric (18,0)
 	,dpa_esp_id int
 	,dpa_dia int 
 	,dpa_desde time
 	,dpa_hasta time
-	,constraint PK_dia_por_agenda primary key (dpa_pro_nro_doc,dpa_esp_id,dpa_dia)
+	,constraint PK_dia_por_agenda primary key (dpa_id)
 	--,constraint FK_dia_por_agenda foreign key (dpa_age_id,dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_id,age_pro_nro_doc,age_esp_id)
 	,constraint FK_dia_por_agenda foreign key (dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_pro_nro_doc,age_esp_id)
 	,constraint FK_dpa_dia foreign key (dpa_dia) references pico_y_pala.dia (dia_id)
@@ -518,5 +518,55 @@ WHILE @i <= @cantBonos
 	INSERT INTO pico_y_pala.bono (bon_afiliado_compra,bon_com_id,bon_pla_id) values(@afiCompro,@idCompra,@planID)
 	set @i= @i+1
 	END 
+END
+GO
+
+/* 21-11-16: devuelve en @maxHoras el acumulado de horas del profesional si insertara la agenda y la query del final hace que al hacer en c#
+			 un executeQuery pueda obtener los registros que generaron conflictos (agendas existentes que chocan con estos horarios) */
+CREATE PROCEDURE pico_y_pala.registrarAgenda(@dia int, @nroDocProf numeric(18,0), @esp int, @hhDesde Time, @hhHasta Time, @maxHoras decimal(5,2), @totalHoras decimal(5,2) OUTPUT)
+AS
+BEGIN
+	--Obtenemos el total de horas por semana del profesional si insertáramos la agenda
+	SET @totalHoras = pico_y_pala.cantHorasSemanaProf(@nroDocProf) + CAST(DATEDIFF(SS,@hhDesde,@hhHasta)/3600.0 AS decimal(5,2))
+	PRINT(@totalHoras)
+	--Chequeamos que no haya conflicto con otras agendas
+	IF (NOT EXISTS( SELECT da.dpa_pro_nro_doc,e.esp_id,e.esp_desc,d.dia_id, d.dia_nombre,da.dpa_desde,da.dpa_hasta
+					FROM pico_y_pala.agenda a
+					INNER JOIN pico_y_pala.dia_por_agenda da ON da.dpa_esp_id = a.age_esp_id AND da.dpa_pro_nro_doc = a.age_pro_nro_doc AND da.dpa_dia != 1
+					INNER JOIN pico_y_pala.dia d ON da.dpa_dia = d.dia_id
+					INNER JOIN pico_y_pala.especialidad e ON e.esp_id = a.age_esp_id
+					GROUP BY da.dpa_pro_nro_doc,e.esp_id,e.esp_desc,d.dia_id,d.dia_nombre,da.dpa_desde,da.dpa_hasta
+					HAVING @nroDocProf=da.dpa_pro_nro_doc AND @dia=d.dia_id AND NOT(@hhDesde < da.dpa_desde AND @hhHasta <= da.dpa_desde OR @hhDesde >= da.dpa_hasta AND @hhHasta > da.dpa_hasta))
+	   AND @totalHoras <= @maxHoras) --Chequeamos que no exceda el limite de horas por semana
+		BEGIN
+			IF NOT EXISTS (SELECT 1 FROM pico_y_pala.profesional_especialidad WHERE pes_esp_id=@esp AND pes_pro_nro_doc=@nroDocProf)
+				INSERT INTO pico_y_pala.profesional_especialidad (pes_esp_id,pes_pro_nro_doc) VALUES (@esp, @nroDocProf)
+			IF NOT EXISTS (SELECT 1 FROM pico_y_pala.agenda WHERE age_esp_id=@esp AND age_pro_nro_doc=@nroDocProf)
+				INSERT INTO pico_y_pala.agenda (age_esp_id, age_pro_nro_doc) VALUES (@esp, @nroDocProf)
+			INSERT INTO pico_y_pala.dia_por_agenda (dpa_esp_id, dpa_pro_nro_doc, dpa_dia, dpa_desde, dpa_hasta) VALUES (@esp, @nroDocProf, @dia, @hhDesde, @hhHasta)
+		END
+		--Con esto devolvemos las filas que entraron en conflicto
+		SELECT da.dpa_pro_nro_doc,e.esp_id,e.esp_desc,d.dia_id, d.dia_nombre,da.dpa_desde,da.dpa_hasta
+		FROM pico_y_pala.agenda a
+		INNER JOIN pico_y_pala.dia_por_agenda da ON da.dpa_esp_id = a.age_esp_id AND da.dpa_pro_nro_doc = a.age_pro_nro_doc
+		INNER JOIN pico_y_pala.dia d ON da.dpa_dia = d.dia_id
+		INNER JOIN pico_y_pala.especialidad e ON e.esp_id = a.age_esp_id
+		GROUP BY da.dpa_pro_nro_doc,e.esp_id,e.esp_desc,d.dia_id,d.dia_nombre,da.dpa_desde,da.dpa_hasta
+		HAVING @nroDocProf=da.dpa_pro_nro_doc AND @dia=d.dia_id AND NOT(@hhDesde < da.dpa_desde AND @hhHasta <= da.dpa_desde OR @hhDesde >= da.dpa_hasta AND @hhHasta > da.dpa_hasta)
+END
+GO
+
+CREATE FUNCTION pico_y_pala.cantHorasSemanaProf(@nroDocProf numeric(18,0))
+RETURNS decimal(5,2)
+AS
+BEGIN
+	RETURN  (SELECT SUM(CANT_HORAS) TOTAL_HORAS
+			 FROM (SELECT CAST(DATEDIFF(SS,dpa_desde,dpa_hasta)/3600.0 AS decimal(5,2)) CANT_HORAS
+				   FROM pico_y_pala.agenda a
+				   INNER JOIN pico_y_pala.dia_por_agenda da ON da.dpa_esp_id = a.age_esp_id AND da.dpa_pro_nro_doc = a.age_pro_nro_doc AND da.dpa_dia != 1
+				   INNER JOIN pico_y_pala.dia d ON da.dpa_dia = d.dia_id
+				   INNER JOIN pico_y_pala.especialidad e ON e.esp_id = a.age_esp_id
+				   GROUP BY da.dpa_pro_nro_doc,e.esp_id,e.esp_desc,d.dia_id,d.dia_nombre,da.dpa_desde,da.dpa_hasta
+				   HAVING @nroDocProf=da.dpa_pro_nro_doc) a)
 END
 GO
