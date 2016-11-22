@@ -9,6 +9,9 @@ namespace ClinicaFrba.Abm_Profesional
 {
     public class Profesional : Usuario.Usuario
     {
+        private string p1;
+        private string p2;
+
 
         public int Matricula { get; set; }
         public List<Especialidad> Especialidades { get; set; }
@@ -21,6 +24,12 @@ namespace ClinicaFrba.Abm_Profesional
             this.TipoDoc = unTipoDoc;
             this.NroDoc = unNroDoc;
             this.Matricula = unaMatricula;
+        }
+
+        public Profesional(String unApellido, String unNombre)
+        {
+            this.Apellido = unApellido;
+            this.Nombre = unNombre;
         }
 
     }

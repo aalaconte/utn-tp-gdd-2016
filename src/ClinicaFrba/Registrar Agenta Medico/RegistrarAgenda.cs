@@ -25,6 +25,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
         private static readonly TimeSpan HORA_HASTA_ALMUERZO = new TimeSpan(14, 00, 00);
         private static readonly TimeSpan HORA_MIN_SAB = new TimeSpan(10, 00, 00);
         private static readonly TimeSpan HORA_MAX_SAB = new TimeSpan(14, 30, 00);
+        private static readonly double MAXIMO_HORAS = double.Parse(ConfigurationManager.AppSettings["max.horas.semanales.profesional"].ToString());
         private List<ComboBox> combosLunes = new List<ComboBox>();
         private List<ComboBox> combosMartes = new List<ComboBox>();
         private List<ComboBox> combosMiercoles = new List<ComboBox>();
@@ -34,6 +35,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
         TimeSpan incremento = new TimeSpan(0, 30, 0);
         private List<Especialidad> especialidades = new List<Especialidad>();
         private Profesional profesional;
+        private double totalHoras = 0;
 
         public RegistrarAgenda()
         {
@@ -58,10 +60,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             TimeSpan horario = HORA_MIN_LV;
             while (horario <= HORA_MAX_LV)
             {
-                if ((horario < HORA_DESDE_ALMUERZO) || (horario >= HORA_HASTA_ALMUERZO))
-                {
-                    horarios.Add(horario.ToString());
-                }
+                horarios.Add(horario.ToString());
                 horario = horario.Add(incremento);
             }
             ManipulacionComponentes.llenarComboBox(this.cmb_hora_desde_lunes, horarios, "");
@@ -102,6 +101,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
                 ManipulacionComponentes.llenarComboBox(this.cmb_especialidades, sqlEspecialidadesProfesional.ToString(), "Especialidad");
                 this.cmb_especialidades.DropDownWidth = ManipulacionComponentes.obtenerDropDownMaxWidthCombo(this.cmb_especialidades);
                 this.especialidades = obtenerEspecialidadesProfesional(this.profesional.NroDoc, sqlEspecialidadesProfesional.ToString());
+                this.totalHoras = 0;
 
             }
             catch (Exception ex)
@@ -211,10 +211,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             TimeSpan horario = TimeSpan.Parse(horaDesde).Add(this.incremento);
             while (horario <= horaMax)
             {
-                if (esSabado || (horario < HORA_DESDE_ALMUERZO) || (horario >= HORA_HASTA_ALMUERZO))
-                {
-                    horarios.Add(horario.ToString());
-                }
+                horarios.Add(horario.ToString());
                 horario = horario.Add(incremento);
             }
             ManipulacionComponentes.llenarComboBox(comboHasta, horarios, "");
@@ -232,16 +229,132 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
 
         private void btn_aceptar_Click(object sender, EventArgs e)
         {
-            if (validar())
+            if (validarCampos())
             {
+                using (SqlConnection cx = Connection.getConnection())
+                {
+                    SqlTransaction tx = null;
+                    try
+                    {
+                        cx.Open();
+                        tx = cx.BeginTransaction();
+                        this.totalHoras = 0;
+                        this.totalHoras += TimeSpan.Parse(this.cmb_hora_hasta_lunes.SelectedItem.ToString()).Subtract(TimeSpan.Parse(this.cmb_hora_hasta_lunes.SelectedItem.ToString())).TotalHours;
+                        //this.totalHoras += TimeSpan.Parse(this.cmb_hora_hasta_martes.SelectedItem.ToString()).Subtract(TimeSpan.Parse(this.cmb_hora_hasta_martes.SelectedItem.ToString())).TotalHours;
+                        //this.totalHoras += TimeSpan.Parse(this.cmb_hora_hasta_miercoles.SelectedItem.ToString()).Subtract(TimeSpan.Parse(this.cmb_hora_hasta_miercoles.SelectedItem.ToString())).TotalHours;
+                        //this.totalHoras += TimeSpan.Parse(this.cmb_hora_hasta_jueves.SelectedItem.ToString()).Subtract(TimeSpan.Parse(this.cmb_hora_hasta_jueves.SelectedItem.ToString())).TotalHours;
+                        //this.totalHoras += TimeSpan.Parse(this.cmb_hora_hasta_viernes.SelectedItem.ToString()).Subtract(TimeSpan.Parse(this.cmb_hora_hasta_viernes.SelectedItem.ToString())).TotalHours;
+                        //this.totalHoras += TimeSpan.Parse(this.cmb_hora_hasta_sabado.SelectedItem.ToString()).Subtract(TimeSpan.Parse(this.cmb_hora_hasta_sabado.SelectedItem.ToString())).TotalHours;
+                        Especialidad espSeleccionada = this.especialidades.Find(especialidad => especialidad.Descripcion.Equals(this.cmb_especialidades.SelectedItem.ToString()));
+                        List<AgendaProfesional> agendasConflictoLunes = new List<AgendaProfesional>();
+                        if (!procesarRegistrarAgenda(2, this.profesional.NroDoc, espSeleccionada.Id, TimeSpan.Parse(this.cmb_hora_desde_lunes.Text), TimeSpan.Parse(this.cmb_hora_hasta_lunes.Text), this.lbl_error_lunes, this.cmb_error_lunes, cx, tx))
+                        {
+                            agendasConflictoLunes = obtenerAgendasConflictoProfesionalDia(this.profesional, new Dia(2, "Lunes"), this.cmb_hora_desde_lunes.Text, this.cmb_hora_hasta_lunes.Text, cx, tx);
+                            foreach (AgendaProfesional agenda in agendasConflictoLunes)
+                            {
+                                this.lbl_error_lunes.Visible = true;
+                                foreach (Especialidad especialidad in agenda.Profesional.Especialidades){
+                                    this.cmb_error_lunes.Items.Add(especialidad.Descripcion + " - " + agenda.hhDesde.ToString() + " - " + agenda.hhHasta.ToString());
+                                }
+                            }
+                        }
+
+
+                                    //SqlDataReader sqlReader = 
+                                    //while (sqlReader.Read())
+                                    //{
+                                    //    lblError.Visible = true;
+                                    //    cmbError.Visible = true;
+                                    //    StringBuilder item = new StringBuilder(sqlReader["especialidad"].ToString());
+                                    //    item.Append(" - ").Append(sqlReader["desde"].ToString());
+                                    //    item.Append(" - ").Append(sqlReader["hasta"].ToString());
+                                    //    cmbError.Items.Add(item.ToString());
+                                    //    cmbError.DropDownWidth = ManipulacionComponentes.obtenerDropDownMaxWidthCombo(cmbError);
+                                    //}
+                                    //sqlReader.Close();
+                                    //return (double)(decimal)sqlCmd.Parameters["@totalHoras"].Value;
+                        if (!this.lbl_error_lunes.Visible && this.totalHoras <= MAXIMO_HORAS)
+                        {
+                            tx.Commit();
+                            this.Close();
+
+                        }
+                        else
+                        {
+                            tx.Rollback();
+                            MessageBox.Show("Se produjo un error al registrar las agendas: " + this.txt_profesional.Text, "Error en el login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (tx != null) tx.Rollback();
+                        Console.WriteLine(ex);
+                        MessageBox.Show("Se produjo un error al registrar las agendas: " + this.txt_profesional.Text, "Error en el login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            
+                    }
+                }
             }
         }
 
-        private bool validar()
+        private List<AgendaProfesional> obtenerAgendasConflictoProfesionalDia(Profesional profesional, Dia dia, String hhDesde, String hhHasta, SqlConnection cx, SqlTransaction tx)
+        {
+            List<AgendaProfesional> agendasReturn = new List<AgendaProfesional>();
+            StringBuilder query = new StringBuilder(ConfigurationManager.AppSettings["query.obtener.agendas.select"].ToString());
+            query.Append(ConfigurationManager.AppSettings["query.obtener.agendas.group.by"].ToString());
+            query.Append(" HAVING");
+            query.Append(ConfigurationManager.AppSettings["query.obtener.agendas.having.profesional"].Replace("{0}",this.profesional.NroDoc.ToString()).ToString());
+            query.Append(" AND");
+            query.Append(ConfigurationManager.AppSettings["query.obtener.agendas.having.dia"].Replace("{1}", dia.Id.ToString()).ToString());
+            query.Append(" AND");
+            query.Append(ConfigurationManager.AppSettings["query.obtener.agendas.having.horario.conflicto"].Replace("{4}", hhDesde).Replace("{5}", hhHasta).ToString());
+            SqlCommand sqlCmd = new SqlCommand(query.ToString(), cx, tx);
+            sqlCmd.CommandType = CommandType.Text;
+            SqlDataReader sqlReader = sqlCmd.ExecuteReader();
+            AgendaProfesional agenda = new AgendaProfesional();
+            agenda.Profesional.Especialidades = new List<Especialidad>();
+            agenda.Profesional = new Profesional(profesional.Apellido, profesional.Nombre);
+            while (sqlReader.Read())
+            {
+                agenda.Dia = dia;
+                agenda.Profesional.Especialidades.Add(new Especialidad((int)sqlReader["esp_id"],sqlReader["especialidad"].ToString()));
+                agenda.hhDesde = TimeSpan.Parse(sqlReader["desde"].ToString());
+                agenda.hhHasta = TimeSpan.Parse(sqlReader["hasta"].ToString());
+                agendasReturn.Add(agenda);
+            }
+            sqlReader.Close();
+            sqlReader.Dispose();
+            
+            return agendasReturn;
+
+        }
+
+        private bool procesarRegistrarAgenda(int idDia, int nroDocProfesional, int idEspecialidad, TimeSpan hhDesde, TimeSpan hhHasta, Label lblError, ComboBox cmbError, SqlConnection cx, SqlTransaction tx)
+        {
+            
+
+            SqlCommand sqlCmd = new SqlCommand("PICO_Y_PALA.registrarAgenda", cx, tx);
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+            sqlCmd.Parameters.Add("@dia", SqlDbType.Int).Value = idDia;
+            sqlCmd.Parameters.Add("@nroDocProf", SqlDbType.Decimal).Value = nroDocProfesional;
+            sqlCmd.Parameters.Add("@esp", SqlDbType.Int).Value = idEspecialidad;
+            sqlCmd.Parameters.Add("@hhDesde", SqlDbType.Time).Value = hhDesde;
+            sqlCmd.Parameters.Add("@hhHasta", SqlDbType.Time).Value = hhHasta;
+            sqlCmd.Parameters.Add("@maxHoras", SqlDbType.Decimal).Value = MAXIMO_HORAS;
+            sqlCmd.Parameters.Add("@totalHoras", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+            sqlCmd.Parameters.Add("@inserted", SqlDbType.Bit).Direction = ParameterDirection.Output;
+            sqlCmd.ExecuteNonQuery();
+
+            return (bool)sqlCmd.Parameters["@inserted"].Value;
+
+        }
+
+        private bool validarCampos()
         {
             bool validacion = true;
             this.lbl_error_lunes.Visible = false; this.lbl_error_martes.Visible = false; this.lbl_error_miercoles.Visible = false;
             this.lbl_error_jueves.Visible = false; this.lbl_error_viernes.Visible = false; this.lbl_error_sabado.Visible = false;
+            this.cmb_error_lunes.Visible = false; this.cmb_error_martes.Visible = false; this.cmb_error_miercoles.Visible = false;
+            this.cmb_error_jueves.Visible = false; this.cmb_error_viernes.Visible = false; this.cmb_error_sabado.Visible = false;
             this.lbl_warn_especialidad.Visible = false; this.lbl_warn_horarios.Visible = false; this.lbl_warn_profesional.Visible = false;
             this.lbl_error_horas_profesional.Text = "Con las agendas generadas, el profesional acumularía {0} hs semanales. El máximo permitido son 48 hs.";
             this.lbl_error_horas_profesional.Visible = false;
@@ -292,6 +405,11 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
         private void lbl_error_lunes_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void cmb_especialidades_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.totalHoras = 0;
         }
 
     }
