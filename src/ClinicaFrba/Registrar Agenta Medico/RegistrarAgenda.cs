@@ -255,6 +255,8 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
                                 this.lbl_error_lunes.Visible = true;
                                 foreach (Especialidad especialidad in agenda.Profesional.Especialidades){
                                     this.cmb_error_lunes.Items.Add(especialidad.Descripcion + " - " + agenda.hhDesde.ToString() + " - " + agenda.hhHasta.ToString());
+                                    this.cmb_error_lunes.Visible = true;
+                                    this.cmb_error_lunes.DropDownWidth = ManipulacionComponentes.obtenerDropDownMaxWidthCombo(this.cmb_error_lunes);
                                 }
                             }
                         }
@@ -282,7 +284,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
                         else
                         {
                             tx.Rollback();
-                            MessageBox.Show("Se produjo un error al registrar las agendas: " + this.txt_profesional.Text, "Error en el login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            //MessageBox.Show("Se produjo un error al registrar las agendas: " + this.txt_profesional.Text, "Error en el login", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                     catch (Exception ex)
@@ -306,13 +308,13 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             query.Append(" AND");
             query.Append(ConfigurationManager.AppSettings["query.obtener.agendas.having.dia"].Replace("{1}", dia.Id.ToString()).ToString());
             query.Append(" AND");
-            query.Append(ConfigurationManager.AppSettings["query.obtener.agendas.having.horario.conflicto"].Replace("{4}", hhDesde).Replace("{5}", hhHasta).ToString());
+            query.Append(ConfigurationManager.AppSettings["query.obtener.agendas.having.horario.conflicto"].Replace("{4}", '\'' + hhDesde + '\'').Replace("{5}", '\'' + hhHasta + '\'').ToString());
             SqlCommand sqlCmd = new SqlCommand(query.ToString(), cx, tx);
             sqlCmd.CommandType = CommandType.Text;
             SqlDataReader sqlReader = sqlCmd.ExecuteReader();
             AgendaProfesional agenda = new AgendaProfesional();
-            agenda.Profesional.Especialidades = new List<Especialidad>();
             agenda.Profesional = new Profesional(profesional.Apellido, profesional.Nombre);
+            agenda.Profesional.Especialidades = new List<Especialidad>();
             while (sqlReader.Read())
             {
                 agenda.Dia = dia;
@@ -355,6 +357,8 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             this.lbl_error_jueves.Visible = false; this.lbl_error_viernes.Visible = false; this.lbl_error_sabado.Visible = false;
             this.cmb_error_lunes.Visible = false; this.cmb_error_martes.Visible = false; this.cmb_error_miercoles.Visible = false;
             this.cmb_error_jueves.Visible = false; this.cmb_error_viernes.Visible = false; this.cmb_error_sabado.Visible = false;
+            this.cmb_error_lunes.Items.Clear(); this.cmb_error_martes.Items.Clear(); this.cmb_error_miercoles.Items.Clear();
+            this.cmb_error_jueves.Items.Clear(); this.cmb_error_viernes.Items.Clear(); this.cmb_error_sabado.Items.Clear();
             this.lbl_warn_especialidad.Visible = false; this.lbl_warn_horarios.Visible = false; this.lbl_warn_profesional.Visible = false;
             this.lbl_error_horas_profesional.Text = "Con las agendas generadas, el profesional acumularía {0} hs semanales. El máximo permitido son 48 hs.";
             this.lbl_error_horas_profesional.Visible = false;

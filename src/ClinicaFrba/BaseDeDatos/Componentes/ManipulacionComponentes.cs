@@ -137,5 +137,6 @@ namespace ClinicaFrba.BaseDeDatos.Componentes
             }
             return maxWidth;
         }
+
     }
 }
