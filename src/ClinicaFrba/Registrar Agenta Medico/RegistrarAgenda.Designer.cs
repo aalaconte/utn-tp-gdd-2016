@@ -69,6 +69,7 @@
             this.lbl_error_miercoles = new System.Windows.Forms.Label();
             this.cmb_error_sabado = new System.Windows.Forms.ComboBox();
             this.lbl_error_sabado = new System.Windows.Forms.Label();
+            this.lbl_warn_dia = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lbl_profesionales
@@ -503,11 +504,23 @@
             this.lbl_error_sabado.Text = "Conflictos con agendas existentes!";
             this.lbl_error_sabado.Visible = false;
             // 
+            // lbl_warn_dia
+            // 
+            this.lbl_warn_dia.AutoSize = true;
+            this.lbl_warn_dia.ForeColor = System.Drawing.Color.Red;
+            this.lbl_warn_dia.Location = new System.Drawing.Point(323, 298);
+            this.lbl_warn_dia.Name = "lbl_warn_dia";
+            this.lbl_warn_dia.Size = new System.Drawing.Size(97, 13);
+            this.lbl_warn_dia.TabIndex = 46;
+            this.lbl_warn_dia.Text = "Seleccione un día!";
+            this.lbl_warn_dia.Visible = false;
+            // 
             // RegistrarAgenda
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(735, 341);
+            this.Controls.Add(this.lbl_warn_dia);
             this.Controls.Add(this.cmb_error_sabado);
             this.Controls.Add(this.lbl_error_sabado);
             this.Controls.Add(this.cmb_error_miercoles);
@@ -600,5 +613,6 @@
         private System.Windows.Forms.Label lbl_error_miercoles;
         private System.Windows.Forms.ComboBox cmb_error_sabado;
         private System.Windows.Forms.Label lbl_error_sabado;
+        private System.Windows.Forms.Label lbl_warn_dia;
     }
 }
