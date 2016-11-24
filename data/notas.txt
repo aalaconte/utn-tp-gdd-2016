@@ -1,4 +1,4 @@
-Notas carga de datos:
+﻿Notas carga de datos:
 
 1) usuario:
 Password para todos los usuarios.
@@ -28,6 +28,18 @@ select
 from gd_esquema.Maestra
 where compra_bono_fecha is not null 
 --and not Plan_Med_Precio_Bono_Consulta = 0
+group by Paciente_Dni
+	,Compra_Bono_Fecha
+order by 1,4
+
+query anterior:
+select 
+	Paciente_Dni
+	,count (*)
+	,0 precio					--ANALIZAR
+	,Compra_Bono_Fecha
+from gd_esquema.Maestra
+where compra_bono_fecha is not null
 group by Paciente_Dni
 	,Compra_Bono_Fecha
 order by 1,4

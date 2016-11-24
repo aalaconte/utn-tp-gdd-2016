@@ -316,11 +316,12 @@ insert into pico_y_pala.compra
 	)
 select 
 	Paciente_Dni
-	,count (*)
-	,0 precio					--ANALIZAR
+	,count (*) cantidad_consultas
+	,sum (Plan_Med_Precio_Bono_Consulta) precio
 	,Compra_Bono_Fecha
 from gd_esquema.Maestra
-where compra_bono_fecha is not null
+where compra_bono_fecha is not null 
+--and not Plan_Med_Precio_Bono_Consulta = 0
 group by Paciente_Dni
 	,Compra_Bono_Fecha
 order by 1,4
