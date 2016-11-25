@@ -13,6 +13,8 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
         public Profesional Profesional { get; set; }
         public Especialidad Especialidad { get; set; }
         public Dia Dia { get; set; }
+        public DateTime FechaDesde { get; set; }
+        public DateTime FechaHasta { get; set; }
         public TimeSpan hhDesde { get; set; }
         public TimeSpan hhHasta { get; set; }
 

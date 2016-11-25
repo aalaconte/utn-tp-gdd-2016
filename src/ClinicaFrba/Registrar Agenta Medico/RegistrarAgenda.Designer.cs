@@ -70,6 +70,20 @@
             this.cmb_error_sabado = new System.Windows.Forms.ComboBox();
             this.lbl_error_sabado = new System.Windows.Forms.Label();
             this.lbl_warn_dia = new System.Windows.Forms.Label();
+            this.dtp_desde_lunes = new System.Windows.Forms.DateTimePicker();
+            this.dtp_hasta_lunes = new System.Windows.Forms.DateTimePicker();
+            this.lbl_fecha_desde = new System.Windows.Forms.Label();
+            this.lbl_fecha_hasta = new System.Windows.Forms.Label();
+            this.dtp_hasta_martes = new System.Windows.Forms.DateTimePicker();
+            this.dtp_desde_martes = new System.Windows.Forms.DateTimePicker();
+            this.dtp_hasta_jueves = new System.Windows.Forms.DateTimePicker();
+            this.dtp_desde_jueves = new System.Windows.Forms.DateTimePicker();
+            this.dtp_hasta_miercoles = new System.Windows.Forms.DateTimePicker();
+            this.dtp_desde_miercoles = new System.Windows.Forms.DateTimePicker();
+            this.dtp_hasta_sabado = new System.Windows.Forms.DateTimePicker();
+            this.dtp_desde_sabado = new System.Windows.Forms.DateTimePicker();
+            this.dtp_hasta_viernes = new System.Windows.Forms.DateTimePicker();
+            this.dtp_desde_viernes = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // lbl_profesionales
@@ -123,7 +137,7 @@
             // 
             // btn_aceptar
             // 
-            this.btn_aceptar.Location = new System.Drawing.Point(648, 306);
+            this.btn_aceptar.Location = new System.Drawing.Point(712, 477);
             this.btn_aceptar.Name = "btn_aceptar";
             this.btn_aceptar.Size = new System.Drawing.Size(75, 23);
             this.btn_aceptar.TabIndex = 10;
@@ -133,7 +147,7 @@
             // 
             // btn_cancelar
             // 
-            this.btn_cancelar.Location = new System.Drawing.Point(567, 306);
+            this.btn_cancelar.Location = new System.Drawing.Point(631, 477);
             this.btn_cancelar.Name = "btn_cancelar";
             this.btn_cancelar.Size = new System.Drawing.Size(75, 23);
             this.btn_cancelar.TabIndex = 11;
@@ -164,7 +178,7 @@
             // chk_sabado
             // 
             this.chk_sabado.AutoSize = true;
-            this.chk_sabado.Location = new System.Drawing.Point(357, 223);
+            this.chk_sabado.Location = new System.Drawing.Point(15, 385);
             this.chk_sabado.Name = "chk_sabado";
             this.chk_sabado.Size = new System.Drawing.Size(63, 17);
             this.chk_sabado.TabIndex = 5;
@@ -175,7 +189,7 @@
             // chk_viernes
             // 
             this.chk_viernes.AutoSize = true;
-            this.chk_viernes.Location = new System.Drawing.Point(357, 169);
+            this.chk_viernes.Location = new System.Drawing.Point(15, 331);
             this.chk_viernes.Name = "chk_viernes";
             this.chk_viernes.Size = new System.Drawing.Size(61, 17);
             this.chk_viernes.TabIndex = 4;
@@ -186,7 +200,7 @@
             // chk_jueves
             // 
             this.chk_jueves.AutoSize = true;
-            this.chk_jueves.Location = new System.Drawing.Point(357, 115);
+            this.chk_jueves.Location = new System.Drawing.Point(15, 277);
             this.chk_jueves.Name = "chk_jueves";
             this.chk_jueves.Size = new System.Drawing.Size(60, 17);
             this.chk_jueves.TabIndex = 3;
@@ -274,7 +288,7 @@
             this.cmb_hora_hasta_jueves.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_hora_hasta_jueves.Enabled = false;
             this.cmb_hora_hasta_jueves.FormattingEnabled = true;
-            this.cmb_hora_hasta_jueves.Location = new System.Drawing.Point(559, 113);
+            this.cmb_hora_hasta_jueves.Location = new System.Drawing.Point(217, 275);
             this.cmb_hora_hasta_jueves.Name = "cmb_hora_hasta_jueves";
             this.cmb_hora_hasta_jueves.Size = new System.Drawing.Size(121, 21);
             this.cmb_hora_hasta_jueves.TabIndex = 20;
@@ -284,7 +298,7 @@
             this.cmb_hora_desde_jueves.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_hora_desde_jueves.Enabled = false;
             this.cmb_hora_desde_jueves.FormattingEnabled = true;
-            this.cmb_hora_desde_jueves.Location = new System.Drawing.Point(432, 113);
+            this.cmb_hora_desde_jueves.Location = new System.Drawing.Point(90, 275);
             this.cmb_hora_desde_jueves.Name = "cmb_hora_desde_jueves";
             this.cmb_hora_desde_jueves.Size = new System.Drawing.Size(121, 21);
             this.cmb_hora_desde_jueves.TabIndex = 19;
@@ -295,7 +309,7 @@
             this.cmb_hora_hasta_viernes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_hora_hasta_viernes.Enabled = false;
             this.cmb_hora_hasta_viernes.FormattingEnabled = true;
-            this.cmb_hora_hasta_viernes.Location = new System.Drawing.Point(559, 167);
+            this.cmb_hora_hasta_viernes.Location = new System.Drawing.Point(217, 329);
             this.cmb_hora_hasta_viernes.Name = "cmb_hora_hasta_viernes";
             this.cmb_hora_hasta_viernes.Size = new System.Drawing.Size(121, 21);
             this.cmb_hora_hasta_viernes.TabIndex = 22;
@@ -305,7 +319,7 @@
             this.cmb_hora_desde_viernes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_hora_desde_viernes.Enabled = false;
             this.cmb_hora_desde_viernes.FormattingEnabled = true;
-            this.cmb_hora_desde_viernes.Location = new System.Drawing.Point(432, 167);
+            this.cmb_hora_desde_viernes.Location = new System.Drawing.Point(90, 329);
             this.cmb_hora_desde_viernes.Name = "cmb_hora_desde_viernes";
             this.cmb_hora_desde_viernes.Size = new System.Drawing.Size(121, 21);
             this.cmb_hora_desde_viernes.TabIndex = 21;
@@ -316,7 +330,7 @@
             this.cmb_hora_hasta_sabado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_hora_hasta_sabado.Enabled = false;
             this.cmb_hora_hasta_sabado.FormattingEnabled = true;
-            this.cmb_hora_hasta_sabado.Location = new System.Drawing.Point(559, 221);
+            this.cmb_hora_hasta_sabado.Location = new System.Drawing.Point(217, 383);
             this.cmb_hora_hasta_sabado.Name = "cmb_hora_hasta_sabado";
             this.cmb_hora_hasta_sabado.Size = new System.Drawing.Size(121, 21);
             this.cmb_hora_hasta_sabado.TabIndex = 24;
@@ -326,7 +340,7 @@
             this.cmb_hora_desde_sabado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_hora_desde_sabado.Enabled = false;
             this.cmb_hora_desde_sabado.FormattingEnabled = true;
-            this.cmb_hora_desde_sabado.Location = new System.Drawing.Point(432, 221);
+            this.cmb_hora_desde_sabado.Location = new System.Drawing.Point(90, 383);
             this.cmb_hora_desde_sabado.Name = "cmb_hora_desde_sabado";
             this.cmb_hora_desde_sabado.Size = new System.Drawing.Size(121, 21);
             this.cmb_hora_desde_sabado.TabIndex = 23;
@@ -347,7 +361,7 @@
             // 
             this.lbl_warn_horarios.AutoSize = true;
             this.lbl_warn_horarios.ForeColor = System.Drawing.Color.Red;
-            this.lbl_warn_horarios.Location = new System.Drawing.Point(244, 311);
+            this.lbl_warn_horarios.Location = new System.Drawing.Point(275, 472);
             this.lbl_warn_horarios.Name = "lbl_warn_horarios";
             this.lbl_warn_horarios.Size = new System.Drawing.Size(277, 13);
             this.lbl_warn_horarios.TabIndex = 26;
@@ -358,7 +372,7 @@
             // 
             this.lbl_error_lunes.AutoSize = true;
             this.lbl_error_lunes.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_lunes.Location = new System.Drawing.Point(40, 143);
+            this.lbl_error_lunes.Location = new System.Drawing.Point(92, 143);
             this.lbl_error_lunes.Name = "lbl_error_lunes";
             this.lbl_error_lunes.Size = new System.Drawing.Size(171, 13);
             this.lbl_error_lunes.TabIndex = 27;
@@ -369,7 +383,7 @@
             // lbl_error_horas_profesional
             // 
             this.lbl_error_horas_profesional.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_horas_profesional.Location = new System.Drawing.Point(432, 49);
+            this.lbl_error_horas_profesional.Location = new System.Drawing.Point(522, 33);
             this.lbl_error_horas_profesional.Name = "lbl_error_horas_profesional";
             this.lbl_error_horas_profesional.Size = new System.Drawing.Size(265, 45);
             this.lbl_error_horas_profesional.TabIndex = 33;
@@ -393,9 +407,9 @@
             // 
             this.cmb_error_lunes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_error_lunes.FormattingEnabled = true;
-            this.cmb_error_lunes.Location = new System.Drawing.Point(217, 140);
+            this.cmb_error_lunes.Location = new System.Drawing.Point(269, 140);
             this.cmb_error_lunes.Name = "cmb_error_lunes";
-            this.cmb_error_lunes.Size = new System.Drawing.Size(121, 21);
+            this.cmb_error_lunes.Size = new System.Drawing.Size(191, 21);
             this.cmb_error_lunes.TabIndex = 35;
             this.cmb_error_lunes.Visible = false;
             // 
@@ -403,7 +417,7 @@
             // 
             this.lbl_error_jueves.AutoSize = true;
             this.lbl_error_jueves.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_jueves.Location = new System.Drawing.Point(382, 143);
+            this.lbl_error_jueves.Location = new System.Drawing.Point(92, 306);
             this.lbl_error_jueves.Name = "lbl_error_jueves";
             this.lbl_error_jueves.Size = new System.Drawing.Size(171, 13);
             this.lbl_error_jueves.TabIndex = 36;
@@ -414,9 +428,9 @@
             // 
             this.cmb_error_jueves.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_error_jueves.FormattingEnabled = true;
-            this.cmb_error_jueves.Location = new System.Drawing.Point(559, 140);
+            this.cmb_error_jueves.Location = new System.Drawing.Point(269, 303);
             this.cmb_error_jueves.Name = "cmb_error_jueves";
-            this.cmb_error_jueves.Size = new System.Drawing.Size(121, 21);
+            this.cmb_error_jueves.Size = new System.Drawing.Size(191, 21);
             this.cmb_error_jueves.TabIndex = 37;
             this.cmb_error_jueves.Visible = false;
             // 
@@ -424,9 +438,9 @@
             // 
             this.cmb_error_martes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_error_martes.FormattingEnabled = true;
-            this.cmb_error_martes.Location = new System.Drawing.Point(217, 194);
+            this.cmb_error_martes.Location = new System.Drawing.Point(269, 195);
             this.cmb_error_martes.Name = "cmb_error_martes";
-            this.cmb_error_martes.Size = new System.Drawing.Size(121, 21);
+            this.cmb_error_martes.Size = new System.Drawing.Size(191, 21);
             this.cmb_error_martes.TabIndex = 39;
             this.cmb_error_martes.Visible = false;
             // 
@@ -434,7 +448,7 @@
             // 
             this.lbl_error_martes.AutoSize = true;
             this.lbl_error_martes.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_martes.Location = new System.Drawing.Point(40, 197);
+            this.lbl_error_martes.Location = new System.Drawing.Point(92, 198);
             this.lbl_error_martes.Name = "lbl_error_martes";
             this.lbl_error_martes.Size = new System.Drawing.Size(171, 13);
             this.lbl_error_martes.TabIndex = 38;
@@ -445,9 +459,9 @@
             // 
             this.cmb_error_viernes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_error_viernes.FormattingEnabled = true;
-            this.cmb_error_viernes.Location = new System.Drawing.Point(559, 194);
+            this.cmb_error_viernes.Location = new System.Drawing.Point(269, 357);
             this.cmb_error_viernes.Name = "cmb_error_viernes";
-            this.cmb_error_viernes.Size = new System.Drawing.Size(121, 21);
+            this.cmb_error_viernes.Size = new System.Drawing.Size(191, 21);
             this.cmb_error_viernes.TabIndex = 41;
             this.cmb_error_viernes.Visible = false;
             // 
@@ -455,7 +469,7 @@
             // 
             this.lbl_error_viernes.AutoSize = true;
             this.lbl_error_viernes.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_viernes.Location = new System.Drawing.Point(382, 197);
+            this.lbl_error_viernes.Location = new System.Drawing.Point(92, 360);
             this.lbl_error_viernes.Name = "lbl_error_viernes";
             this.lbl_error_viernes.Size = new System.Drawing.Size(171, 13);
             this.lbl_error_viernes.TabIndex = 40;
@@ -466,9 +480,9 @@
             // 
             this.cmb_error_miercoles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_error_miercoles.FormattingEnabled = true;
-            this.cmb_error_miercoles.Location = new System.Drawing.Point(217, 248);
+            this.cmb_error_miercoles.Location = new System.Drawing.Point(269, 249);
             this.cmb_error_miercoles.Name = "cmb_error_miercoles";
-            this.cmb_error_miercoles.Size = new System.Drawing.Size(121, 21);
+            this.cmb_error_miercoles.Size = new System.Drawing.Size(191, 21);
             this.cmb_error_miercoles.TabIndex = 43;
             this.cmb_error_miercoles.Visible = false;
             // 
@@ -476,7 +490,7 @@
             // 
             this.lbl_error_miercoles.AutoSize = true;
             this.lbl_error_miercoles.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_miercoles.Location = new System.Drawing.Point(40, 251);
+            this.lbl_error_miercoles.Location = new System.Drawing.Point(92, 252);
             this.lbl_error_miercoles.Name = "lbl_error_miercoles";
             this.lbl_error_miercoles.Size = new System.Drawing.Size(171, 13);
             this.lbl_error_miercoles.TabIndex = 42;
@@ -487,9 +501,9 @@
             // 
             this.cmb_error_sabado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_error_sabado.FormattingEnabled = true;
-            this.cmb_error_sabado.Location = new System.Drawing.Point(559, 248);
+            this.cmb_error_sabado.Location = new System.Drawing.Point(269, 410);
             this.cmb_error_sabado.Name = "cmb_error_sabado";
-            this.cmb_error_sabado.Size = new System.Drawing.Size(121, 21);
+            this.cmb_error_sabado.Size = new System.Drawing.Size(191, 21);
             this.cmb_error_sabado.TabIndex = 45;
             this.cmb_error_sabado.Visible = false;
             // 
@@ -497,7 +511,7 @@
             // 
             this.lbl_error_sabado.AutoSize = true;
             this.lbl_error_sabado.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_sabado.Location = new System.Drawing.Point(382, 251);
+            this.lbl_error_sabado.Location = new System.Drawing.Point(92, 413);
             this.lbl_error_sabado.Name = "lbl_error_sabado";
             this.lbl_error_sabado.Size = new System.Drawing.Size(171, 13);
             this.lbl_error_sabado.TabIndex = 44;
@@ -508,18 +522,152 @@
             // 
             this.lbl_warn_dia.AutoSize = true;
             this.lbl_warn_dia.ForeColor = System.Drawing.Color.Red;
-            this.lbl_warn_dia.Location = new System.Drawing.Point(323, 298);
+            this.lbl_warn_dia.Location = new System.Drawing.Point(354, 459);
             this.lbl_warn_dia.Name = "lbl_warn_dia";
             this.lbl_warn_dia.Size = new System.Drawing.Size(97, 13);
             this.lbl_warn_dia.TabIndex = 46;
             this.lbl_warn_dia.Text = "Seleccione un día!";
             this.lbl_warn_dia.Visible = false;
             // 
+            // dtp_desde_lunes
+            // 
+            this.dtp_desde_lunes.Enabled = false;
+            this.dtp_desde_lunes.Location = new System.Drawing.Point(417, 114);
+            this.dtp_desde_lunes.Name = "dtp_desde_lunes";
+            this.dtp_desde_lunes.Size = new System.Drawing.Size(200, 20);
+            this.dtp_desde_lunes.TabIndex = 47;
+            this.dtp_desde_lunes.ValueChanged += new System.EventHandler(this.dtp_desde_lunes_ValueChanged);
+            // 
+            // dtp_hasta_lunes
+            // 
+            this.dtp_hasta_lunes.Enabled = false;
+            this.dtp_hasta_lunes.Location = new System.Drawing.Point(647, 114);
+            this.dtp_hasta_lunes.Name = "dtp_hasta_lunes";
+            this.dtp_hasta_lunes.Size = new System.Drawing.Size(200, 20);
+            this.dtp_hasta_lunes.TabIndex = 48;
+            // 
+            // lbl_fecha_desde
+            // 
+            this.lbl_fecha_desde.AutoSize = true;
+            this.lbl_fecha_desde.Location = new System.Drawing.Point(419, 98);
+            this.lbl_fecha_desde.Name = "lbl_fecha_desde";
+            this.lbl_fecha_desde.Size = new System.Drawing.Size(69, 13);
+            this.lbl_fecha_desde.TabIndex = 49;
+            this.lbl_fecha_desde.Text = "Fecha desde";
+            // 
+            // lbl_fecha_hasta
+            // 
+            this.lbl_fecha_hasta.AutoSize = true;
+            this.lbl_fecha_hasta.Location = new System.Drawing.Point(654, 98);
+            this.lbl_fecha_hasta.Name = "lbl_fecha_hasta";
+            this.lbl_fecha_hasta.Size = new System.Drawing.Size(66, 13);
+            this.lbl_fecha_hasta.TabIndex = 50;
+            this.lbl_fecha_hasta.Text = "Fecha hasta";
+            // 
+            // dtp_hasta_martes
+            // 
+            this.dtp_hasta_martes.Enabled = false;
+            this.dtp_hasta_martes.Location = new System.Drawing.Point(647, 168);
+            this.dtp_hasta_martes.Name = "dtp_hasta_martes";
+            this.dtp_hasta_martes.Size = new System.Drawing.Size(200, 20);
+            this.dtp_hasta_martes.TabIndex = 52;
+            // 
+            // dtp_desde_martes
+            // 
+            this.dtp_desde_martes.Enabled = false;
+            this.dtp_desde_martes.Location = new System.Drawing.Point(417, 168);
+            this.dtp_desde_martes.Name = "dtp_desde_martes";
+            this.dtp_desde_martes.Size = new System.Drawing.Size(200, 20);
+            this.dtp_desde_martes.TabIndex = 51;
+            this.dtp_desde_martes.ValueChanged += new System.EventHandler(this.dtp_desde_martes_ValueChanged);
+            // 
+            // dtp_hasta_jueves
+            // 
+            this.dtp_hasta_jueves.Enabled = false;
+            this.dtp_hasta_jueves.Location = new System.Drawing.Point(647, 276);
+            this.dtp_hasta_jueves.Name = "dtp_hasta_jueves";
+            this.dtp_hasta_jueves.Size = new System.Drawing.Size(200, 20);
+            this.dtp_hasta_jueves.TabIndex = 56;
+            // 
+            // dtp_desde_jueves
+            // 
+            this.dtp_desde_jueves.Enabled = false;
+            this.dtp_desde_jueves.Location = new System.Drawing.Point(417, 276);
+            this.dtp_desde_jueves.Name = "dtp_desde_jueves";
+            this.dtp_desde_jueves.Size = new System.Drawing.Size(200, 20);
+            this.dtp_desde_jueves.TabIndex = 55;
+            this.dtp_desde_jueves.ValueChanged += new System.EventHandler(this.dtp_desde_jueves_ValueChanged);
+            // 
+            // dtp_hasta_miercoles
+            // 
+            this.dtp_hasta_miercoles.Enabled = false;
+            this.dtp_hasta_miercoles.Location = new System.Drawing.Point(647, 222);
+            this.dtp_hasta_miercoles.Name = "dtp_hasta_miercoles";
+            this.dtp_hasta_miercoles.Size = new System.Drawing.Size(200, 20);
+            this.dtp_hasta_miercoles.TabIndex = 54;
+            // 
+            // dtp_desde_miercoles
+            // 
+            this.dtp_desde_miercoles.Enabled = false;
+            this.dtp_desde_miercoles.Location = new System.Drawing.Point(417, 222);
+            this.dtp_desde_miercoles.Name = "dtp_desde_miercoles";
+            this.dtp_desde_miercoles.Size = new System.Drawing.Size(200, 20);
+            this.dtp_desde_miercoles.TabIndex = 53;
+            this.dtp_desde_miercoles.ValueChanged += new System.EventHandler(this.dtp_desde_miercoles_ValueChanged);
+            // 
+            // dtp_hasta_sabado
+            // 
+            this.dtp_hasta_sabado.Enabled = false;
+            this.dtp_hasta_sabado.Location = new System.Drawing.Point(647, 384);
+            this.dtp_hasta_sabado.Name = "dtp_hasta_sabado";
+            this.dtp_hasta_sabado.Size = new System.Drawing.Size(200, 20);
+            this.dtp_hasta_sabado.TabIndex = 60;
+            // 
+            // dtp_desde_sabado
+            // 
+            this.dtp_desde_sabado.Enabled = false;
+            this.dtp_desde_sabado.Location = new System.Drawing.Point(417, 384);
+            this.dtp_desde_sabado.Name = "dtp_desde_sabado";
+            this.dtp_desde_sabado.Size = new System.Drawing.Size(200, 20);
+            this.dtp_desde_sabado.TabIndex = 59;
+            this.dtp_desde_sabado.ValueChanged += new System.EventHandler(this.dtp_desde_sabado_ValueChanged);
+            // 
+            // dtp_hasta_viernes
+            // 
+            this.dtp_hasta_viernes.Enabled = false;
+            this.dtp_hasta_viernes.Location = new System.Drawing.Point(647, 330);
+            this.dtp_hasta_viernes.Name = "dtp_hasta_viernes";
+            this.dtp_hasta_viernes.Size = new System.Drawing.Size(200, 20);
+            this.dtp_hasta_viernes.TabIndex = 58;
+            // 
+            // dtp_desde_viernes
+            // 
+            this.dtp_desde_viernes.Enabled = false;
+            this.dtp_desde_viernes.Location = new System.Drawing.Point(417, 330);
+            this.dtp_desde_viernes.Name = "dtp_desde_viernes";
+            this.dtp_desde_viernes.Size = new System.Drawing.Size(200, 20);
+            this.dtp_desde_viernes.TabIndex = 57;
+            this.dtp_desde_viernes.ValueChanged += new System.EventHandler(this.dtp_desde_viernes_ValueChanged);
+            // 
             // RegistrarAgenda
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(735, 341);
+            this.ClientSize = new System.Drawing.Size(910, 512);
+            this.Controls.Add(this.dtp_hasta_sabado);
+            this.Controls.Add(this.dtp_desde_sabado);
+            this.Controls.Add(this.dtp_hasta_viernes);
+            this.Controls.Add(this.dtp_desde_viernes);
+            this.Controls.Add(this.dtp_hasta_jueves);
+            this.Controls.Add(this.dtp_desde_jueves);
+            this.Controls.Add(this.dtp_hasta_miercoles);
+            this.Controls.Add(this.dtp_desde_miercoles);
+            this.Controls.Add(this.dtp_hasta_martes);
+            this.Controls.Add(this.dtp_desde_martes);
+            this.Controls.Add(this.lbl_fecha_hasta);
+            this.Controls.Add(this.lbl_fecha_desde);
+            this.Controls.Add(this.dtp_hasta_lunes);
+            this.Controls.Add(this.dtp_desde_lunes);
             this.Controls.Add(this.lbl_warn_dia);
             this.Controls.Add(this.cmb_error_sabado);
             this.Controls.Add(this.lbl_error_sabado);
@@ -614,5 +762,19 @@
         private System.Windows.Forms.ComboBox cmb_error_sabado;
         private System.Windows.Forms.Label lbl_error_sabado;
         private System.Windows.Forms.Label lbl_warn_dia;
+        private System.Windows.Forms.DateTimePicker dtp_desde_lunes;
+        private System.Windows.Forms.DateTimePicker dtp_hasta_lunes;
+        private System.Windows.Forms.Label lbl_fecha_desde;
+        private System.Windows.Forms.Label lbl_fecha_hasta;
+        private System.Windows.Forms.DateTimePicker dtp_hasta_martes;
+        private System.Windows.Forms.DateTimePicker dtp_desde_martes;
+        private System.Windows.Forms.DateTimePicker dtp_hasta_jueves;
+        private System.Windows.Forms.DateTimePicker dtp_desde_jueves;
+        private System.Windows.Forms.DateTimePicker dtp_hasta_miercoles;
+        private System.Windows.Forms.DateTimePicker dtp_desde_miercoles;
+        private System.Windows.Forms.DateTimePicker dtp_hasta_sabado;
+        private System.Windows.Forms.DateTimePicker dtp_desde_sabado;
+        private System.Windows.Forms.DateTimePicker dtp_hasta_viernes;
+        private System.Windows.Forms.DateTimePicker dtp_desde_viernes;
     }
 }
