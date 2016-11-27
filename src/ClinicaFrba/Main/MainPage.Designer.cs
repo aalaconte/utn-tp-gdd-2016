@@ -127,6 +127,7 @@
             this.btn_PedidoTurno.Text = "Pedir Turno";
             this.btn_PedidoTurno.UseVisualStyleBackColor = true;
             this.btn_PedidoTurno.Visible = false;
+            this.btn_PedidoTurno.Click += new System.EventHandler(this.btn_PedidoTurno_Click);
             // 
             // btn_ABMProfesional
             // 

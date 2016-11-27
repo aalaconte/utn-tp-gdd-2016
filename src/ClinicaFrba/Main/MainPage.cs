@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClinicaFrba.Pedir_Turno;
 
 namespace ClinicaFrba.Main
 {
@@ -25,15 +26,15 @@ namespace ClinicaFrba.Main
         enum funcionalidades
         {
             ABMRol = 1,
-            ABMAfiliado = 4,
-            ABMProfesional = 5,
-            RegistrarAgenda = 8,
-            ComprarBonos = 9,
-            PedidoTurno = 10,
-            RegistroLlegadaAtMedica = 11,
-            RegistroResultadoAtMedica = 12,
-            CancelarAtencion = 13,
-            ListadoEstadistico = 14
+            ABMAfiliado = 2,
+            ABMProfesional = 3,
+            RegistrarAgenda = 4,
+            ComprarBonos = 5,
+            PedidoTurno = 6,
+            RegistroLlegadaAtMedica = 7,
+            RegistroResultadoAtMedica = 8,
+            CancelarAtencion = 9,
+            ListadoEstadistico = 10
         };
 
         public MainPage()
@@ -144,6 +145,12 @@ namespace ClinicaFrba.Main
                 CompraBonos compraBono = new Compra_Bono.CompraBonos(Program.user);
                 compraBono.ShowDialog();
             }
+        }
+
+        private void btn_PedidoTurno_Click(object sender, EventArgs e)
+        {
+            PedirTurno pedirTurno = new PedirTurno();
+            pedirTurno.ShowDialog();
         }
 
     }

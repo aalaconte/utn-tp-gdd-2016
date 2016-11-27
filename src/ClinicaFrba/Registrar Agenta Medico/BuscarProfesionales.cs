@@ -262,7 +262,6 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             }
             else
             {
-                //TODO guardar los datos del profesional y pasarlos al Dialog parent (RegistrarAgenda)
                 this.ProfesionalReturn = new Profesional(this.dgv_profesionales.SelectedRows[0].Cells[0].Value.ToString(),
                                                          this.dgv_profesionales.SelectedRows[0].Cells[1].Value.ToString(),
                                                          this.dgv_profesionales.SelectedRows[0].Cells[2].Value.ToString(),

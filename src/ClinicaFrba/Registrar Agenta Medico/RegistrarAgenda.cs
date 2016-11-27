@@ -105,7 +105,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.ToString());
-                        MessageBox.Show("Se produjo un error al consultar las especialidades del profesional: " + this.txt_profesional.Text, "Error en el login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Se produjo un error al consultar las especialidades del profesional: " + this.txt_profesional.Text, "Error al buscar especialidades", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
@@ -374,8 +374,6 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
             query.Append(" AND");
             query.Append(ConfigurationManager.AppSettings["query.obtener.agendas.having.horario.conflicto"].Replace("{4}", "'" + hhDesde + "'").Replace("{5}", "'" + hhHasta + "'").
                                                                                                             Replace("{6}", '\'' + fechaDesde + '\'').Replace("{7}", '\'' + fechaHasta + '\'').ToString());
-            Console.WriteLine("La query es: ");
-            Console.WriteLine(query.ToString());
             SqlCommand sqlCmd = new SqlCommand(query.ToString(), cx, tx);
             sqlCmd.CommandType = CommandType.Text;
             SqlDataReader sqlReader = sqlCmd.ExecuteReader();
