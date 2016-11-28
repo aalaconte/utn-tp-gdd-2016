@@ -598,8 +598,6 @@ BEGIN
 		END
 	ELSE
 		INSERT INTO pico_y_pala.cancelacion(can_motivo,can_tca_id,can_tur_id)
-				VALUES (@motivoCancelacion, @tipoCancelacion, @turno)
-		
-		
+				VALUES (@motivoCancelacion, @tipoCancelacion, @turno)	
 END
 GO
