@@ -30,6 +30,7 @@
         {
             this.lbl_username = new System.Windows.Forms.Label();
             this.btn_logout = new System.Windows.Forms.Button();
+            this.btn_registrar_agenda = new ClinicaFrba.Main.BotonFuncionalidad();
             this.btn_CancelarAtencion = new ClinicaFrba.Main.BotonFuncionalidad();
             this.btn_ListadoEstadistico = new ClinicaFrba.Main.BotonFuncionalidad();
             this.btn_RegistroLlegadaAtMedica = new ClinicaFrba.Main.BotonFuncionalidad();
@@ -39,7 +40,6 @@
             this.btn_ABMProfesional = new ClinicaFrba.Main.BotonFuncionalidad();
             this.btn_ABMAfiliado = new ClinicaFrba.Main.BotonFuncionalidad();
             this.btn_abm_rol = new ClinicaFrba.Main.BotonFuncionalidad();
-            this.btn_registrar_agenda = new ClinicaFrba.Main.BotonFuncionalidad();
             this.SuspendLayout();
             // 
             // lbl_username
@@ -60,6 +60,18 @@
             this.btn_logout.Text = "Logout";
             this.btn_logout.UseVisualStyleBackColor = true;
             this.btn_logout.Click += new System.EventHandler(this.btn_logout_Click);
+            // 
+            // btn_registrar_agenda
+            // 
+            this.btn_registrar_agenda.Funcionalidad = null;
+            this.btn_registrar_agenda.Location = new System.Drawing.Point(247, 223);
+            this.btn_registrar_agenda.Name = "btn_registrar_agenda";
+            this.btn_registrar_agenda.Size = new System.Drawing.Size(195, 38);
+            this.btn_registrar_agenda.TabIndex = 14;
+            this.btn_registrar_agenda.Text = "Registrar Agenda Profesional";
+            this.btn_registrar_agenda.UseVisualStyleBackColor = true;
+            this.btn_registrar_agenda.Visible = false;
+            this.btn_registrar_agenda.Click += new System.EventHandler(this.btn_registrar_agenda_Click);
             // 
             // btn_CancelarAtencion
             // 
@@ -93,6 +105,7 @@
             this.btn_RegistroLlegadaAtMedica.Text = "Regitro Llegada Atencion Medica";
             this.btn_RegistroLlegadaAtMedica.UseVisualStyleBackColor = true;
             this.btn_RegistroLlegadaAtMedica.Visible = false;
+            this.btn_RegistroLlegadaAtMedica.Click += new System.EventHandler(this.btn_RegistroLlegadaAtMedica_Click);
             // 
             // btn_RegistroResultadoAtMedica
             // 
@@ -104,6 +117,7 @@
             this.btn_RegistroResultadoAtMedica.Text = "Registro Resultado Atencion Medica";
             this.btn_RegistroResultadoAtMedica.UseVisualStyleBackColor = true;
             this.btn_RegistroResultadoAtMedica.Visible = false;
+            this.btn_RegistroResultadoAtMedica.Click += new System.EventHandler(this.btn_RegistroResultadoAtMedica_Click);
             // 
             // btn_ComprarBonos
             // 
@@ -162,18 +176,6 @@
             this.btn_abm_rol.UseVisualStyleBackColor = true;
             this.btn_abm_rol.Visible = false;
             this.btn_abm_rol.Click += new System.EventHandler(this.btn_abm_rol_Click);
-            // 
-            // btn_registrar_agenda
-            // 
-            this.btn_registrar_agenda.Funcionalidad = null;
-            this.btn_registrar_agenda.Location = new System.Drawing.Point(247, 223);
-            this.btn_registrar_agenda.Name = "btn_registrar_agenda";
-            this.btn_registrar_agenda.Size = new System.Drawing.Size(195, 38);
-            this.btn_registrar_agenda.TabIndex = 14;
-            this.btn_registrar_agenda.Text = "Registrar Agenda Profesional";
-            this.btn_registrar_agenda.UseVisualStyleBackColor = true;
-            this.btn_registrar_agenda.Visible = false;
-            this.btn_registrar_agenda.Click += new System.EventHandler(this.btn_registrar_agenda_Click);
             // 
             // MainPage
             // 

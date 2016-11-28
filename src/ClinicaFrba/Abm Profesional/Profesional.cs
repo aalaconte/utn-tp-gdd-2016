@@ -1,6 +1,8 @@
 ﻿using ClinicaFrba.Abm_Especialidades_Medicas;
+using ClinicaFrba.BaseDeDatos;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +32,32 @@ namespace ClinicaFrba.Abm_Profesional
         {
             this.Apellido = unApellido;
             this.Nombre = unNombre;
+        }
+
+        public static long buscarNroProPorUser(String username)
+        {
+            long docPro = 0;
+            String unaQuery = "select pro.pro_nro_doc as ProDoc from pico_y_pala.profesional pro join pico_y_pala.usuario usu on pro.pro_nro_doc=usu.usu_nro_doc where usu.usu_username='" + username + "'";
+            using (SqlConnection cx = Connection.getConnection())
+            {
+                try
+                {
+                    SqlCommand sqlCmd = new SqlCommand(unaQuery, cx);
+                    cx.Open();
+                    SqlDataReader sqlReader = sqlCmd.ExecuteReader();
+                    while (sqlReader.Read())
+                    {
+                        docPro = Int64.Parse(sqlReader["ProDoc"].ToString());
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            return docPro;
         }
 
     }

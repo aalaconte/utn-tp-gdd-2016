@@ -93,5 +93,17 @@ go
 drop procedure PICO_Y_PALA.registrarAgenda
 go
 drop function PICO_Y_PALA.cantHorasSemanaProf
-
+go
+DROP FUNCTION pico_y_pala.fechaActualSistema
+go
+DROP PROCEDURE pico_y_pala.registrarLlegada
+go
+DROP PROCEDURE pico_y_pala.registarResultadoSinDiagnostico
+go
+DROP PROCEDURE pico_y_pala.registarResultadoConDiagnostico
+go
+DROP PROCEDURE pico_y_pala.agregarSintomasConsulta
+go
+DROP PROCEDURE pico_y_pala.agregarEnfermedadesConsulta
+go
 drop schema pico_y_pala
