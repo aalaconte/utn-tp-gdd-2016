@@ -106,4 +106,5 @@ DROP PROCEDURE pico_y_pala.agregarSintomasConsulta
 go
 DROP PROCEDURE pico_y_pala.agregarEnfermedadesConsulta
 go
+
 drop schema pico_y_pala

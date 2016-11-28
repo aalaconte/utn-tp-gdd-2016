@@ -98,8 +98,6 @@ create table pico_y_pala.agenda
 	--age_id numeric (18,0) identity (1,1)
 	age_pro_nro_doc numeric (18,0)
 	,age_esp_id int
-	,age_fecha_desde date
-	,age_fecha_hasta date
 	--,constraint PK_agenda primary key (age_id,age_pro_nro_doc,age_esp_id)
 	,constraint PK_agenda primary key (age_pro_nro_doc,age_esp_id)
 	,constraint FK_agenda foreign key (age_pro_nro_doc,age_esp_id) references pico_y_pala.profesional_especialidad (pes_pro_nro_doc,pes_esp_id)
@@ -117,7 +115,9 @@ create table pico_y_pala.dia_por_agenda
 	dpa_id int identity(1,1)
 	,dpa_pro_nro_doc numeric (18,0)
 	,dpa_esp_id int
-	,dpa_dia int 
+	,dpa_dia int
+	,dpa_fecha_desde date
+	,dpa_fecha_hasta date 
 	,dpa_desde time
 	,dpa_hasta time
 	--,constraint PK_dia_por_agenda primary key (dpa_id)
@@ -526,45 +526,51 @@ GO
 
 /* 21-11-16: devuelve en @totalHoras el acumulado de horas del profesional si insertara la agenda y la query del final hace que al hacer en c#
 			 un executeQuery pueda obtener los registros que generaron conflictos (agendas existentes que chocan con estos horarios) */
-CREATE PROCEDURE pico_y_pala.registrarAgenda(@dia int, @nroDocProf numeric(18,0), @esp int, @hhDesde Time, @hhHasta Time, @maxHoras decimal(5,2), @totalHoras decimal(5,2) OUTPUT, @inserted bit OUTPUT)
+CREATE PROCEDURE pico_y_pala.registrarAgenda(@dia int, @nroDocProf numeric(18,0), @esp int, @fechaDesde Date, @fechaHasta Date, @hhDesde Time, @hhHasta Time, 
+											 @maxHoras decimal(5,2), @fechaActual Date, @totalHoras decimal(5,2) OUTPUT, @inserted bit OUTPUT)
 AS
 BEGIN
 	--Obtenemos el total de horas por semana del profesional si insertáramos la agenda
-	SET @totalHoras = pico_y_pala.cantHorasSemanaProf(@nroDocProf) + CAST(DATEDIFF(SS,@hhDesde,@hhHasta)/3600.0 AS decimal(5,2))
+	SET @totalHoras = pico_y_pala.cantHorasSemanaProf(@nroDocProf, @fechaActual) + CAST(DATEDIFF(SS,@hhDesde,@hhHasta)/3600.0 AS decimal(5,2))
 	--Inicializamos la variable output en false (0)
 	SET @inserted = 0
 	--Chequeamos que no haya conflicto con otras agendas
-	IF (NOT EXISTS( SELECT da.dpa_pro_nro_doc nro_doc,e.esp_id esp_id,e.esp_desc especialidad,d.dia_id dia_id, d.dia_nombre dia,da.dpa_desde desde,da.dpa_hasta hasta
+	IF (NOT EXISTS( SELECT da.dpa_pro_nro_doc nro_doc,e.esp_id esp_id,e.esp_desc especialidad,d.dia_id dia_id, d.dia_nombre dia,
+						   da.dpa_desde desde,da.dpa_hasta hasta, da.dpa_fecha_desde fechaDesde, da.dpa_fecha_hasta fechaHasta
 					FROM pico_y_pala.agenda a
 					INNER JOIN pico_y_pala.dia_por_agenda da ON da.dpa_esp_id = a.age_esp_id AND da.dpa_pro_nro_doc = a.age_pro_nro_doc AND da.dpa_dia != 1
 					INNER JOIN pico_y_pala.dia d ON da.dpa_dia = d.dia_id
 					INNER JOIN pico_y_pala.especialidad e ON e.esp_id = a.age_esp_id
-					GROUP BY da.dpa_pro_nro_doc,e.esp_id,e.esp_desc,d.dia_id,d.dia_nombre,da.dpa_desde,da.dpa_hasta
-					HAVING @nroDocProf=da.dpa_pro_nro_doc AND @dia=d.dia_id AND NOT(@hhDesde < da.dpa_desde AND @hhHasta <= da.dpa_desde OR @hhDesde >= da.dpa_hasta AND @hhHasta > da.dpa_hasta))
-	   AND @totalHoras <= @maxHoras) -- y chequeamos que no exceda el limite de horas por semana
+					GROUP BY da.dpa_pro_nro_doc,e.esp_id,e.esp_desc,d.dia_id,d.dia_nombre,da.dpa_desde,da.dpa_hasta,da.dpa_fecha_desde, da.dpa_fecha_hasta
+					HAVING @nroDocProf=da.dpa_pro_nro_doc AND @dia=d.dia_id AND
+					NOT(CONVERT(Date, @fechaDesde, 111) < da.dpa_fecha_desde AND CONVERT(Date, @fechaHasta, 111) < da.dpa_fecha_desde OR CONVERT(Date, @fechaDesde, 111) > da.dpa_fecha_hasta AND CONVERT(Date, @fechaHasta, 111) > da.dpa_fecha_hasta ) AND
+					NOT(@hhDesde < da.dpa_desde AND @hhHasta <= da.dpa_desde OR @hhDesde >= da.dpa_hasta AND @hhHasta > da.dpa_hasta)) AND
+					@totalHoras <= @maxHoras) -- y chequeamos que no exceda el limite de horas por semana
 		BEGIN
 			IF NOT EXISTS (SELECT 1 FROM pico_y_pala.profesional_especialidad WHERE pes_esp_id=@esp AND pes_pro_nro_doc=@nroDocProf)
 				INSERT INTO pico_y_pala.profesional_especialidad (pes_esp_id,pes_pro_nro_doc) VALUES (@esp, @nroDocProf)
 			IF NOT EXISTS (SELECT 1 FROM pico_y_pala.agenda WHERE age_esp_id=@esp AND age_pro_nro_doc=@nroDocProf)
 				INSERT INTO pico_y_pala.agenda (age_esp_id, age_pro_nro_doc) VALUES (@esp, @nroDocProf)
-			INSERT INTO pico_y_pala.dia_por_agenda (dpa_esp_id, dpa_pro_nro_doc, dpa_dia, dpa_desde, dpa_hasta) VALUES (@esp, @nroDocProf, @dia, @hhDesde, @hhHasta)
+			INSERT INTO pico_y_pala.dia_por_agenda (dpa_esp_id, dpa_pro_nro_doc, dpa_dia, dpa_fecha_desde, dpa_fecha_hasta, dpa_desde, dpa_hasta)
+											VALUES (@esp, @nroDocProf, @dia, CONVERT(Date, @fechaDesde, 111), CONVERT(Date, @fechaHasta, 111), @hhDesde, @hhHasta)
 			--Si se inserta, actualizamos la variable output @inserted para control desde la App.
 			SET @inserted = 1
 		END
 END
 GO
 
-CREATE FUNCTION pico_y_pala.cantHorasSemanaProf(@nroDocProf numeric(18,0))
+CREATE FUNCTION pico_y_pala.cantHorasSemanaProf(@nroDocProf numeric(18,0), @fechaActual Date)
 RETURNS decimal(5,2)
 AS
 BEGIN
-	RETURN  (SELECT SUM(CANT_HORAS) TOTAL_HORAS
+	RETURN  (SELECT ISNULL(SUM(CANT_HORAS),0) TOTAL_HORAS
 			 FROM (SELECT CAST(DATEDIFF(SS,dpa_desde,dpa_hasta)/3600.0 AS decimal(5,2)) CANT_HORAS
 				   FROM pico_y_pala.agenda a
 				   INNER JOIN pico_y_pala.dia_por_agenda da ON da.dpa_esp_id = a.age_esp_id AND da.dpa_pro_nro_doc = a.age_pro_nro_doc AND da.dpa_dia != 1
 				   INNER JOIN pico_y_pala.dia d ON da.dpa_dia = d.dia_id
 				   INNER JOIN pico_y_pala.especialidad e ON e.esp_id = a.age_esp_id
-				   GROUP BY da.dpa_pro_nro_doc,e.esp_id,e.esp_desc,d.dia_id,d.dia_nombre,da.dpa_desde,da.dpa_hasta
+				   WHERE CONVERT(Date, @fechaActual, 111) <= da.dpa_fecha_hasta
+				   GROUP BY da.dpa_pro_nro_doc,e.esp_id,e.esp_desc,d.dia_id,d.dia_nombre,da.dpa_desde,da.dpa_hasta,da.dpa_fecha_desde,da.dpa_fecha_hasta
 				   HAVING @nroDocProf=da.dpa_pro_nro_doc) a)
 END
 GO
