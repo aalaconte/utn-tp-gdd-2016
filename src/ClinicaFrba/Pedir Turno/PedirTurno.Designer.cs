@@ -33,14 +33,16 @@
             this.btn_buscar_profesional = new System.Windows.Forms.Button();
             this.lbl_especialidad = new System.Windows.Forms.Label();
             this.cmb_especialidad = new System.Windows.Forms.ComboBox();
-            this.lbl_fecha_turno = new System.Windows.Forms.Label();
-            this.dtp_fecha_turno = new System.Windows.Forms.DateTimePicker();
             this.btn_aceptar = new System.Windows.Forms.Button();
             this.btn_cancelar = new System.Windows.Forms.Button();
-            this.lbl_error_sin_agenda = new System.Windows.Forms.Label();
-            this.cmb_hora_turno = new System.Windows.Forms.ComboBox();
-            this.lbl_hora_turno = new System.Windows.Forms.Label();
             this.lbl_error_turno = new System.Windows.Forms.Label();
+            this.dgv_turnos_disponibles = new System.Windows.Forms.DataGridView();
+            this.dia = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lbl_error_profesional = new System.Windows.Forms.Label();
+            this.lbl_error_especialidad = new System.Windows.Forms.Label();
+            this.lbl_error_horario = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_turnos_disponibles)).BeginInit();
             this.SuspendLayout();
             // 
             // lbl_profesional
@@ -89,24 +91,6 @@
             this.cmb_especialidad.TabIndex = 4;
             this.cmb_especialidad.SelectedIndexChanged += new System.EventHandler(this.cmb_especialidad_SelectedIndexChanged);
             // 
-            // lbl_fecha_turno
-            // 
-            this.lbl_fecha_turno.AutoSize = true;
-            this.lbl_fecha_turno.Location = new System.Drawing.Point(12, 120);
-            this.lbl_fecha_turno.Name = "lbl_fecha_turno";
-            this.lbl_fecha_turno.Size = new System.Drawing.Size(114, 13);
-            this.lbl_fecha_turno.TabIndex = 6;
-            this.lbl_fecha_turno.Text = "Seleccione una fecha:";
-            // 
-            // dtp_fecha_turno
-            // 
-            this.dtp_fecha_turno.Enabled = false;
-            this.dtp_fecha_turno.Location = new System.Drawing.Point(24, 145);
-            this.dtp_fecha_turno.Name = "dtp_fecha_turno";
-            this.dtp_fecha_turno.Size = new System.Drawing.Size(200, 20);
-            this.dtp_fecha_turno.TabIndex = 7;
-            this.dtp_fecha_turno.ValueChanged += new System.EventHandler(this.dtp_fecha_turno_ValueChanged);
-            // 
             // btn_aceptar
             // 
             this.btn_aceptar.Location = new System.Drawing.Point(495, 315);
@@ -115,6 +99,7 @@
             this.btn_aceptar.TabIndex = 8;
             this.btn_aceptar.Text = "Aceptar";
             this.btn_aceptar.UseVisualStyleBackColor = true;
+            this.btn_aceptar.Click += new System.EventHandler(this.btn_aceptar_Click);
             // 
             // btn_cancelar
             // 
@@ -126,62 +111,93 @@
             this.btn_cancelar.UseVisualStyleBackColor = true;
             this.btn_cancelar.Click += new System.EventHandler(this.btn_cancelar_Click);
             // 
-            // lbl_error_sin_agenda
-            // 
-            this.lbl_error_sin_agenda.AutoSize = true;
-            this.lbl_error_sin_agenda.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_error_sin_agenda.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_sin_agenda.Location = new System.Drawing.Point(23, 168);
-            this.lbl_error_sin_agenda.Name = "lbl_error_sin_agenda";
-            this.lbl_error_sin_agenda.Size = new System.Drawing.Size(253, 15);
-            this.lbl_error_sin_agenda.TabIndex = 10;
-            this.lbl_error_sin_agenda.Text = "El profesional no posee agendas disponibles";
-            this.lbl_error_sin_agenda.Visible = false;
-            // 
-            // cmb_hora_turno
-            // 
-            this.cmb_hora_turno.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_hora_turno.Enabled = false;
-            this.cmb_hora_turno.FormattingEnabled = true;
-            this.cmb_hora_turno.Location = new System.Drawing.Point(353, 144);
-            this.cmb_hora_turno.Name = "cmb_hora_turno";
-            this.cmb_hora_turno.Size = new System.Drawing.Size(121, 21);
-            this.cmb_hora_turno.TabIndex = 11;
-            // 
-            // lbl_hora_turno
-            // 
-            this.lbl_hora_turno.AutoSize = true;
-            this.lbl_hora_turno.Location = new System.Drawing.Point(339, 120);
-            this.lbl_hora_turno.Name = "lbl_hora_turno";
-            this.lbl_hora_turno.Size = new System.Drawing.Size(113, 13);
-            this.lbl_hora_turno.TabIndex = 12;
-            this.lbl_hora_turno.Text = "Seleccione un horario:";
-            // 
             // lbl_error_turno
             // 
             this.lbl_error_turno.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_error_turno.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_turno.Location = new System.Drawing.Point(339, 168);
+            this.lbl_error_turno.Location = new System.Drawing.Point(386, 278);
             this.lbl_error_turno.Name = "lbl_error_turno";
-            this.lbl_error_turno.Size = new System.Drawing.Size(167, 37);
+            this.lbl_error_turno.Size = new System.Drawing.Size(167, 21);
             this.lbl_error_turno.TabIndex = 13;
-            this.lbl_error_turno.Text = "No hay turnos disponibles para la fecha seleccionada";
+            this.lbl_error_turno.Text = "No hay turnos disponibles";
             this.lbl_error_turno.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lbl_error_turno.Visible = false;
+            // 
+            // dgv_turnos_disponibles
+            // 
+            this.dgv_turnos_disponibles.AllowUserToAddRows = false;
+            this.dgv_turnos_disponibles.AllowUserToDeleteRows = false;
+            this.dgv_turnos_disponibles.AllowUserToResizeRows = false;
+            this.dgv_turnos_disponibles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_turnos_disponibles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dia,
+            this.fecha});
+            this.dgv_turnos_disponibles.Location = new System.Drawing.Point(12, 115);
+            this.dgv_turnos_disponibles.MultiSelect = false;
+            this.dgv_turnos_disponibles.Name = "dgv_turnos_disponibles";
+            this.dgv_turnos_disponibles.ReadOnly = true;
+            this.dgv_turnos_disponibles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv_turnos_disponibles.Size = new System.Drawing.Size(541, 150);
+            this.dgv_turnos_disponibles.TabIndex = 15;
+            // 
+            // dia
+            // 
+            this.dia.HeaderText = "Dia";
+            this.dia.Name = "dia";
+            this.dia.ReadOnly = true;
+            // 
+            // fecha
+            // 
+            this.fecha.HeaderText = "Fecha";
+            this.fecha.Name = "fecha";
+            this.fecha.ReadOnly = true;
+            // 
+            // lbl_error_profesional
+            // 
+            this.lbl_error_profesional.AutoSize = true;
+            this.lbl_error_profesional.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error_profesional.Location = new System.Drawing.Point(56, 84);
+            this.lbl_error_profesional.Name = "lbl_error_profesional";
+            this.lbl_error_profesional.Size = new System.Drawing.Size(159, 13);
+            this.lbl_error_profesional.TabIndex = 16;
+            this.lbl_error_profesional.Text = "Debe seleccionar un profesional";
+            this.lbl_error_profesional.Visible = false;
+            // 
+            // lbl_error_especialidad
+            // 
+            this.lbl_error_especialidad.AutoSize = true;
+            this.lbl_error_especialidad.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error_especialidad.Location = new System.Drawing.Point(339, 84);
+            this.lbl_error_especialidad.Name = "lbl_error_especialidad";
+            this.lbl_error_especialidad.Size = new System.Drawing.Size(173, 13);
+            this.lbl_error_especialidad.TabIndex = 17;
+            this.lbl_error_especialidad.Text = "Debe seleccionar una especialidad";
+            this.lbl_error_especialidad.Visible = false;
+            // 
+            // lbl_error_horario
+            // 
+            this.lbl_error_horario.AutoSize = true;
+            this.lbl_error_horario.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.lbl_error_horario.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error_horario.Location = new System.Drawing.Point(12, 278);
+            this.lbl_error_horario.Name = "lbl_error_horario";
+            this.lbl_error_horario.Size = new System.Drawing.Size(229, 15);
+            this.lbl_error_horario.TabIndex = 18;
+            this.lbl_error_horario.Text = "Debe seleccionar un horario de atención";
+            this.lbl_error_horario.Visible = false;
             // 
             // PedirTurno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(582, 350);
+            this.Controls.Add(this.lbl_error_horario);
+            this.Controls.Add(this.lbl_error_especialidad);
+            this.Controls.Add(this.lbl_error_profesional);
+            this.Controls.Add(this.dgv_turnos_disponibles);
             this.Controls.Add(this.lbl_error_turno);
-            this.Controls.Add(this.lbl_hora_turno);
-            this.Controls.Add(this.cmb_hora_turno);
-            this.Controls.Add(this.lbl_error_sin_agenda);
             this.Controls.Add(this.btn_cancelar);
             this.Controls.Add(this.btn_aceptar);
-            this.Controls.Add(this.dtp_fecha_turno);
-            this.Controls.Add(this.lbl_fecha_turno);
             this.Controls.Add(this.cmb_especialidad);
             this.Controls.Add(this.lbl_especialidad);
             this.Controls.Add(this.btn_buscar_profesional);
@@ -189,6 +205,7 @@
             this.Controls.Add(this.lbl_profesional);
             this.Name = "PedirTurno";
             this.Text = "Pedir Turno";
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_turnos_disponibles)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,13 +218,14 @@
         private System.Windows.Forms.Button btn_buscar_profesional;
         private System.Windows.Forms.Label lbl_especialidad;
         private System.Windows.Forms.ComboBox cmb_especialidad;
-        private System.Windows.Forms.Label lbl_fecha_turno;
-        private System.Windows.Forms.DateTimePicker dtp_fecha_turno;
         private System.Windows.Forms.Button btn_aceptar;
         private System.Windows.Forms.Button btn_cancelar;
-        private System.Windows.Forms.Label lbl_error_sin_agenda;
-        private System.Windows.Forms.ComboBox cmb_hora_turno;
-        private System.Windows.Forms.Label lbl_hora_turno;
         private System.Windows.Forms.Label lbl_error_turno;
+        private System.Windows.Forms.DataGridView dgv_turnos_disponibles;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dia;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fecha;
+        private System.Windows.Forms.Label lbl_error_profesional;
+        private System.Windows.Forms.Label lbl_error_especialidad;
+        private System.Windows.Forms.Label lbl_error_horario;
     }
 }

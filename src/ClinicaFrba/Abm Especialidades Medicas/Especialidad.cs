@@ -21,5 +21,10 @@ namespace ClinicaFrba.Abm_Especialidades_Medicas
 
         }
 
+        public Especialidad(int unId)
+        {
+            Id = unId;
+        }
+
     }
 }

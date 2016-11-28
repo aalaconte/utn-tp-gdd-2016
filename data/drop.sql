@@ -19,8 +19,6 @@ drop table pico_y_pala.sintoma
 go
 drop table pico_y_pala.consulta
 go
-drop table pico_y_pala.turno
-go
 drop table pico_y_pala.bono
 go
 drop table pico_y_pala.compra
@@ -28,6 +26,8 @@ go
 drop table pico_y_pala.cancelacion
 go
 drop table pico_y_pala.tipo_cancelacion
+go
+drop table pico_y_pala.turno
 go
 drop table pico_y_pala.audit_cambio_plan
 go
@@ -93,6 +93,8 @@ go
 drop procedure PICO_Y_PALA.registrarAgenda
 go
 drop function PICO_Y_PALA.cantHorasSemanaProf
+go
+drop procedure PICO_Y_PALA.darTurno
 go
 
 drop schema pico_y_pala

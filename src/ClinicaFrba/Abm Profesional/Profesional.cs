@@ -9,14 +9,17 @@ namespace ClinicaFrba.Abm_Profesional
 {
     public class Profesional : Usuario.Usuario
     {
-        private string p1;
-        private string p2;
-
 
         public int Matricula { get; set; }
         public List<Especialidad> Especialidades { get; set; }
 
         public Profesional() { }
+
+        public Profesional(int unNroDoc)
+        {
+            this.NroDoc = unNroDoc;
+        }
+
         public Profesional(String unApellido, String unNombre, String unTipoDoc, int unNroDoc, int unaMatricula)
         {
             this.Apellido = unApellido;

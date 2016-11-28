@@ -11,6 +11,10 @@ namespace ClinicaFrba.Abm_Afiliado
     public class Afiliado
     {
         public Afiliado() { }
+        public Afiliado(String unNroDoc)
+        {
+            this.documento = unNroDoc;
+        }
         public Afiliado(String unUsername, String unNroAfi, String unNombre, String unApellido,String unDoc, String unaDireccion, String unTelefono, String unMail, String unaFechaNac, String unPlan, bool unHabilitado)
         {
             this.username = unUsername;
@@ -39,6 +43,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private String estadoCivil;
         private String plan;
         private String nroAfiliado;
+        private String nroConsultas;
         private bool habilitado;
 
         public bool getHabilitado()
@@ -49,6 +54,16 @@ namespace ClinicaFrba.Abm_Afiliado
         public void setHabilitado(bool estado)
         {
             this.habilitado = estado;
+        }
+
+        public String getNroConsultas()
+        {
+            return this.nroConsultas;
+        }
+
+        public void setNroConsultas(String unNroConsultas)
+        {
+            this.nroConsultas = unNroConsultas;
         }
 
         public String getNroAfiliado()

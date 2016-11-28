@@ -192,6 +192,19 @@ create table pico_y_pala.audit_cambio_plan
 	,constraint FK_acp_plan_nuevo foreign key (acp_plan_nuevo) references pico_y_pala.planes (pla_codigo)
 );
 
+create table pico_y_pala.turno
+(
+	tur_id numeric (18,0)
+	,tur_afi_nro_doc numeric (18,0) 
+	,tur_pro_nro_doc numeric (18,0)
+	,tur_esp_id int
+	,tur_fecha_hora datetime
+	,constraint PK_tur_id primary key (tur_id)
+	,constraint FK_tur_afi_username foreign key (tur_afi_nro_doc) references pico_y_pala.afiliado (afi_nro_doc)
+	,constraint FK_tur_pro_username foreign key (tur_pro_nro_doc) references pico_y_pala.profesional (pro_nro_doc)
+	,constraint FK_tur_esp_id foreign key (tur_esp_id) references pico_y_pala.especialidad (esp_id)
+);
+
 create table pico_y_pala.tipo_cancelacion
 (
 	tca_id int identity (1,1)
@@ -204,8 +217,10 @@ create table pico_y_pala.cancelacion
 	can_id numeric (18,0) identity (1,1)
 	,can_tca_id int
 	,can_motivo varchar (255)
+	,can_tur_id numeric (18,0)
 	,constraint PK_can_id primary key (can_id)
 	,constraint FK_can_tca_id foreign key (can_tca_id) references pico_y_pala.tipo_cancelacion (tca_id)
+	,constraint FK_can_tur_id foreign key (can_tur_id) references pico_y_pala.turno (tur_id)
 );
 
 create table pico_y_pala.compra
@@ -233,18 +248,6 @@ create table pico_y_pala.bono
 	,constraint FK_bon_pla_id foreign key (bon_pla_id) references pico_y_pala.planes (pla_codigo)
 	,constraint FK_bon_afiliado_utilizo foreign key (bon_afiliado_utilizo) references pico_y_pala.afiliado (afi_nro_doc)
 	,constraint FK_bon_com_id foreign key (bon_com_id) references pico_y_pala.compra (com_id)
-);
-
-create table pico_y_pala.turno
-(
-	tur_id numeric (18,0)
-	,tur_afi_nro_doc numeric (18,0) 
-	,tur_pro_nro_doc numeric (18,0) 
-	,tur_fecha_hora datetime
-	,tur_can_id numeric (18,0) 
-	,constraint PK_tur_id primary key (tur_id)
-	,constraint FK_tur_afi_username foreign key (tur_afi_nro_doc) references pico_y_pala.afiliado (afi_nro_doc)
-	,constraint FK_tur_pro_username foreign key (tur_pro_nro_doc) references pico_y_pala.profesional (pro_nro_doc)
 );
 
 create table pico_y_pala.consulta
@@ -523,8 +526,6 @@ WHILE @i <= @cantBonos
 END
 GO
 
-/* 21-11-16: devuelve en @totalHoras el acumulado de horas del profesional si insertara la agenda y la query del final hace que al hacer en c#
-			 un executeQuery pueda obtener los registros que generaron conflictos (agendas existentes que chocan con estos horarios) */
 CREATE PROCEDURE pico_y_pala.registrarAgenda(@dia int, @nroDocProf numeric(18,0), @esp int, @fechaDesde Date, @fechaHasta Date, @hhDesde Time, @hhHasta Time, 
 											 @maxHoras decimal(5,2), @fechaActual Date, @totalHoras decimal(5,2) OUTPUT, @inserted bit OUTPUT)
 AS
@@ -571,5 +572,13 @@ BEGIN
 				   WHERE CONVERT(Date, @fechaActual, 111) <= da.dpa_fecha_hasta
 				   GROUP BY da.dpa_pro_nro_doc,e.esp_id,e.esp_desc,d.dia_id,d.dia_nombre,da.dpa_desde,da.dpa_hasta,da.dpa_fecha_desde,da.dpa_fecha_hasta
 				   HAVING @nroDocProf=da.dpa_pro_nro_doc) a)
+END
+GO
+
+CREATE PROCEDURE pico_y_pala.darTurno(@nroDocAfi numeric(18,0), @nroDocProf numeric(18,0), @espId int, @fechaHoraTurno Datetime)
+AS
+BEGIN
+	INSERT INTO pico_y_pala.turno(tur_id,tur_afi_nro_doc,tur_pro_nro_doc,tur_esp_id,tur_fecha_hora)
+		VALUES ((SELECT MAX(tur_id) + 1 from pico_y_pala.turno),@nroDocAfi, @nroDocProf, @espId, @fechaHoraTurno)
 END
 GO

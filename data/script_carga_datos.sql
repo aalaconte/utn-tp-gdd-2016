@@ -151,7 +151,7 @@ select
 where
 	roles.rol_nombre = 'Administrador'
 	and fun.fun_desc in ('ABM de Rol','Login y Seguridad','Registro de Usuario','Abm Afiliado','Abm Profesional'
-	,'Abm Especialidades Medicas','Abm de Planes','Registrar Agenda del Medico','Comprar Bonos','Pedir Turno','Registro de llegadas para atención médica','Registrar resultado para atencion medica','Cancelar atencion medica','Listado Estadistico')
+	,'Abm Especialidades Medicas','Abm de Planes','Registrar Agenda del Medico','Comprar Bonos','Registro de llegadas para atención médica','Registrar resultado para atencion medica','Cancelar atencion medica','Listado Estadistico')
 union
 select 
 	roles.rol_id,
@@ -160,7 +160,7 @@ select
 where
 	roles.rol_nombre = 'Administrativo'
 	and fun.fun_desc in ('ABM de Rol','Login y Seguridad','Registro de Usuario','Abm Afiliado','Abm Profesional'
-	,'Abm Especialidades Medicas','Abm de Planes','Registro de llegadas para atención médica','Listado Estadistico')
+	,'Abm Especialidades Medicas','Abm de Planes','Registrar Agenda del Medico', 'Registro de llegadas para atención médica','Listado Estadistico')
 union
 select 
 	roles.rol_id,

@@ -27,13 +27,15 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
         private static readonly TimeSpan HORA_MIN_SAB = new TimeSpan(10, 00, 00);
         private static readonly TimeSpan HORA_MAX_SAB = new TimeSpan(14, 30, 00);
         private static readonly double MAXIMO_HORAS = double.Parse(ConfigurationManager.AppSettings["max.horas.semanales.profesional"].ToString());
+        private static readonly int minutosEntreTurnos = int.Parse(ConfigurationManager.AppSettings["tiempo.entre.turnos.minutos"]);
         private List<ComboBox> combosLunes = new List<ComboBox>();
         private List<ComboBox> combosMartes = new List<ComboBox>();
         private List<ComboBox> combosMiercoles = new List<ComboBox>();
         private List<ComboBox> combosJueves = new List<ComboBox>();
         private List<ComboBox> combosViernes = new List<ComboBox>();
         private List<ComboBox> combosSabado = new List<ComboBox>();
-        TimeSpan incremento = new TimeSpan(0, 30, 0);
+        
+        TimeSpan incremento = new TimeSpan(0, minutosEntreTurnos, 0);
         private List<Especialidad> especialidades = new List<Especialidad>();
         private Profesional profesional;
         private double totalHoras = 0;
@@ -327,7 +329,6 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
                         {
                             this.lbl_error_horas_profesional.Text = this.lbl_error_horas_profesional.Text.Replace("{0}", this.totalHoras.ToString());
                             tx.Rollback();
-                            //MessageBox.Show("Se produjo un error al registrar las agendas: " + this.txt_profesional.Text, "Error en el login", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                     catch (Exception ex)
@@ -335,8 +336,7 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
                         Console.WriteLine("ERROR AL INTENTAR REGISTRAR AGENDA!!");
                         Console.WriteLine(ex);
                         if (tx != null) tx.Rollback();
-                        Console.WriteLine(ex);
-                        MessageBox.Show("Se produjo un error al registrar las agendas: " + this.txt_profesional.Text, "Error en el login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Se produjo un error al registrar las agendas", "Error al registrar agenda", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     }
                 }
