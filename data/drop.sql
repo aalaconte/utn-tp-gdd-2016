@@ -92,9 +92,12 @@ drop procedure PICO_Y_PALA.compraBonos
 go
 drop procedure PICO_Y_PALA.registrarAgenda
 go
-drop function PICO_Y_PALA.cantHorasSemanaProf
-go
 drop procedure PICO_Y_PALA.darTurno
+go
+drop procedure PICO_Y_PALA.cancelarTurno
+go
+--Functions
+drop function PICO_Y_PALA.cantHorasSemanaProf
 go
 
 drop schema pico_y_pala

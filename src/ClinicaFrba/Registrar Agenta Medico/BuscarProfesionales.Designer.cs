@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.gpb_filtros_busqueda = new System.Windows.Forms.GroupBox();
+            this.lbl_error_nro_matricula = new System.Windows.Forms.Label();
+            this.lbl_error_nro_doc = new System.Windows.Forms.Label();
             this.txt_especialidad = new System.Windows.Forms.TextBox();
             this.lbl_especialidad = new System.Windows.Forms.Label();
             this.txt_nro_documento = new System.Windows.Forms.TextBox();
@@ -51,8 +53,6 @@
             this.lbl_nro_pagina = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lbl_nro_profesionales = new System.Windows.Forms.Label();
-            this.lbl_error_nro_doc = new System.Windows.Forms.Label();
-            this.lbl_error_nro_matricula = new System.Windows.Forms.Label();
             this.gpb_filtros_busqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_profesionales)).BeginInit();
             this.SuspendLayout();
@@ -77,6 +77,26 @@
             this.gpb_filtros_busqueda.TabIndex = 0;
             this.gpb_filtros_busqueda.TabStop = false;
             this.gpb_filtros_busqueda.Text = "Filtros";
+            // 
+            // lbl_error_nro_matricula
+            // 
+            this.lbl_error_nro_matricula.AutoSize = true;
+            this.lbl_error_nro_matricula.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error_nro_matricula.Location = new System.Drawing.Point(61, 125);
+            this.lbl_error_nro_matricula.Name = "lbl_error_nro_matricula";
+            this.lbl_error_nro_matricula.Size = new System.Drawing.Size(186, 13);
+            this.lbl_error_nro_matricula.TabIndex = 11;
+            this.lbl_error_nro_matricula.Text = "El nro de matrícula debe ser numérico";
+            // 
+            // lbl_error_nro_doc
+            // 
+            this.lbl_error_nro_doc.AutoSize = true;
+            this.lbl_error_nro_doc.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error_nro_doc.Location = new System.Drawing.Point(400, 49);
+            this.lbl_error_nro_doc.Name = "lbl_error_nro_doc";
+            this.lbl_error_nro_doc.Size = new System.Drawing.Size(195, 13);
+            this.lbl_error_nro_doc.TabIndex = 10;
+            this.lbl_error_nro_doc.Text = "El nro de documento debe ser numérico";
             // 
             // txt_especialidad
             // 
@@ -278,26 +298,6 @@
             this.lbl_nro_profesionales.Name = "lbl_nro_profesionales";
             this.lbl_nro_profesionales.Size = new System.Drawing.Size(0, 13);
             this.lbl_nro_profesionales.TabIndex = 13;
-            // 
-            // lbl_error_nro_doc
-            // 
-            this.lbl_error_nro_doc.AutoSize = true;
-            this.lbl_error_nro_doc.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_nro_doc.Location = new System.Drawing.Point(400, 49);
-            this.lbl_error_nro_doc.Name = "lbl_error_nro_doc";
-            this.lbl_error_nro_doc.Size = new System.Drawing.Size(195, 13);
-            this.lbl_error_nro_doc.TabIndex = 10;
-            this.lbl_error_nro_doc.Text = "El nro de documento debe ser numérico";
-            // 
-            // lbl_error_nro_matricula
-            // 
-            this.lbl_error_nro_matricula.AutoSize = true;
-            this.lbl_error_nro_matricula.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_nro_matricula.Location = new System.Drawing.Point(61, 125);
-            this.lbl_error_nro_matricula.Name = "lbl_error_nro_matricula";
-            this.lbl_error_nro_matricula.Size = new System.Drawing.Size(186, 13);
-            this.lbl_error_nro_matricula.TabIndex = 11;
-            this.lbl_error_nro_matricula.Text = "El nro de matrícula debe ser numérico";
             // 
             // BuscarProfesionales
             // 

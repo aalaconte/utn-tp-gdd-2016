@@ -582,3 +582,24 @@ BEGIN
 		VALUES ((SELECT MAX(tur_id) + 1 from pico_y_pala.turno),@nroDocAfi, @nroDocProf, @espId, @fechaHoraTurno)
 END
 GO
+
+CREATE PROCEDURE pico_y_pala.cancelarTurno(@motivoCancelacion varchar(255), @tipoCancelacion int, @turno numeric(18,0), @fechaActual Date)
+AS
+BEGIN
+	IF EXISTS(SELECT 1 FROM pico_y_pala.cancelacion WHERE can_tur_id=@turno)
+		BEGIN
+			RAISERROR('Ya existe una cancelación para el turno solicitado',16,1)
+			RETURN
+		END
+	ELSE IF (SELECT CONVERT(Date,tur_fecha_hora) FROM pico_y_pala.turno WHERE tur_id=@turno) = @fechaActual
+		BEGIN
+			RAISERROR('No está permitido cancelar un turno el mismo día de la cita',16,1)
+			RETURN
+		END
+	ELSE
+		INSERT INTO pico_y_pala.cancelacion(can_motivo,can_tca_id,can_tur_id)
+				VALUES (@motivoCancelacion, @tipoCancelacion, @turno)
+		
+		
+END
+GO

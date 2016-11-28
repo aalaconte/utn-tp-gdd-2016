@@ -392,9 +392,10 @@ namespace ClinicaFrba.Pedir_Turno
                     Especialidad especialidadSeleccionada = this.especialidades.Find(especialidad => especialidad.Descripcion.Equals(this.cmb_especialidad.SelectedItem.ToString()));
                     DateTime turnoSeleccionado = DateTime.Parse(this.dgv_turnos_disponibles.SelectedRows[0].Cells["fecha"].Value.ToString());
                     insertarTurno(int.Parse(this.afiliado.getDocumento()), this.profesional.NroDoc, especialidadSeleccionada.Id, turnoSeleccionado);
+                    Mensajes.operacionExitosa();
+                    this.Close();
                 }
-                Mensajes.operacionExitosa();
-                this.Close();
+
             }
         }
 

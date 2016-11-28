@@ -127,11 +127,17 @@
     </Compile>
     <Compile Include="BaseDeDatos\Componentes\ManipulacionComponentes.cs" />
     <Compile Include="BaseDeDatos\Connection.cs" />
-    <Compile Include="Cancelar Atencion\Form1.cs">
+    <Compile Include="Cancelar Atencion\CancelarAtencionAfiliado.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cancelar Atencion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Cancelar Atencion\CancelarAtencionAfiliado.Designer.cs">
+      <DependentUpon>CancelarAtencionAfiliado.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cancelar Atencion\CancelarAtencionProfesional.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cancelar Atencion\CancelarAtencionProfesional.Designer.cs">
+      <DependentUpon>CancelarAtencionProfesional.cs</DependentUpon>
     </Compile>
     <Compile Include="Compra Bono\CompraBonos.cs">
       <SubType>Form</SubType>
@@ -232,6 +238,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\SeleccionRol.resx">
       <DependentUpon>SeleccionRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cancelar Atencion\CancelarAtencionAfiliado.resx">
+      <DependentUpon>CancelarAtencionAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cancelar Atencion\CancelarAtencionProfesional.resx">
+      <DependentUpon>CancelarAtencionProfesional.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Compra Bono\CompraBonos.resx">
       <DependentUpon>CompraBonos.cs</DependentUpon>

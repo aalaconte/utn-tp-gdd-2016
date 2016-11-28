@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Pedir_Turno;
+using ClinicaFrba.Cancelar_Atencion;
 
 namespace ClinicaFrba.Main
 {
@@ -135,7 +136,7 @@ namespace ClinicaFrba.Main
 
         private void btn_ComprarBonos_Click(object sender, EventArgs e)
         {
-            if (Program.rol.Equals("Administrativo")||Program.rol.Equals("Administrador"))
+            if (Program.rol.Equals("Administrativo") || Program.rol.Equals("Administrador"))
             {
                 CompraBonos compraBono = new Compra_Bono.CompraBonos();
                 compraBono.ShowDialog();
@@ -151,6 +152,21 @@ namespace ClinicaFrba.Main
         {
             PedirTurno pedirTurno = new PedirTurno();
             pedirTurno.ShowDialog();
+        }
+
+        private void btn_CancelarAtencion_Click(object sender, EventArgs e)
+        {
+            if (Program.rol.Equals("Afiliado"))
+            {
+                CancelarAtencionAfiliado cancelarAtencion = new CancelarAtencionAfiliado();
+                cancelarAtencion.ShowDialog();
+            }
+            else
+            {
+                CancelarAtencionProfesional cancelarAtencion = new CancelarAtencionProfesional();
+                cancelarAtencion.ShowDialog();
+            }
+
         }
 
     }
