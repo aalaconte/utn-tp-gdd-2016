@@ -95,8 +95,8 @@ namespace ClinicaFrba.Registro_Llegada
 
             this.sqlEspecialidadesProfesional.Clear();
             this.sqlCount.Clear();
-            sqlEspecialidadesProfesional.Append(ConfigurationManager.AppSettings["query.obtener.turnos.select"].Replace("{2}", this.dtp_fechaTurno.Value.Year.ToString()).Replace("{3}", this.dtp_fechaTurno.Value.Month.ToString()).Replace("{4}", this.dtp_fechaTurno.Value.Day.ToString()));
-            sqlCount.Append(ConfigurationManager.AppSettings["query.obtener.turnos.count"].Replace("{2}", this.dtp_fechaTurno.Value.Year.ToString()).Replace("{3}", this.dtp_fechaTurno.Value.Month.ToString()).Replace("{4}", this.dtp_fechaTurno.Value.Day.ToString()));
+            sqlEspecialidadesProfesional.Append(ConfigurationManager.AppSettings["query.obtener.turnos.select.not.consultas"].Replace("{2}", this.dtp_fechaTurno.Value.Year.ToString()).Replace("{3}", this.dtp_fechaTurno.Value.Month.ToString()).Replace("{4}", this.dtp_fechaTurno.Value.Day.ToString()));
+            sqlCount.Append(ConfigurationManager.AppSettings["query.obtener.turnos.count.not.consultas"].Replace("{2}", this.dtp_fechaTurno.Value.Year.ToString()).Replace("{3}", this.dtp_fechaTurno.Value.Month.ToString()).Replace("{4}", this.dtp_fechaTurno.Value.Day.ToString()));
             //Armamos los AND
             sqlAnd.Clear();
             if (ValidacionComponentes.textBoxLlenoCampo(this.txt_profesional))
