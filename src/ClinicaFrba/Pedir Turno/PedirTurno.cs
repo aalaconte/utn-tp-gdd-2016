@@ -107,6 +107,7 @@ namespace ClinicaFrba.Pedir_Turno
             this.lbl_error_especialidad.Visible = false;
             this.dgv_turnos_disponibles.Rows.Clear();
             this.agendas = obtenerAgendasProfesionalEspecialidad();
+            Console.WriteLine("Cantidad agendas: " + this.agendas.Count());
             List<DateTime> horariosOcupados = obtenerTurnosOcupados();
             List<DateTime> horariosAOfrecer = new List<DateTime>();
             DateTime fechaMin;
@@ -118,41 +119,15 @@ namespace ClinicaFrba.Pedir_Turno
                 //Si la fechaDesde de la agenda es menor que la actual, tengo que chequear a partir de la actual
                 if (agenda.FechaDesde < fechaActualDate)
                 {
-                    //La fecha actual puede no ser el día de la semana que tiene la agenda
-                    // The (... + 7) % 7 ensures we end up with a value in the range [0, 6]
-                    int diasHastaSiguienteOcurrencia;
-                    switch (agenda.Dia.Id)
-                    {
-                        case 2:
-                            diasHastaSiguienteOcurrencia = ((int)DayOfWeek.Monday - (int)fechaActualDate.DayOfWeek + 7) % 7;
-                            break;
-                        case 3:
-                            diasHastaSiguienteOcurrencia = ((int)DayOfWeek.Tuesday - (int)fechaActualDate.DayOfWeek + 7) % 7;
-                            break;
-                        case 4:
-                            diasHastaSiguienteOcurrencia = ((int)DayOfWeek.Wednesday - (int)fechaActualDate.DayOfWeek + 7) % 7;
-                            break;
-                        case 5:
-                            diasHastaSiguienteOcurrencia = ((int)DayOfWeek.Thursday - (int)fechaActualDate.DayOfWeek + 7) % 7;
-                            break;
-                        case 6:
-                            diasHastaSiguienteOcurrencia = ((int)DayOfWeek.Friday - (int)fechaActualDate.DayOfWeek + 7) % 7;
-                            break;
-                        case 7:
-                            diasHastaSiguienteOcurrencia = ((int)DayOfWeek.Saturday - (int)fechaActualDate.DayOfWeek + 7) % 7;
-                            break;
-                        default:
-                            MessageBox.Show("Error al obtener siguiente día de la semana correspondiente al de la agenda");
-                            return;
-                    }
-
-                    DateTime siguienteOcurrencia = fechaActualDate.AddDays(diasHastaSiguienteOcurrencia);
-                    fechaMin = siguienteOcurrencia;
+                    //La fechaActualDate puede no corresponderse con el día de la semana que se definió en la agenda
+                    // obtengo fecha mínima.
+                    fechaMin = obtenerFechaMin(agenda.Dia.Id, fechaActualDate);
                 }
                 else
                 {
-                    //La fechaDesde de la agenda seguro es el día de la semana que le corresponde, la seteo como mínima
-                    fechaMin = agenda.FechaDesde;
+                    //La fechaDesde de la agenda puede no corresponderse con el día de la semana que se definió
+                    // obtengo fecha mínima.
+                    fechaMin = obtenerFechaMin(agenda.Dia.Id, agenda.FechaDesde);
                 }
 
                 //Generamos los posibles turnos para mostrar los horarios que están disponibles
@@ -168,6 +143,40 @@ namespace ClinicaFrba.Pedir_Turno
             }
 
             this.lbl_error_turno.Visible = this.dgv_turnos_disponibles.RowCount == 0;
+        }
+
+        private DateTime obtenerFechaMin(int idDiaAgenda, DateTime fecha)
+        {
+            //La fecha actual puede no ser el día de la semana que tiene la agenda
+            // The (... + 7) % 7 ensures we end up with a value in the range [0, 6]
+            int diasHastaSiguienteOcurrencia;
+            switch (idDiaAgenda)
+            {
+                case 2:
+                    diasHastaSiguienteOcurrencia = ((int)DayOfWeek.Monday - (int)fecha.DayOfWeek + 7) % 7;
+                    break;
+                case 3:
+                    diasHastaSiguienteOcurrencia = ((int)DayOfWeek.Tuesday - (int)fecha.DayOfWeek + 7) % 7;
+                    break;
+                case 4:
+                    diasHastaSiguienteOcurrencia = ((int)DayOfWeek.Wednesday - (int)fecha.DayOfWeek + 7) % 7;
+                    break;
+                case 5:
+                    diasHastaSiguienteOcurrencia = ((int)DayOfWeek.Thursday - (int)fecha.DayOfWeek + 7) % 7;
+                    break;
+                case 6:
+                    diasHastaSiguienteOcurrencia = ((int)DayOfWeek.Friday - (int)fecha.DayOfWeek + 7) % 7;
+                    break;
+                case 7:
+                    diasHastaSiguienteOcurrencia = ((int)DayOfWeek.Saturday - (int)fecha.DayOfWeek + 7) % 7;
+                    break;
+                default:
+                    MessageBox.Show("Error al obtener siguiente día de la semana correspondiente al de la agenda");
+                    return DateTime.MinValue;
+            }
+
+            DateTime siguienteOcurrencia = fecha.AddDays(diasHastaSiguienteOcurrencia);
+            return siguienteOcurrencia;
         }
 
         private List<AgendaProfesional> obtenerAgendasProfesionalEspecialidad()
