@@ -120,8 +120,8 @@ create table pico_y_pala.dia_por_agenda
 	,dpa_fecha_hasta date 
 	,dpa_desde time
 	,dpa_hasta time
-	--,constraint PK_dia_por_agenda primary key (dpa_id)
-	,constraint PK_dia_por_agenda primary key (dpa_id,dpa_pro_nro_doc,dpa_esp_id)
+	,constraint PK_dia_por_agenda primary key (dpa_id)
+	--,constraint PK_dia_por_agenda primary key (dpa_id,dpa_pro_nro_doc,dpa_esp_id)
 	,constraint FK_dia_por_agenda foreign key (dpa_pro_nro_doc,dpa_esp_id) references pico_y_pala.agenda (age_pro_nro_doc,age_esp_id)
 	,constraint FK_dpa_dia foreign key (dpa_dia) references pico_y_pala.dia (dia_id)
 );
@@ -218,9 +218,11 @@ create table pico_y_pala.cancelacion
 	,can_tca_id int
 	,can_motivo varchar (255)
 	,can_tur_id numeric (18,0)
+	,can_dpa_id int
 	,constraint PK_can_id primary key (can_id)
 	,constraint FK_can_tca_id foreign key (can_tca_id) references pico_y_pala.tipo_cancelacion (tca_id)
 	,constraint FK_can_tur_id foreign key (can_tur_id) references pico_y_pala.turno (tur_id)
+	,constraint FK_can_dpa_id foreign key (can_dpa_id) references pico_y_pala.dia_por_agenda (dpa_id)
 );
 
 create table pico_y_pala.compra
