@@ -296,12 +296,14 @@ insert into pico_y_pala.turno
 	,tur_afi_nro_doc
 	,tur_pro_nro_doc
 	,tur_fecha_hora
+	,tur_esp_id
 	)
 select distinct
 	maestra.Turno_Numero
 	,maestra.paciente_dni
 	,maestra.Medico_Dni
 	,maestra.Turno_Fecha
+	,maestra.Especialidad_Codigo
 from gd_esquema.Maestra maestra
 	where maestra.Turno_Numero is not null
 print ('turno ok');
@@ -459,13 +461,17 @@ insert into pico_y_pala.dia_por_agenda
 		,dpa_dia
 		,dpa_desde
 		,dpa_hasta
+		,dpa_fecha_desde
+		,dpa_fecha_hasta
 	)
 select 
 	maestra.Medico_Dni
 	,maestra.Especialidad_Codigo
 	,dia.dia_id
-	,cast (min (maestra.turno_fecha) as time (0)) horamin
-	,cast (max (maestra.turno_fecha) as time (0)) horamax
+	,(select cast (min(distinct maestra2.Turno_Fecha)as time (0)) from gd_esquema.Maestra maestra2 where maestra2.Medico_Dni = maestra.Medico_Dni and maestra2.Especialidad_Codigo=maestra.Especialidad_Codigo) horamin
+	,(select cast (max(distinct maestra2.Turno_Fecha)as time (0)) from gd_esquema.Maestra maestra2 where maestra2.Medico_Dni = maestra.Medico_Dni and maestra2.Especialidad_Codigo=maestra.Especialidad_Codigo) horamax
+	,(select cast (min(distinct maestra2.Turno_Fecha)as date) from gd_esquema.Maestra maestra2 where maestra2.Medico_Dni = maestra.Medico_Dni and maestra2.Especialidad_Codigo=maestra.Especialidad_Codigo) fechamin
+	,(select cast (max(distinct maestra3.Turno_Fecha)as date) from gd_esquema.Maestra maestra3 where maestra3.Medico_Dni = maestra.Medico_Dni and maestra3.Especialidad_Codigo=maestra.Especialidad_Codigo) fechamax
 from gd_esquema.Maestra maestra
 inner join pico_y_pala.dia dia on dia.dia_id = datepart (weekday , maestra.Turno_Fecha)
 group by 

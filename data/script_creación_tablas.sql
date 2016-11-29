@@ -617,7 +617,7 @@ UPDATE pico_y_pala.consulta set con_atendio = 0 where con_id=@consultaID
 END
 GO
 
-CREATE PROCEDURE pico_y_pala.registarResultadoConDiagnostico (@consultaID numeric(18,0), @fechaAtencion SMALLDATETIME, @sintomas VARCHAR(255), @enfermedades VARCHAR(255))
+CREATE PROCEDURE pico_y_pala.registarResultadoConDiagnostico (@consultaID numeric(18,0), @fechaAtencion SMALLDATETIME)
 AS
 BEGIN
 --Le asigno el valor 0 al parametro con_atendio
