@@ -16,6 +16,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Pedir_Turno;
+using ClinicaFrba.Registro_Llegada;
+using ClinicaFrba.Registro_Resultado;
 
 namespace ClinicaFrba.Main
 {
@@ -57,7 +59,7 @@ namespace ClinicaFrba.Main
 
         private void btn_logout_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
             Login.Login login = new Login.Login();
             login.Show();
         }
@@ -135,7 +137,7 @@ namespace ClinicaFrba.Main
 
         private void btn_ComprarBonos_Click(object sender, EventArgs e)
         {
-            if (Program.rol.Equals("Administrativo")||Program.rol.Equals("Administrador"))
+            if (Program.rol.Equals("Administrativo") || Program.rol.Equals("Administrador"))
             {
                 CompraBonos compraBono = new Compra_Bono.CompraBonos();
                 compraBono.ShowDialog();
@@ -151,6 +153,18 @@ namespace ClinicaFrba.Main
         {
             PedirTurno pedirTurno = new PedirTurno();
             pedirTurno.ShowDialog();
+        }
+        
+        private void btn_RegistroLlegadaAtMedica_Click(object sender, EventArgs e)
+        {
+            RegistroLlegada registrollegada = new Registro_Llegada.RegistroLlegada();
+            registrollegada.ShowDialog();
+        }
+
+        private void btn_RegistroResultadoAtMedica_Click(object sender, EventArgs e)
+        {
+            RegistrarResultado regResult = new Registro_Resultado.RegistrarResultado(Program.user);
+            regResult.ShowDialog();
         }
 
     }

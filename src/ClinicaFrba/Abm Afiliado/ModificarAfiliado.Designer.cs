@@ -195,6 +195,7 @@
             // txtMotivo
             // 
             this.txtMotivo.Location = new System.Drawing.Point(43, 167);
+            this.txtMotivo.MaxLength = 255;
             this.txtMotivo.Name = "txtMotivo";
             this.txtMotivo.Size = new System.Drawing.Size(490, 58);
             this.txtMotivo.TabIndex = 57;
@@ -233,7 +234,6 @@
             // chbHabilitado
             // 
             this.chbHabilitado.AutoSize = true;
-            this.chbHabilitado.Enabled = false;
             this.chbHabilitado.Location = new System.Drawing.Point(282, 86);
             this.chbHabilitado.Name = "chbHabilitado";
             this.chbHabilitado.Size = new System.Drawing.Size(73, 17);

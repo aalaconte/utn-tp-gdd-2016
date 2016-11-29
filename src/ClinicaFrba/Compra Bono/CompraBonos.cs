@@ -5,6 +5,7 @@ using ClinicaFrba.Validaciones;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -17,6 +18,7 @@ namespace ClinicaFrba.Compra_Bono
 {
     public partial class CompraBonos : Form
     {
+        Afiliado afiliado;
         public CompraBonos()
         {
             InitializeComponent();
@@ -74,20 +76,20 @@ namespace ClinicaFrba.Compra_Bono
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(this.txtNroAfi.Text))
+            using (BuscarAfiliado buscarAfi = new BuscarAfiliado("Seleccionar"))
             {
-                MessageBox.Show("Complete el campo Nro Afiliado", "Error Campo Vacio", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            if (!ValidacionComponentes.validarNumericoPositivo(this.txtNroAfi))
-            {
-                MessageBox.Show("Ingrese un numero valido para NroAfiliado", "Error Campo Nro Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;                
+                if (buscarAfi.ShowDialog().Equals(DialogResult.OK))
+                {
+                    this.afiliado = buscarAfi.AfiliadoReturn;
+                    if (this.afiliado.getHabilitado())
+                        this.txtNroAfi.Text = this.afiliado.getNroAfiliado();
+                    else
+                        MessageBox.Show("El afiliado seleccionado no se encuentra habilitado para realizar esta operacion", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
             }
             if (cargarDatosBono(this.txtNroAfi.Text))
             {
                 ManipulacionComponentes.verComponentes(new List<Control>() { this.lblCant, this.lblPA, this.lblPB, this.lblPlan, this.lblPrecio, this.btnComprar, this.nudCantBonos });
-                this.btnBuscar.Enabled = false;
             }
             else
             {
@@ -114,6 +116,7 @@ namespace ClinicaFrba.Compra_Bono
                 sqlCmd.Parameters.Add("@afi_NroAfi", SqlDbType.BigInt).Value = Int64.Parse(this.txtNroAfi.Text);
                 sqlCmd.Parameters.Add("@cantBonos", SqlDbType.Int).Value = this.nudCantBonos.Value;
                 sqlCmd.Parameters.Add("@precioBonos", SqlDbType.Int).Value = this.lblPrecio.Text;
+                sqlCmd.Parameters.Add("@fechaSistema", SqlDbType.SmallDateTime).Value = DateTime.Parse(ConfigurationManager.AppSettings["fechaActualSistema"].ToString());
                 sqlCmd.ExecuteNonQuery();
                 sqlCmd.Dispose();
                 MessageBox.Show("Compra realizada con exito! Total: "+(this.nudCantBonos.Value*(Int32.Parse(lblPrecio.Text)))+"$");
