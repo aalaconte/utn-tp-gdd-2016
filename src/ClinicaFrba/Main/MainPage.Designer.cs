@@ -106,6 +106,7 @@
             this.btn_RegistroLlegadaAtMedica.Text = "Regitro Llegada Atencion Medica";
             this.btn_RegistroLlegadaAtMedica.UseVisualStyleBackColor = true;
             this.btn_RegistroLlegadaAtMedica.Visible = false;
+            this.btn_RegistroLlegadaAtMedica.Click += new System.EventHandler(this.btn_RegistroLlegadaAtMedica_Click);
             // 
             // btn_RegistroResultadoAtMedica
             // 
@@ -117,6 +118,7 @@
             this.btn_RegistroResultadoAtMedica.Text = "Registro Resultado Atencion Medica";
             this.btn_RegistroResultadoAtMedica.UseVisualStyleBackColor = true;
             this.btn_RegistroResultadoAtMedica.Visible = false;
+            this.btn_RegistroResultadoAtMedica.Click += new System.EventHandler(this.btn_RegistroResultadoAtMedica_Click);
             // 
             // btn_ComprarBonos
             // 

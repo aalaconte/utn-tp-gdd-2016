@@ -362,12 +362,14 @@ insert into pico_y_pala.consulta
 	,con_bono_utilizado
 	,con_fecha_llegada
 	,con_fecha_consulta
+	,con_atendio
 	)
 select
 	Turno_Numero
 	,Bono_Consulta_Numero
 	,Turno_Fecha
 	,Turno_Fecha				--ANALIZAR
+	,1 Atendio
 from gd_esquema.Maestra
 where Turno_Numero is not null 
 	and Bono_Consulta_Numero is not null

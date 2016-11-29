@@ -71,7 +71,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            if (this.chbHabilitado.Checked && this.cbPlan.Text.Equals(this.planActual))
+            if (this.chbCambiarPlan.Checked && this.cbPlan.Text.Equals(this.planActual))
             {
                 MessageBox.Show("No se puede cambiar al mismo Plan al que pertenece.", "Error al Modificar Plan", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 this.txtUsername.Focus();

@@ -32,6 +32,11 @@ namespace ClinicaFrba.Validaciones
             return (unList.Items.Count > 0);
         }
 
+        public static bool listViewSeleccionoOpciones(ListView unList)
+        {
+            return (unList.Items.Count > 0);
+        }
+
         public static bool textBoxLlenoCampo(TextBox unTextBox)
         {
             return (!string.IsNullOrWhiteSpace(unTextBox.Text));

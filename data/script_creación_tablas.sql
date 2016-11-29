@@ -236,7 +236,7 @@ create table pico_y_pala.compra
 
 create table pico_y_pala.bono
 (
-	bon_id numeric (18,0) identity
+	bon_id numeric (18,0) identity (1,1)
 	,bon_afiliado_compra numeric (18,0) 
 	,bon_pla_id numeric (18,0) 
 	,bon_nro_consultas_afiliado numeric (18,0)
@@ -257,6 +257,7 @@ create table pico_y_pala.consulta
 	,con_bono_utilizado numeric (18,0)
 	,con_fecha_llegada datetime
 	,con_fecha_consulta datetime
+	,con_atendio bit
 	,constraint PK_con_id primary key (con_id)
 	,constraint FK_con_tur_id foreign key (con_tur_id) references pico_y_pala.turno (tur_id)
 	,constraint FK_con_bono_utilizado foreign key (con_bono_utilizado)references pico_y_pala.bono (bon_id)
@@ -495,7 +496,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE PICO_Y_PALA.compraBonos (@afi_NroAfi numeric(18,0), @cantBonos int, @precioBonos int)
+CREATE PROCEDURE PICO_Y_PALA.compraBonos (@afi_NroAfi numeric(18,0), @cantBonos int, @precioBonos int,@fechaSistema SMALLDATETIME)
 AS
 BEGIN
 DECLARE @afiNroDoc NUMERIC (18,0)
@@ -505,7 +506,7 @@ DECLARE @afiNroDoc NUMERIC (18,0)
 		RETURN
 	END
 	SELECT @afiNroDoc=afi.afi_nro_doc from pico_y_pala.afiliado afi where afi.afi_nro_afiliado=@afi_NroAfi
-	INSERT INTO pico_y_pala.compra (com_afi_compro,com_cant,com_fecha,com_precio)values(@afiNroDoc,@cantBonos,GETDATE(),(@cantBonos*@precioBonos))
+	INSERT INTO pico_y_pala.compra (com_afi_compro,com_cant,com_fecha,com_precio)values(@afiNroDoc,@cantBonos,pico_y_pala.fechaActualSistema(@fechaSistema),(@cantBonos*@precioBonos))
 END
 GO
 
@@ -599,5 +600,69 @@ BEGIN
 	ELSE
 		INSERT INTO pico_y_pala.cancelacion(can_motivo,can_tca_id,can_tur_id)
 				VALUES (@motivoCancelacion, @tipoCancelacion, @turno)	
+END
+GO
+
+CREATE FUNCTION pico_y_pala.fechaActualSistema(@fecha SMALLDATETIME)
+RETURNS SMALLDATETIME
+AS
+BEGIN
+DECLARE @fechaSistema SMALLDATETIME
+SET @fechaSistema = SMALLDATETIMEFROMPARTS(YEAR(@fecha),MONTH(@fecha),DAY(@fecha),DATEPART(hour,getdate()),DATEPART(minute,getdate()))
+RETURN @fechaSistema
+END
+GO
+
+CREATE PROCEDURE pico_y_pala.registrarLlegada (@bonoID numeric(18,0), @afiDoc numeric(18,0), @turnoID numeric(18,0),@fechaTurno SMALLDATETIME)
+AS
+BEGIN
+--Asignarle al bono afi utilizo
+--Generar la consulta con la hora de llegada
+	IF NOT (exists (SELECT * FROM PICO_Y_PALA.afiliado WHERE afi_nro_doc = @afiDoc and afi_activo=1))
+	BEGIN
+		RAISERROR('No se puede realizar la compra, el Afiliado no esta activo.',16,1)
+		RETURN
+	END	
+INSERT INTO pico_y_pala.consulta (con_tur_id,con_bono_utilizado,con_fecha_llegada)values(@turnoID,@bonoID,@fechaTurno)
+UPDATE pico_y_pala.bono set bon_afiliado_utilizo=@afiDoc, bon_fecha_utilizo=@fechaTurno where bon_id=@bonoID
+END
+GO
+
+CREATE PROCEDURE pico_y_pala.registarResultadoSinDiagnostico (@consultaID numeric(18,0))
+AS
+BEGIN
+--Le asigno el valor 0 al parametro con_atendio
+UPDATE pico_y_pala.consulta set con_atendio = 0 where con_id=@consultaID
+END
+GO
+
+CREATE PROCEDURE pico_y_pala.registarResultadoConDiagnostico (@consultaID numeric(18,0), @fechaAtencion SMALLDATETIME, @sintomas VARCHAR(255), @enfermedades VARCHAR(255))
+AS
+BEGIN
+--Le asigno el valor 0 al parametro con_atendio
+DECLARE @sintomaID NUMERIC(18,0), @enfermedadID NUMERIC(18,0)
+UPDATE pico_y_pala.consulta set con_atendio = 1, con_fecha_consulta=@fechaAtencion where con_id=@consultaID
+END
+GO
+
+CREATE PROCEDURE pico_y_pala.agregarSintomasConsulta (@consultaID numeric(18,0), @sintoma VARCHAR(255))
+AS
+BEGIN
+--Le asigno el valor 0 al parametro con_atendio
+DECLARE @sintomaID NUMERIC(18,0)
+INSERT INTO pico_y_pala.sintoma (sin_desc) values (@sintoma)
+SET @sintomaID = SCOPE_IDENTITY()
+INSERT INTO pico_y_pala.consulta_sintoma(csi_con_id,csi_sin_id) values (@consultaID,@sintomaID)
+END
+GO
+
+CREATE PROCEDURE pico_y_pala.agregarEnfermedadesConsulta (@consultaID numeric(18,0), @enfermedad VARCHAR(255))
+AS
+BEGIN
+--Le asigno el valor 0 al parametro con_atendio
+DECLARE @enfermedadID NUMERIC(18,0)
+INSERT INTO pico_y_pala.enfermedad(enf_desc) values (@enfermedad)
+SET @enfermedadID = SCOPE_IDENTITY()
+INSERT INTO pico_y_pala.consulta_enfermedad (cen_con_id,cen_enf_id) values (@consultaID,@enfermedadID)
 END
 GO

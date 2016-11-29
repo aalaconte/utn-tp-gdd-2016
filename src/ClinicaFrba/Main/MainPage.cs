@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Pedir_Turno;
 using ClinicaFrba.Cancelar_Atencion;
+using ClinicaFrba.Registro_Llegada;
+using ClinicaFrba.Registro_Resultado;
 
 namespace ClinicaFrba.Main
 {
@@ -58,7 +60,7 @@ namespace ClinicaFrba.Main
 
         private void btn_logout_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
             Login.Login login = new Login.Login();
             login.Show();
         }
@@ -152,6 +154,18 @@ namespace ClinicaFrba.Main
         {
             PedirTurno pedirTurno = new PedirTurno();
             pedirTurno.ShowDialog();
+        }
+        
+        private void btn_RegistroLlegadaAtMedica_Click(object sender, EventArgs e)
+        {
+            RegistroLlegada registrollegada = new Registro_Llegada.RegistroLlegada();
+            registrollegada.ShowDialog();
+        }
+
+        private void btn_RegistroResultadoAtMedica_Click(object sender, EventArgs e)
+        {
+            RegistrarResultado regResult = new Registro_Resultado.RegistrarResultado(Program.user);
+            regResult.ShowDialog();
         }
 
         private void btn_CancelarAtencion_Click(object sender, EventArgs e)

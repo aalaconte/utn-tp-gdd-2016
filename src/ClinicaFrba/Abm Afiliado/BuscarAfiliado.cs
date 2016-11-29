@@ -28,8 +28,10 @@ namespace ClinicaFrba.Abm_Afiliado
         private int nroPagina;
         private int cantPaginas;
         private StringBuilder sql = new StringBuilder();
+        private StringBuilder sqlCount = new StringBuilder();
         private StringBuilder sqlAnd = new StringBuilder("");
         private static readonly int CANT_POR_PAGINA = int.Parse(ConfigurationManager.AppSettings["valor.paginacion"]);
+        public Afiliado AfiliadoReturn { get; set; }
 
         private void btn_Buscar_Click(object sender, EventArgs e)
         {
@@ -44,8 +46,8 @@ namespace ClinicaFrba.Abm_Afiliado
                 ManipulacionComponentes.llenarGrid(dgv_Afiliados, sql.ToString(), pagingDS, scrollVal, CANT_POR_PAGINA, "Afiliados");
                 dgv_Afiliados.DataSource = pagingDS;
                 dgv_Afiliados.DataMember = "Afiliados";
-                cantAfiliados = (dgv_Afiliados.Rows.Count == 0) ? 1 : dgv_Afiliados.Rows.Count;
-                //cantAfiliados = calcularFilasTotal();
+                //cantAfiliados = (dgv_Afiliados.Rows.Count == 0) ? 1 : dgv_Afiliados.Rows.Count;
+                cantAfiliados = calcularFilasTotal();
                 lbl_nroAfi.Text = dgv_Afiliados.Rows.Count.ToString();
                 cantPaginas = cantAfiliados / CANT_POR_PAGINA;
                 nroPagina = 1;
@@ -69,7 +71,9 @@ namespace ClinicaFrba.Abm_Afiliado
         private void armarQuery()
         {
             sql.Clear();
+            sqlCount.Clear();
             sql.Append(ConfigurationManager.AppSettings["query.abm.afiliado.select"]);
+            sqlCount.Append(ConfigurationManager.AppSettings["query.abm.afiliado.count"]);
             //Armamos los AND
             sqlAnd.Clear();
             if (!string.IsNullOrWhiteSpace(this.txtUsername.Text))
@@ -107,6 +111,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 sqlAnd.Append(ConfigurationManager.AppSettings["query.abm.afiliado.and.activo"].Replace("{0}", valor));
             }
             sql.Append(sqlAnd);
+            sqlCount.Append(sqlAnd);
             sql.Append(ConfigurationManager.AppSettings["query.abm.afiliado.order"]);
         }
 
@@ -203,7 +208,7 @@ namespace ClinicaFrba.Abm_Afiliado
             }
             else
             {
-                if (btn_seleccionar.Text.Equals("Seleccionar"))
+                if (btn_seleccionar.Text.Equals("Modificar"))
                 {
                     Afiliado afi = new Abm_Afiliado.Afiliado(this.dgv_Afiliados.SelectedRows[0].Cells[0].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[4].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[2].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[1].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[3].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[5].Value.ToString(),
                     this.dgv_Afiliados.SelectedRows[0].Cells[6].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[7].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[8].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[10].Value.ToString(), (bool)(this.dgv_Afiliados.SelectedRows[0].Cells[12].Value.ToString().Equals("SI")));
@@ -211,9 +216,12 @@ namespace ClinicaFrba.Abm_Afiliado
                     ModificarAfiliado modificar = new ModificarAfiliado(afi);
                     modificar.ShowDialog();
                 }
-                else
+                else if (btn_seleccionar.Text.Equals("Seleccionar"))
                 {
-                    //Baja Afiliado
+                    this.AfiliadoReturn = new Abm_Afiliado.Afiliado(this.dgv_Afiliados.SelectedRows[0].Cells[0].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[4].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[2].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[1].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[3].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[5].Value.ToString(),
+                    this.dgv_Afiliados.SelectedRows[0].Cells[6].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[7].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[8].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[10].Value.ToString(), (bool)(this.dgv_Afiliados.SelectedRows[0].Cells[12].Value.ToString().Equals("SI")));
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
                 }
 
             }
@@ -221,49 +229,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private int calcularFilasTotal()
         {
-            StringBuilder sqlc = new StringBuilder();
-            StringBuilder sqlAndc = new StringBuilder();
+            String unaQuery = sqlCount.ToString();
             int numeroAfi;
-            sqlc.Clear();
-            sqlc.Append(ConfigurationManager.AppSettings["query.abm.afiliado.count"]);
-            //Armamos los AND
-            sqlAndc.Clear();
-            if (!string.IsNullOrWhiteSpace(this.txtUsername.Text))
-            {
-                sqlAndc.Append(ConfigurationManager.AppSettings["query.abm.afiliado.and.username"].Replace("{0}", this.txtUsername.Text));
-            }
-            if (!string.IsNullOrWhiteSpace(this.txtNombre.Text))
-            {
-                sqlAndc.Append(ConfigurationManager.AppSettings["query.abm.afiliado.and.nombre"].Replace("{0}", this.txtNombre.Text));
-            }
-            if (!string.IsNullOrWhiteSpace(this.txtApellido.Text))
-            {
-                sqlAndc.Append(ConfigurationManager.AppSettings["query.abm.afiliado.and.apellido"].Replace("{0}", this.txtApellido.Text));
-            }
-            if (!string.IsNullOrWhiteSpace(this.txtDocumento.Text))
-            {
-                sqlAndc.Append(ConfigurationManager.AppSettings["query.abm.afiliado.and.documento"].Replace("{0}", this.txtDocumento.Text));
-            }
-            if (!string.IsNullOrWhiteSpace(this.txt_NroAfi.Text))
-            {
-                sqlAndc.Append(ConfigurationManager.AppSettings["query.abm.afiliado.and.nroAfilado"].Replace("{0}", this.txt_NroAfi.Text));
-            }
-
-            if (this.cmb_estado.SelectedIndex != -1)
-            {
-                String valor;
-                if (this.cmb_estado.SelectedItem.Equals("SI"))
-                {
-                    valor = "1";
-                }
-                else
-                {
-                    valor = "0";
-                }
-                sqlAndc.Append(ConfigurationManager.AppSettings["query.abm.afiliado.and.activo"].Replace("{0}", valor));
-            }
-            sqlc.Append(sqlAndc);
-            String unaQuery = sqlc.ToString();
             using (SqlConnection cx1 = Connection.getConnection())
             {
                 try

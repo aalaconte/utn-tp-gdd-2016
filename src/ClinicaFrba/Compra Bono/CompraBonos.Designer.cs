@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.label2 = new System.Windows.Forms.Label();
-            this.txtNroAfi = new System.Windows.Forms.TextBox();
             this.lblCant = new System.Windows.Forms.Label();
             this.nudCantBonos = new System.Windows.Forms.NumericUpDown();
             this.btnComprar = new System.Windows.Forms.Button();
@@ -39,6 +38,7 @@
             this.lblPlan = new System.Windows.Forms.Label();
             this.lblPrecio = new System.Windows.Forms.Label();
             this.btnAtras = new System.Windows.Forms.Button();
+            this.txtNroAfi = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantBonos)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,14 +50,6 @@
             this.label2.Size = new System.Drawing.Size(61, 13);
             this.label2.TabIndex = 52;
             this.label2.Text = "Nro Afiliado";
-            // 
-            // txtNroAfi
-            // 
-            this.txtNroAfi.Enabled = false;
-            this.txtNroAfi.Location = new System.Drawing.Point(73, 12);
-            this.txtNroAfi.Name = "txtNroAfi";
-            this.txtNroAfi.Size = new System.Drawing.Size(121, 20);
-            this.txtNroAfi.TabIndex = 51;
             // 
             // lblCant
             // 
@@ -164,11 +156,21 @@
             this.btnAtras.UseVisualStyleBackColor = true;
             this.btnAtras.Click += new System.EventHandler(this.btnAtras_Click);
             // 
+            // txtNroAfi
+            // 
+            this.txtNroAfi.Enabled = false;
+            this.txtNroAfi.Location = new System.Drawing.Point(72, 12);
+            this.txtNroAfi.Name = "txtNroAfi";
+            this.txtNroAfi.ReadOnly = true;
+            this.txtNroAfi.Size = new System.Drawing.Size(122, 20);
+            this.txtNroAfi.TabIndex = 62;
+            // 
             // CompraBonos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(394, 126);
+            this.Controls.Add(this.txtNroAfi);
             this.Controls.Add(this.btnAtras);
             this.Controls.Add(this.lblPrecio);
             this.Controls.Add(this.lblPlan);
@@ -179,7 +181,6 @@
             this.Controls.Add(this.lblCant);
             this.Controls.Add(this.nudCantBonos);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.txtNroAfi);
             this.Name = "CompraBonos";
             this.Text = "Compra de Bonos";
             this.Load += new System.EventHandler(this.CompraBonos_Load);
@@ -192,7 +193,6 @@
         #endregion
 
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtNroAfi;
         private System.Windows.Forms.Label lblCant;
         private System.Windows.Forms.NumericUpDown nudCantBonos;
         private System.Windows.Forms.Button btnComprar;
@@ -202,5 +202,6 @@
         private System.Windows.Forms.Label lblPlan;
         private System.Windows.Forms.Label lblPrecio;
         private System.Windows.Forms.Button btnAtras;
+        private System.Windows.Forms.TextBox txtNroAfi;
     }
 }
