@@ -106,6 +106,10 @@ DROP PROCEDURE pico_y_pala.agregarEnfermedadesConsulta
 go
 drop procedure PICO_Y_PALA.cancelarTurno
 go
+DROP PROCEDURE pico_y_pala.cancelarTurnosFecha
+go
+DROP PROCEDURE pico_y_pala.cancelarTurnosRangoFechas
+go
 --Functions
 drop function PICO_Y_PALA.cantHorasSemanaProf
 go

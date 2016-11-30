@@ -109,6 +109,7 @@ namespace ClinicaFrba.Pedir_Turno
             this.agendas = obtenerAgendasProfesionalEspecialidad();
             Console.WriteLine("Cantidad agendas: " + this.agendas.Count());
             List<DateTime> horariosOcupados = obtenerTurnosOcupados();
+            List<DateTime> diasCancelados = obtenerDiasCancelados();
             List<DateTime> horariosAOfrecer = new List<DateTime>();
             DateTime fechaMin;
             DateTime fechaActualDate = DateTime.Parse(Program.fechaActual).Date;
@@ -131,7 +132,7 @@ namespace ClinicaFrba.Pedir_Turno
                 }
 
                 //Generamos los posibles turnos para mostrar los horarios que están disponibles
-                horariosAOfrecer.AddRange(generarPosiblesTurnosAgenda(fechaMin, agenda, horariosOcupados));
+                horariosAOfrecer.AddRange(generarPosiblesTurnosAgenda(fechaMin, agenda, horariosOcupados, diasCancelados));
 
             }
 
@@ -302,7 +303,7 @@ namespace ClinicaFrba.Pedir_Turno
                 {
                     Console.WriteLine("Se ha producido un error al buscar los turnos para el afiliado y la especialidad seleccionados");
                     Console.WriteLine(ex);
-                    MessageBox.Show("Se ha producido un error al buscar los turnos para el profesional y la especialidad seleccionados", "Error al buscar especialidades", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Se ha producido un error al buscar los turnos para el afiliado y la especialidad seleccionados", "Error al buscar especialidades", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
@@ -310,7 +311,60 @@ namespace ClinicaFrba.Pedir_Turno
 
         }
 
-        private List<DateTime> generarPosiblesTurnosAgenda(DateTime fechaMin, AgendaProfesional agenda, List<DateTime> horariosOcupados)
+        private List<DateTime> obtenerDiasCancelados()
+        {
+            List<DateTime> diasCancelados = new List<DateTime>();
+            //Obtenemos los dias cancelados para el profesional
+            using (SqlConnection cx = Connection.getConnection())
+            {
+                StringBuilder query = new StringBuilder(ConfigurationManager.AppSettings["query.obtener.cancelaciones.select"]);
+                query.Append(" WHERE");
+                query.Append(ConfigurationManager.AppSettings["query.obtener.cancelaciones.where.profesional"].Replace("{0}", this.profesional.NroDoc.ToString()));
+                query.Append(" AND");
+                query.Append(ConfigurationManager.AppSettings["query.obtener.cancelaciones.where.fecha.mayor.igual"].Replace("{fechaActual}", "'" + Program.fechaActual + "'"));
+                SqlCommand sqlCmd = new SqlCommand(query.ToString(), cx);
+                Console.WriteLine("Query obtener cancelaciones:");
+                Console.WriteLine(query.ToString());
+                sqlCmd.CommandType = CommandType.Text;
+                try
+                {
+                    cx.Open();
+                    SqlDataReader sqlReader = sqlCmd.ExecuteReader();
+                    DateTime fechaIntermedia;
+                    while (sqlReader.Read())
+                    {
+                        DateTime fechaDesdeCancelacion = DateTime.Parse(sqlReader["can_fecha_desde"].ToString()).Date;
+                        DateTime fechaHastaCancelacion = DateTime.Parse(sqlReader["can_fecha_hasta"].ToString()).Date;
+                        if (fechaDesdeCancelacion == fechaHastaCancelacion)
+                        {
+                            diasCancelados.Add(fechaDesdeCancelacion);
+                        }
+                        else
+                        {
+                            fechaIntermedia = fechaDesdeCancelacion;
+                            while (fechaIntermedia <= fechaHastaCancelacion)
+                            {
+                                diasCancelados.Add(fechaIntermedia);
+                                fechaIntermedia.AddDays(1);
+                            }
+                        }
+                        
+                    }
+                    sqlReader.Close();
+                    sqlReader.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Se ha producido un error al buscar las cancelaciones para el profesional");
+                    Console.WriteLine(ex);
+                    MessageBox.Show("Se ha producido un error al buscar las cancelaciones para el profesional seleccionado", "Error al buscar especialidades", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return diasCancelados;
+        }
+
+        private List<DateTime> generarPosiblesTurnosAgenda(DateTime fechaMin, AgendaProfesional agenda, List<DateTime> horariosOcupados, List<DateTime> diasCancelados)
         {
             List<Turno> turnosPosibles = new List<Turno>();
             List<DateTime> horariosPosibles = new List<DateTime>();
@@ -329,7 +383,8 @@ namespace ClinicaFrba.Pedir_Turno
                 while (horario < agenda.hhHasta)
                 {
                     //Si el horario no está tomado por alguno de los horariosOcupados, agrego a la lista de posibles turnos
-                    if (horariosOcupados.Find(horarioOcupado => horarioOcupado.Equals(fechaHoraTurnoPosible)) == DateTime.MinValue)
+                    if (horariosOcupados.Find(horarioOcupado => horarioOcupado.Equals(fechaHoraTurnoPosible)) == DateTime.MinValue &&
+                        diasCancelados.Find(diaCancelado => diaCancelado.Equals(fechaHoraTurnoPosible.Date)) == DateTime.MinValue)
                     {
                         horariosPosibles.Add(fechaHoraTurnoPosible);
                     }

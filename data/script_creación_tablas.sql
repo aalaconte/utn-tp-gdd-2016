@@ -218,11 +218,13 @@ create table pico_y_pala.cancelacion
 	,can_tca_id int
 	,can_motivo varchar (255)
 	,can_tur_id numeric (18,0)
-	,can_dpa_id int
+	,can_pro_nro_doc numeric(18,0)
+	,can_fecha_desde Date
+	,can_fecha_hasta Date
 	,constraint PK_can_id primary key (can_id)
 	,constraint FK_can_tca_id foreign key (can_tca_id) references pico_y_pala.tipo_cancelacion (tca_id)
 	,constraint FK_can_tur_id foreign key (can_tur_id) references pico_y_pala.turno (tur_id)
-	,constraint FK_can_dpa_id foreign key (can_dpa_id) references pico_y_pala.dia_por_agenda (dpa_id)
+	,constraint FK_can_pro_nro_dok foreign key (can_pro_nro_doc) references pico_y_pala.profesional (pro_nro_doc)
 );
 
 create table pico_y_pala.compra
@@ -600,8 +602,51 @@ BEGIN
 			RETURN
 		END
 	ELSE
-		INSERT INTO pico_y_pala.cancelacion(can_motivo,can_tca_id,can_tur_id)
-				VALUES (@motivoCancelacion, @tipoCancelacion, @turno)	
+		INSERT INTO pico_y_pala.cancelacion(can_motivo,can_tca_id,can_tur_id,can_fecha_desde,can_fecha_hasta)
+				VALUES (@motivoCancelacion, @tipoCancelacion, @turno, @fechaActual, @fechaActual)	
+END
+GO
+
+--Procedure hecho para CancelarAtencion por Profesional. Cancela los turnos ya tomados en la fecha que quiere cancelar, y además
+--inhabilita el día para tomar nuevos turnos con el profesional al asociar una cancelación para él y el día
+CREATE PROCEDURE pico_y_pala.cancelarTurnosFecha(@nroDocProf numeric(18,0), @motivoCancelacion varchar(255), @tipoCancelacion int, @fechaCancela Date, @fechaActual Date)
+AS
+BEGIN
+	IF @fechaActual >= @fechaCancela
+		BEGIN
+			RAISERROR('La cancelación del turno tiene que ser por lo menos 1 día antes de la cita!',16,1)
+			RETURN
+		END
+
+	INSERT INTO pico_y_pala.cancelacion(can_motivo,can_tca_id,can_tur_id,can_fecha_desde,can_fecha_hasta)
+		SELECT @motivoCancelacion, @tipoCancelacion, tur_id, @fechaCancela, @fechaCancela
+		FROM pico_y_pala.turno
+		WHERE CONVERT(Date,tur_fecha_hora)=@fechaCancela AND tur_pro_nro_doc=@nroDocProf AND
+			  NOT EXISTS (SELECT 1 FROM pico_y_pala.cancelacion WHERE can_tur_id=tur_id) --Con esta condición evitamos cancelar un turno ya cancelado previamente
+	IF NOT EXISTS(SELECT 1 FROM pico_y_pala.cancelacion 
+					WHERE can_pro_nro_doc=@nroDocProf AND can_fecha_desde=@fechaCancela AND can_fecha_hasta=@fechaCancela)
+		INSERT INTO pico_y_pala.cancelacion(can_motivo,can_tca_id,can_fecha_desde,can_fecha_hasta,can_pro_nro_doc)
+			VALUES(@motivoCancelacion, @tipoCancelacion, @fechaCancela, @fechaCancela, @nroDocProf)
+END
+GO
+
+--Procedure hecho para CancelarAtencion por Profesional. Cancela los turnos ya tomados en el rango de fechas, y además
+--inhabilita ese rango para tomar nuevos turnos con el profesional al asociar una cancelación para él y el rango
+CREATE PROCEDURE pico_y_pala.cancelarTurnosRangoFechas(@nroDocProf numeric(18,0), @motivoCancelacion varchar(255), @tipoCancelacion int, @fechaDesde Date, @fechaHasta Date, @fechaActual Date)
+AS
+BEGIN
+	DECLARE @fechaIntermedia Date
+	IF @fechaActual >= @fechaDesde
+		BEGIN
+			RAISERROR('La cancelación del turno tiene que ser por lo menos 1 día antes de la cita!',16,1)
+			RETURN
+		END
+	SET @fechaIntermedia = @fechaDesde
+	WHILE @fechaIntermedia <= @fechaHasta
+	BEGIN
+		EXEC pico_y_pala.cancelarTurnosFecha @nroDocProf,@motivoCancelacion,@tipoCancelacion,@fechaIntermedia,@fechaActual
+		SET @fechaIntermedia = DATEADD(DAY,1,@fechaIntermedia)
+	END
 END
 GO
 

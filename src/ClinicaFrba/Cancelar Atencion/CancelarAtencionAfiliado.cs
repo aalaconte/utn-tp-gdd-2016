@@ -161,7 +161,14 @@ namespace ClinicaFrba.Cancelar_Atencion
             sqlWhere.Append(" AND").Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.afiliado"].Replace("{1}", Program.user));
             sqlWhere.Append(" AND").Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.not.cancelacion"]);
             if (this.dtp_fecha_turno.Enabled)
-                sqlWhere.Append(" AND").Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.fecha"].Replace("{3}", "'"+this.dtp_fecha_turno.Value.ToString("yyyy/MM/dd")+"'"));
+            {
+                sqlWhere.Append(" AND").Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.fecha"].Replace("{3}", "'" + this.dtp_fecha_turno.Value.ToString("yyyy/MM/dd") + "'"));
+            }
+            else
+            {
+                sqlWhere.Append(" AND").Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.fecha.mayor"].Replace("{3}", "'" + Program.fechaActual + "'"));
+            }
+
 
             sql.Append(sqlWhere);
             sqlCount.Append(sqlWhere);
