@@ -39,6 +39,7 @@ namespace ClinicaFrba.Cancelar_Atencion
             this.afiliado = obtenerAfiliadoConUsername();
             this.pan_canAfiliado.Visible = true;
             this.btn_buscarAfiliado.Visible = false;
+            this.txt_idAfiliado.Text = afiliado.getNroAfiliado();
         }
 
         public CancelarAtencionAfiliado(string administrador)

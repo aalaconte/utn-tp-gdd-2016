@@ -29,7 +29,14 @@
         private void InitializeComponent()
         {
             this.gpb_filtros = new System.Windows.Forms.GroupBox();
+            this.lbl_error_pro = new System.Windows.Forms.Label();
+            this.lbl_error_esp = new System.Windows.Forms.Label();
+            this.cmb_especialidades = new System.Windows.Forms.ComboBox();
+            this.lbl_especialidades = new System.Windows.Forms.Label();
+            this.btn_buscar_profesional = new System.Windows.Forms.Button();
+            this.txt_profesional = new System.Windows.Forms.TextBox();
             this.chk_buscar_fecha = new System.Windows.Forms.CheckBox();
+            this.lbl_profesionales = new System.Windows.Forms.Label();
             this.dtp_fecha_turno = new System.Windows.Forms.DateTimePicker();
             this.btn_limpiar = new System.Windows.Forms.Button();
             this.btn_buscar = new System.Windows.Forms.Button();
@@ -50,13 +57,6 @@
             this.txt_idAfiliado = new System.Windows.Forms.TextBox();
             this.btn_buscarAfiliado = new System.Windows.Forms.Button();
             this.lbl_afiliados = new System.Windows.Forms.Label();
-            this.btn_buscar_profesional = new System.Windows.Forms.Button();
-            this.txt_profesional = new System.Windows.Forms.TextBox();
-            this.lbl_profesionales = new System.Windows.Forms.Label();
-            this.cmb_especialidades = new System.Windows.Forms.ComboBox();
-            this.lbl_especialidades = new System.Windows.Forms.Label();
-            this.lbl_error_esp = new System.Windows.Forms.Label();
-            this.lbl_error_pro = new System.Windows.Forms.Label();
             this.gpb_filtros.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_turnos)).BeginInit();
             this.pan_canAfiliado.SuspendLayout();
@@ -80,6 +80,67 @@
             this.gpb_filtros.TabStop = false;
             this.gpb_filtros.Text = "Filtros";
             // 
+            // lbl_error_pro
+            // 
+            this.lbl_error_pro.AutoSize = true;
+            this.lbl_error_pro.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error_pro.Location = new System.Drawing.Point(79, 43);
+            this.lbl_error_pro.Name = "lbl_error_pro";
+            this.lbl_error_pro.Size = new System.Drawing.Size(159, 13);
+            this.lbl_error_pro.TabIndex = 66;
+            this.lbl_error_pro.Text = "Debe seleccionar un profesional";
+            this.lbl_error_pro.Visible = false;
+            // 
+            // lbl_error_esp
+            // 
+            this.lbl_error_esp.AutoSize = true;
+            this.lbl_error_esp.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error_esp.Location = new System.Drawing.Point(173, 89);
+            this.lbl_error_esp.Name = "lbl_error_esp";
+            this.lbl_error_esp.Size = new System.Drawing.Size(173, 13);
+            this.lbl_error_esp.TabIndex = 65;
+            this.lbl_error_esp.Text = "Debe seleccionar una especialidad";
+            this.lbl_error_esp.Visible = false;
+            // 
+            // cmb_especialidades
+            // 
+            this.cmb_especialidades.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_especialidades.FormattingEnabled = true;
+            this.cmb_especialidades.Location = new System.Drawing.Point(176, 65);
+            this.cmb_especialidades.Name = "cmb_especialidades";
+            this.cmb_especialidades.Size = new System.Drawing.Size(121, 21);
+            this.cmb_especialidades.TabIndex = 64;
+            this.cmb_especialidades.Visible = false;
+            // 
+            // lbl_especialidades
+            // 
+            this.lbl_especialidades.AutoSize = true;
+            this.lbl_especialidades.Location = new System.Drawing.Point(14, 68);
+            this.lbl_especialidades.Name = "lbl_especialidades";
+            this.lbl_especialidades.Size = new System.Drawing.Size(146, 13);
+            this.lbl_especialidades.TabIndex = 63;
+            this.lbl_especialidades.Text = "Seleccione una especialidad:";
+            this.lbl_especialidades.Visible = false;
+            // 
+            // btn_buscar_profesional
+            // 
+            this.btn_buscar_profesional.Location = new System.Drawing.Point(222, 19);
+            this.btn_buscar_profesional.Name = "btn_buscar_profesional";
+            this.btn_buscar_profesional.Size = new System.Drawing.Size(75, 23);
+            this.btn_buscar_profesional.TabIndex = 62;
+            this.btn_buscar_profesional.Text = "Seleccionar";
+            this.btn_buscar_profesional.UseVisualStyleBackColor = true;
+            this.btn_buscar_profesional.Click += new System.EventHandler(this.btn_buscar_profesional_Click);
+            // 
+            // txt_profesional
+            // 
+            this.txt_profesional.Enabled = false;
+            this.txt_profesional.Location = new System.Drawing.Point(82, 21);
+            this.txt_profesional.Name = "txt_profesional";
+            this.txt_profesional.ReadOnly = true;
+            this.txt_profesional.Size = new System.Drawing.Size(131, 20);
+            this.txt_profesional.TabIndex = 61;
+            // 
             // chk_buscar_fecha
             // 
             this.chk_buscar_fecha.AutoSize = true;
@@ -90,6 +151,15 @@
             this.chk_buscar_fecha.Text = "Buscar por fecha";
             this.chk_buscar_fecha.UseVisualStyleBackColor = true;
             this.chk_buscar_fecha.CheckedChanged += new System.EventHandler(this.chk_buscar_fecha_CheckedChanged);
+            // 
+            // lbl_profesionales
+            // 
+            this.lbl_profesionales.AutoSize = true;
+            this.lbl_profesionales.Location = new System.Drawing.Point(14, 24);
+            this.lbl_profesionales.Name = "lbl_profesionales";
+            this.lbl_profesionales.Size = new System.Drawing.Size(62, 13);
+            this.lbl_profesionales.TabIndex = 60;
+            this.lbl_profesionales.Text = "Profesional:";
             // 
             // dtp_fecha_turno
             // 
@@ -123,6 +193,7 @@
             this.dgv_turnos.AllowUserToAddRows = false;
             this.dgv_turnos.AllowUserToDeleteRows = false;
             this.dgv_turnos.AllowUserToResizeRows = false;
+            this.dgv_turnos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_turnos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_turnos.Location = new System.Drawing.Point(4, 156);
             this.dgv_turnos.MultiSelect = false;
@@ -295,76 +366,6 @@
             this.lbl_afiliados.Size = new System.Drawing.Size(58, 13);
             this.lbl_afiliados.TabIndex = 57;
             this.lbl_afiliados.Text = "ID Afiliado:";
-            // 
-            // btn_buscar_profesional
-            // 
-            this.btn_buscar_profesional.Location = new System.Drawing.Point(222, 19);
-            this.btn_buscar_profesional.Name = "btn_buscar_profesional";
-            this.btn_buscar_profesional.Size = new System.Drawing.Size(75, 23);
-            this.btn_buscar_profesional.TabIndex = 62;
-            this.btn_buscar_profesional.Text = "Seleccionar";
-            this.btn_buscar_profesional.UseVisualStyleBackColor = true;
-            this.btn_buscar_profesional.Click += new System.EventHandler(this.btn_buscar_profesional_Click);
-            // 
-            // txt_profesional
-            // 
-            this.txt_profesional.Enabled = false;
-            this.txt_profesional.Location = new System.Drawing.Point(82, 21);
-            this.txt_profesional.Name = "txt_profesional";
-            this.txt_profesional.ReadOnly = true;
-            this.txt_profesional.Size = new System.Drawing.Size(131, 20);
-            this.txt_profesional.TabIndex = 61;
-            // 
-            // lbl_profesionales
-            // 
-            this.lbl_profesionales.AutoSize = true;
-            this.lbl_profesionales.Location = new System.Drawing.Point(14, 24);
-            this.lbl_profesionales.Name = "lbl_profesionales";
-            this.lbl_profesionales.Size = new System.Drawing.Size(62, 13);
-            this.lbl_profesionales.TabIndex = 60;
-            this.lbl_profesionales.Text = "Profesional:";
-            // 
-            // cmb_especialidades
-            // 
-            this.cmb_especialidades.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_especialidades.FormattingEnabled = true;
-            this.cmb_especialidades.Location = new System.Drawing.Point(176, 65);
-            this.cmb_especialidades.Name = "cmb_especialidades";
-            this.cmb_especialidades.Size = new System.Drawing.Size(121, 21);
-            this.cmb_especialidades.TabIndex = 64;
-            this.cmb_especialidades.Visible = false;
-            // 
-            // lbl_especialidades
-            // 
-            this.lbl_especialidades.AutoSize = true;
-            this.lbl_especialidades.Location = new System.Drawing.Point(14, 68);
-            this.lbl_especialidades.Name = "lbl_especialidades";
-            this.lbl_especialidades.Size = new System.Drawing.Size(146, 13);
-            this.lbl_especialidades.TabIndex = 63;
-            this.lbl_especialidades.Text = "Seleccione una especialidad:";
-            this.lbl_especialidades.Visible = false;
-            // 
-            // lbl_error_esp
-            // 
-            this.lbl_error_esp.AutoSize = true;
-            this.lbl_error_esp.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_esp.Location = new System.Drawing.Point(173, 89);
-            this.lbl_error_esp.Name = "lbl_error_esp";
-            this.lbl_error_esp.Size = new System.Drawing.Size(173, 13);
-            this.lbl_error_esp.TabIndex = 65;
-            this.lbl_error_esp.Text = "Debe seleccionar una especialidad";
-            this.lbl_error_esp.Visible = false;
-            // 
-            // lbl_error_pro
-            // 
-            this.lbl_error_pro.AutoSize = true;
-            this.lbl_error_pro.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_pro.Location = new System.Drawing.Point(79, 43);
-            this.lbl_error_pro.Name = "lbl_error_pro";
-            this.lbl_error_pro.Size = new System.Drawing.Size(159, 13);
-            this.lbl_error_pro.TabIndex = 66;
-            this.lbl_error_pro.Text = "Debe seleccionar un profesional";
-            this.lbl_error_pro.Visible = false;
             // 
             // CancelarAtencionAfiliado
             // 

@@ -88,6 +88,7 @@ namespace ClinicaFrba.Cancelar_Atencion
                             }
                             sqlCmd.ExecuteNonQuery();
                             sqlCmd.Dispose();
+                            Mensajes.operacionExitosa();
                         }
                         catch (Exception ex)
                         {
@@ -95,10 +96,9 @@ namespace ClinicaFrba.Cancelar_Atencion
                             Console.WriteLine(ex);
                             MessageBox.Show("Se produjo un error al cancelar los turnos en el rango solicitado: " +
                                 this.dtp_fecha_desde.Value.ToString() + " a " + this.dtp_fecha_hasta.Value.ToString() + ". " +
-                                ex.Message, "Error al registrar el turno", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                ex.Message, "Error al Cancelar turnos", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
-                    Mensajes.operacionExitosa();
                     this.Close();
                 }
             }
