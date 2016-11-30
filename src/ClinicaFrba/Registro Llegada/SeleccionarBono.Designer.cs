@@ -51,6 +51,7 @@
             this.dgv_bonosDisponibles.AllowUserToDeleteRows = false;
             this.dgv_bonosDisponibles.AllowUserToResizeColumns = false;
             this.dgv_bonosDisponibles.AllowUserToResizeRows = false;
+            this.dgv_bonosDisponibles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_bonosDisponibles.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dgv_bonosDisponibles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_bonosDisponibles.Location = new System.Drawing.Point(10, 38);

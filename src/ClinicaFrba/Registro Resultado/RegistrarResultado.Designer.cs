@@ -42,13 +42,14 @@
             this.btn_primera = new System.Windows.Forms.Button();
             this.lbl_profesionales = new System.Windows.Forms.Label();
             this.lbl_DocProfesional = new System.Windows.Forms.Label();
+            this.btn_ver = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ConsultasProfesional)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(588, 30);
+            this.label1.Location = new System.Drawing.Point(478, 30);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(73, 13);
             this.label1.TabIndex = 59;
@@ -57,9 +58,8 @@
             // dtp_fechaConsulta
             // 
             this.dtp_fechaConsulta.CustomFormat = "d-M-yyyy HH:mm:ss";
-            this.dtp_fechaConsulta.Enabled = false;
             this.dtp_fechaConsulta.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtp_fechaConsulta.Location = new System.Drawing.Point(591, 46);
+            this.dtp_fechaConsulta.Location = new System.Drawing.Point(481, 46);
             this.dtp_fechaConsulta.Name = "dtp_fechaConsulta";
             this.dtp_fechaConsulta.Size = new System.Drawing.Size(118, 20);
             this.dtp_fechaConsulta.TabIndex = 58;
@@ -70,6 +70,7 @@
             this.dgv_ConsultasProfesional.AllowUserToDeleteRows = false;
             this.dgv_ConsultasProfesional.AllowUserToResizeColumns = false;
             this.dgv_ConsultasProfesional.AllowUserToResizeRows = false;
+            this.dgv_ConsultasProfesional.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_ConsultasProfesional.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dgv_ConsultasProfesional.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_ConsultasProfesional.Location = new System.Drawing.Point(27, 82);
@@ -182,11 +183,22 @@
             this.lbl_DocProfesional.TabIndex = 71;
             this.lbl_DocProfesional.Text = "IDProfesional";
             // 
+            // btn_ver
+            // 
+            this.btn_ver.Location = new System.Drawing.Point(634, 43);
+            this.btn_ver.Name = "btn_ver";
+            this.btn_ver.Size = new System.Drawing.Size(75, 23);
+            this.btn_ver.TabIndex = 72;
+            this.btn_ver.Text = "Ver";
+            this.btn_ver.UseVisualStyleBackColor = true;
+            this.btn_ver.Click += new System.EventHandler(this.btn_ver_Click);
+            // 
             // RegistrarResultado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(753, 353);
+            this.Controls.Add(this.btn_ver);
             this.Controls.Add(this.lbl_DocProfesional);
             this.Controls.Add(this.lbl_profesionales);
             this.Controls.Add(this.dgv_ConsultasProfesional);
@@ -203,6 +215,7 @@
             this.Controls.Add(this.dtp_fechaConsulta);
             this.Name = "RegistrarResultado";
             this.Text = "RegistrarResultado";
+            this.Load += new System.EventHandler(this.RegistrarResultado_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ConsultasProfesional)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -225,5 +238,6 @@
         private System.Windows.Forms.Button btn_primera;
         private System.Windows.Forms.Label lbl_profesionales;
         private System.Windows.Forms.Label lbl_DocProfesional;
+        private System.Windows.Forms.Button btn_ver;
     }
 }

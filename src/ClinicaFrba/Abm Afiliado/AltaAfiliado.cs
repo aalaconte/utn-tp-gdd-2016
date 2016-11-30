@@ -19,7 +19,7 @@ namespace ClinicaFrba.Abm_Afiliado
     public partial class AltaAfiliado : Form
     {
         private int codigoAfiliado;
-
+        private Afiliado afiliadoBuscar;
         public AltaAfiliado()
         {
             InitializeComponent();
@@ -348,6 +348,22 @@ namespace ClinicaFrba.Abm_Afiliado
         {
 
             ManipulacionComponentes.ocultarComponentes(new List<Control>{this.lbl_warn_tdoc, this.lbl_warn_ape, this.lbl_warn_dir, this.lbl_warn_doc, this.lbl_warn_ec, this.lbl_warn_fecha, this.lbl_warn_mail, this.lbl_warn_nom, this.lbl_warn_pass, this.lbl_warn_plan, this.lbl_warn_sexo, this.lbl_warn_tdoc, this.lbl_warn_tel, this.lbl_warn_usuario});
+        }
+
+        private void btn_buscar_Click(object sender, EventArgs e)
+        {
+            
+            using (BuscarAfiliado buscarAfi = new BuscarAfiliado("Seleccionar"))
+            {
+                if (buscarAfi.ShowDialog().Equals(DialogResult.OK))
+                {
+                    this.afiliadoBuscar = buscarAfi.AfiliadoReturn;
+                    if (this.afiliadoBuscar.getHabilitado())
+                        this.txtDocAfiTitular.Text = this.afiliadoBuscar.getDocumento();
+                    else
+                        MessageBox.Show("El afiliado seleccionado no se encuentra habilitado para realizar esta operacion", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
         }
 
     }

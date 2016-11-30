@@ -33,12 +33,16 @@ namespace ClinicaFrba.Listados
             cb_listados.Items.Add("Top 5 de las especialidades de médicos con más bonos de consultas utilizados.");
             cb_listados.Items.Add("Top 5 de las especialidades que más se registraron cancelaciones, tanto de afiliados como de profesionales.");
             cb_listados.Items.Add("Top 5 de los afiliados con mayor cantidad de bonos comprados, detallando si pertenece a un grupo familiar.");
-            cb_listados.Items.Add("Top 5 de los profesionales más consultados por Especialidad.");
+            cb_listados.Items.Add("Top 5 de los profesionales más consultados por Plan, detallando también bajo que Especialidad.");
             //Ver si los agregamos tomandolos de las max fechas.
-            cb_año.Items.Add("2015");
-            cb_año.Items.Add("2016");
+            //cb_año.Items.Add("2015");
+            //cb_año.Items.Add("2016");
+            ManipulacionComponentes.llenarComboBox(this.cb_año, "select distinct YEAR(tur.tur_fecha_hora) año from pico_y_pala.turno tur order by año", "año");
             cb_semestre.Items.Add("Primer Semestre");
             cb_semestre.Items.Add("Segundo Semestre");
+            cb_tcan.Items.Add("Todas");
+            cb_tcan.Items.Add("Afiliado");
+            cb_tcan.Items.Add("Profesional");
             ManipulacionComponentes.llenarComboBox(this.cbPlan, "select pla_desc from PICO_Y_PALA.planes", "pla_desc");
                     
         }
@@ -54,6 +58,26 @@ namespace ClinicaFrba.Listados
             {
                 chb_plan.Visible = false;
                 cbPlan.Visible = false;
+            }
+            if (!(this.cb_listados.SelectedIndex == -1))
+            {
+                this.lbl_ano.Visible = true;
+                this.cb_año.Visible = true;
+            }
+            else
+            {
+                this.lbl_ano.Visible = false;
+                this.cb_año.Visible = false;
+            }
+            if (this.cb_listados.SelectedIndex == 2)
+            {
+                this.chb_tcan.Visible = true;
+                this.cb_tcan.Visible = true;
+            }
+            else
+            {
+                this.chb_tcan.Visible = false;
+                this.cb_tcan.Visible = false;
             }
         }
 
@@ -84,12 +108,16 @@ namespace ClinicaFrba.Listados
 
         private void btn_ver_Click(object sender, EventArgs e)
         {
-            this.btn_ver.Enabled = false;
+            this.lbl_warn_año.Visible = false;
             if (ValidacionComponentes.comboBoxSeleccionoOpcion(this.cb_listados))
             {
                 try
                 {
-
+                    if (!ValidacionComponentes.comboBoxSeleccionoOpcion(this.cb_año))
+                    {
+                        this.lbl_warn_año.Visible = true;
+                        return;
+                    }
                     scrollVal = 0;
                     pagingDS = new DataSet();
                     armarQuery(this.cb_listados.SelectedIndex);
@@ -103,6 +131,10 @@ namespace ClinicaFrba.Listados
                     MessageBox.Show("Se ha producido un error al cargar el listado: " + ex.Message, "Error inesperado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+            }
+            else
+            {
+                MessageBox.Show("Por favor selecciones el Listado que desea visualizar.", "Error al Mostrar Listados", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -119,9 +151,7 @@ namespace ClinicaFrba.Listados
                     //Año
                     if (ValidacionComponentes.comboBoxSeleccionoOpcion(this.cb_año))
                         sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.1.año"]).Replace("{1}", this.cb_año.Text);
-                    else
-                    {
-                    }
+
                         //warn label años
 
                         //Semestre
@@ -132,20 +162,13 @@ namespace ClinicaFrba.Listados
                             else
                                 sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.1.SegundoSemestre"]);
                         }
-                        else
-                        {
-                            //warn Semestre
-                        }
-                            
+
                     //Meses
                             if (this.chb_meses.Checked && ValidacionComponentes.comboBoxSeleccionoOpcion(this.cb_meses))
                             {
                                 sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.1.meses"]).Replace("{2}", calcularMes(this.cb_meses.Text));
                             }
-                            else
-                            {
-                            }
-                        //warn Semestre
+
 
                     //Group y Order by
                     sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.1.group.order"]);
@@ -168,20 +191,13 @@ namespace ClinicaFrba.Listados
                             else
                                 sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.1.SegundoSemestre"]);
                         }
-                        else
-                        {
-                            //warn Semestre
-                        }
-                            
+
                     //Meses
                             if (this.chb_meses.Checked && ValidacionComponentes.comboBoxSeleccionoOpcion(this.cb_meses))
                             {
                                 sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.1.meses"]).Replace("{2}", calcularMes(this.cb_meses.Text));
                             }
-                            else
-                            {
-                            }
-                        //warn Semestre
+
 
                     //Group y Order by
                     sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.2.group.order"]);
@@ -194,10 +210,7 @@ namespace ClinicaFrba.Listados
                         this.sqlSubq.Append(ConfigurationManager.AppSettings["query.obtener.listado.3.subquery.select"]).Replace("{1}", this.cb_año.Text);
                         this.sqlSubqCount.Append(ConfigurationManager.AppSettings["query.obtener.listado.3.subquery.count"]).Replace("{1}", this.cb_año.Text);
                     }
-                    else
-                    {
-                    }
-                        //warn label años
+
 
                         //Semestre
                         if (this.chb_semestre.Checked && ValidacionComponentes.comboBoxSeleccionoOpcion(this.cb_semestre))
@@ -215,10 +228,6 @@ namespace ClinicaFrba.Listados
                                 this.sqlSubqCount.Append(ConfigurationManager.AppSettings["query.obtener.listado.3.SegundoSemestre.subquery"]);
                             }
                         }
-                        else
-                        {
-                            //warn Semestre
-                        }
                             
                     //Meses
                             if (this.chb_meses.Checked && ValidacionComponentes.comboBoxSeleccionoOpcion(this.cb_meses))
@@ -227,10 +236,13 @@ namespace ClinicaFrba.Listados
                                 this.sqlSubq.Append(ConfigurationManager.AppSettings["query.obtener.listado.3.meses.subquery"]).Replace("{2}", calcularMes(this.cb_meses.Text));
                                 this.sqlSubqCount.Append(ConfigurationManager.AppSettings["query.obtener.listado.3.meses.subquery"]).Replace("{2}", calcularMes(this.cb_meses.Text));
                             }
-                            else
+                    //Tipo Cancelacion
+                            if (this.chb_tcan.Checked && ValidacionComponentes.comboBoxSeleccionoOpcion(this.cb_tcan) && !(this.cb_tcan.SelectedIndex==0))
                             {
+                                this.sqlSubq.Append(ConfigurationManager.AppSettings["query.obtener.listado.3.tipoCancelacion.subquery"]).Replace("{6}", mostrarTipoCan(this.cb_tcan.Text));
+                                this.sqlSubqCount.Append(ConfigurationManager.AppSettings["query.obtener.listado.3.tipoCancelacion.subquery"]).Replace("{6}", mostrarTipoCan(this.cb_tcan.Text));
                             }
-                        //warn Semestre
+
                     //Agrego las dos Subquerys armadas
                     sql.Replace("{4}", this.sqlSubq.ToString());
                     sql.Replace("{5}", this.sqlSubqCount.ToString());
@@ -255,20 +267,12 @@ namespace ClinicaFrba.Listados
                             else
                                 sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.4.SegundoSemestre"]);
                         }
-                        else
-                        {
-                            //warn Semestre
-                        }
                             
                     //Meses
                             if (this.chb_meses.Checked && ValidacionComponentes.comboBoxSeleccionoOpcion(this.cb_meses))
                             {
                                 sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.4.meses"]).Replace("{2}", calcularMes(this.cb_meses.Text));
                             }
-                            else
-                            {
-                            }
-                        //warn Semestre
 
                     //Group y Order by
                     sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.4.group.order"]);
@@ -291,27 +295,16 @@ namespace ClinicaFrba.Listados
                             else
                                 sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.1.SegundoSemestre"]);
                         }
-                        else
-                        {
-                            //warn Semestre
-                        }
                             
                     //Meses
                             if (this.chb_meses.Checked && ValidacionComponentes.comboBoxSeleccionoOpcion(this.cb_meses))
                             {
                                 sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.1.meses"]).Replace("{2}", calcularMes(this.cb_meses.Text));
                             }
-                            else
-                            {
-                            }
                     //Plan
                             if (this.chb_plan.Checked && ValidacionComponentes.comboBoxSeleccionoOpcion(this.cbPlan))
                             {
                                 sql.Append(ConfigurationManager.AppSettings["query.obtener.listado.5.plan"]).Replace("{3}",calcularIdPlan(this.cbPlan.Text));
-                            }
-                            else
-                            {
-                                //warn Plan
                             }
 
                     //Group y Order by
@@ -321,7 +314,6 @@ namespace ClinicaFrba.Listados
 
                     break;
             }
-            this.btn_ver.Enabled = true;
         }
 
         private String calcularMes(String nombreMes)
@@ -413,6 +405,16 @@ namespace ClinicaFrba.Listados
 
         }
 
+        private string mostrarTipoCan(string descripcion)
+        {
+
+            if (this.cb_tcan.Text.Equals("Afiliado"))
+                return "2";
+            else
+                return "1";
+
+        }
+
         private void chb_plan_CheckedChanged(object sender, EventArgs e)
         {
             if (this.chb_plan.Checked)
@@ -442,6 +444,28 @@ namespace ClinicaFrba.Listados
                 this.chb_semestre.Visible = false;
                 this.cb_semestre.Visible = false;
             }
+        }
+
+        private void chb_tcan_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.chb_tcan.Checked)
+            {
+                this.cb_tcan.Enabled = true;
+                this.cb_tcan.SelectedIndex = 0;
+
+
+            }
+            else
+            {
+                this.cb_tcan.Enabled = false;
+                this.cb_tcan.SelectedIndex = -1;
+
+            }
+        }
+
+        private void ListadosEstadisticos_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

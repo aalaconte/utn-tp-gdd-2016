@@ -23,8 +23,6 @@ namespace ClinicaFrba.Registro_Resultado
         private StringBuilder sqlConsulta = new StringBuilder();
         private StringBuilder sqlCount = new StringBuilder();
         private StringBuilder sqlAnd = new StringBuilder();
-        private Profesional profesional;
-        private Afiliado afiliado;
         private DataSet pagingDS;
         private int scrollVal;
         private int cantConsultas;
@@ -338,6 +336,16 @@ namespace ClinicaFrba.Registro_Resultado
             sqlCmd.ExecuteNonQuery();
             sqlCmd.Dispose();
             cx.Close();
+        }
+
+        private void RegistrarResultado_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_ver_Click(object sender, EventArgs e)
+        {
+            cargarConsutas();
         }
 
     }

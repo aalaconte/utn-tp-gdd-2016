@@ -76,6 +76,7 @@
             this.lbl_warn_plan = new System.Windows.Forms.Label();
             this.lbl_warn_doc = new System.Windows.Forms.Label();
             this.lbl_warn_tdoc = new System.Windows.Forms.Label();
+            this.btn_buscar = new System.Windows.Forms.Button();
             this.gbGrupoFamiliar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFamACargo)).BeginInit();
             this.SuspendLayout();
@@ -270,6 +271,7 @@
             // 
             // gbGrupoFamiliar
             // 
+            this.gbGrupoFamiliar.Controls.Add(this.btn_buscar);
             this.gbGrupoFamiliar.Controls.Add(this.label15);
             this.gbGrupoFamiliar.Controls.Add(this.txtDocAfiTitular);
             this.gbGrupoFamiliar.Location = new System.Drawing.Point(47, 267);
@@ -374,7 +376,7 @@
             // 
             // txtDocumento
             // 
-            this.txtDocumento.Location = new System.Drawing.Point(289, 193);
+            this.txtDocumento.Location = new System.Drawing.Point(295, 192);
             this.txtDocumento.Name = "txtDocumento";
             this.txtDocumento.Size = new System.Drawing.Size(121, 20);
             this.txtDocumento.TabIndex = 29;
@@ -540,6 +542,16 @@
             this.lbl_warn_tdoc.Text = "Ingrese un tipo de documento";
             this.lbl_warn_tdoc.Visible = false;
             // 
+            // btn_buscar
+            // 
+            this.btn_buscar.Location = new System.Drawing.Point(280, 19);
+            this.btn_buscar.Name = "btn_buscar";
+            this.btn_buscar.Size = new System.Drawing.Size(75, 20);
+            this.btn_buscar.TabIndex = 46;
+            this.btn_buscar.Text = "Buscar";
+            this.btn_buscar.UseVisualStyleBackColor = true;
+            this.btn_buscar.Click += new System.EventHandler(this.btn_buscar_Click);
+            // 
             // AltaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -652,5 +664,6 @@
         private System.Windows.Forms.Label lbl_warn_plan;
         private System.Windows.Forms.Label lbl_warn_doc;
         private System.Windows.Forms.Label lbl_warn_tdoc;
+        private System.Windows.Forms.Button btn_buscar;
     }
 }

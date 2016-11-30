@@ -188,6 +188,7 @@
             this.dgv_turnosProfesional.AllowUserToDeleteRows = false;
             this.dgv_turnosProfesional.AllowUserToResizeColumns = false;
             this.dgv_turnosProfesional.AllowUserToResizeRows = false;
+            this.dgv_turnosProfesional.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_turnosProfesional.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dgv_turnosProfesional.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_turnosProfesional.Location = new System.Drawing.Point(28, 93);

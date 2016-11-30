@@ -40,6 +40,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbPlan = new System.Windows.Forms.ComboBox();
             this.chb_plan = new System.Windows.Forms.CheckBox();
+            this.lbl_warn_año = new System.Windows.Forms.Label();
+            this.chb_tcan = new System.Windows.Forms.CheckBox();
+            this.cb_tcan = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_listados)).BeginInit();
             this.SuspendLayout();
             // 
@@ -173,11 +176,47 @@
             this.chb_plan.Visible = false;
             this.chb_plan.CheckedChanged += new System.EventHandler(this.chb_plan_CheckedChanged);
             // 
+            // lbl_warn_año
+            // 
+            this.lbl_warn_año.AutoSize = true;
+            this.lbl_warn_año.ForeColor = System.Drawing.Color.Red;
+            this.lbl_warn_año.Location = new System.Drawing.Point(9, 84);
+            this.lbl_warn_año.Name = "lbl_warn_año";
+            this.lbl_warn_año.Size = new System.Drawing.Size(220, 13);
+            this.lbl_warn_año.TabIndex = 60;
+            this.lbl_warn_año.Text = "Debe seleccionar un Año para ver el informe.";
+            this.lbl_warn_año.Visible = false;
+            // 
+            // chb_tcan
+            // 
+            this.chb_tcan.AutoSize = true;
+            this.chb_tcan.Location = new System.Drawing.Point(268, 111);
+            this.chb_tcan.Name = "chb_tcan";
+            this.chb_tcan.Size = new System.Drawing.Size(128, 17);
+            this.chb_tcan.TabIndex = 62;
+            this.chb_tcan.Text = "Por Tipo Cancelacion";
+            this.chb_tcan.UseVisualStyleBackColor = true;
+            this.chb_tcan.Visible = false;
+            this.chb_tcan.CheckedChanged += new System.EventHandler(this.chb_tcan_CheckedChanged);
+            // 
+            // cb_tcan
+            // 
+            this.cb_tcan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_tcan.Enabled = false;
+            this.cb_tcan.Location = new System.Drawing.Point(402, 109);
+            this.cb_tcan.Name = "cb_tcan";
+            this.cb_tcan.Size = new System.Drawing.Size(107, 21);
+            this.cb_tcan.TabIndex = 61;
+            this.cb_tcan.Visible = false;
+            // 
             // ListadosEstadisticos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(707, 351);
+            this.Controls.Add(this.chb_tcan);
+            this.Controls.Add(this.cb_tcan);
+            this.Controls.Add(this.lbl_warn_año);
             this.Controls.Add(this.chb_plan);
             this.Controls.Add(this.cbPlan);
             this.Controls.Add(this.label1);
@@ -192,6 +231,7 @@
             this.Controls.Add(this.cb_listados);
             this.Name = "ListadosEstadisticos";
             this.Text = "ListadosEstadisticos";
+            this.Load += new System.EventHandler(this.ListadosEstadisticos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_listados)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -212,5 +252,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbPlan;
         private System.Windows.Forms.CheckBox chb_plan;
+        private System.Windows.Forms.Label lbl_warn_año;
+        private System.Windows.Forms.CheckBox chb_tcan;
+        private System.Windows.Forms.ComboBox cb_tcan;
     }
 }
