@@ -185,6 +185,7 @@
             // 
             // cbPlan
             // 
+            this.cbPlan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPlan.Enabled = false;
             this.cbPlan.FormattingEnabled = true;
             this.cbPlan.Location = new System.Drawing.Point(140, 123);
@@ -308,7 +309,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtUsername);
             this.Name = "ModificarAfiliado";
-            this.Text = "ModificarAfiliado";
+            this.Text = "s";
             this.Load += new System.EventHandler(this.ModificarAfiliado_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

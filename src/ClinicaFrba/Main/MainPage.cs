@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using ClinicaFrba.Pedir_Turno;
 using ClinicaFrba.Registro_Llegada;
 using ClinicaFrba.Registro_Resultado;
+using ClinicaFrba.Listados;
 
 namespace ClinicaFrba.Main
 {
@@ -165,6 +166,12 @@ namespace ClinicaFrba.Main
         {
             RegistrarResultado regResult = new Registro_Resultado.RegistrarResultado(Program.user);
             regResult.ShowDialog();
+        }
+
+        private void btn_ListadoEstadistico_Click(object sender, EventArgs e)
+        {
+            ListadosEstadisticos listados = new Listados.ListadosEstadisticos();
+            listados.ShowDialog();
         }
 
     }
