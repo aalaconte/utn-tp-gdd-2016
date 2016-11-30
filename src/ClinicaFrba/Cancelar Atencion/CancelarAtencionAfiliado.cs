@@ -1,5 +1,8 @@
-﻿using ClinicaFrba.BaseDeDatos;
+﻿using ClinicaFrba.Abm_Afiliado;
+using ClinicaFrba.Abm_Profesional;
+using ClinicaFrba.BaseDeDatos;
 using ClinicaFrba.BaseDeDatos.Componentes;
+using ClinicaFrba.Registrar_Agenta_Medico;
 using ClinicaFrba.Utils;
 using ClinicaFrba.Validaciones;
 using System;
@@ -18,6 +21,8 @@ namespace ClinicaFrba.Cancelar_Atencion
 {
     public partial class CancelarAtencionAfiliado : Form
     {
+        Afiliado afiliado;
+        Profesional profesional;
         private DataSet pagingDS;
         private int scrollVal;
         private int cantTurnos;
@@ -31,6 +36,17 @@ namespace ClinicaFrba.Cancelar_Atencion
         public CancelarAtencionAfiliado()
         {
             InitializeComponent();
+            this.afiliado = obtenerAfiliadoConUsername();
+            this.pan_canAfiliado.Visible = true;
+            this.btn_buscarAfiliado.Visible = false;
+        }
+
+        public CancelarAtencionAfiliado(string administrador)
+        {
+            InitializeComponent();
+            this.afiliado = obtenerAfiliadoConUsername();
+            this.pan_canAfiliado.Visible = false;
+            this.btn_buscarAfiliado.Visible = true;
         }
 
         private void CancelarAtencionAfiliado_Load(object sender, EventArgs e)
@@ -64,9 +80,12 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void btn_limpiar_Click(object sender, EventArgs e)
         {
-            this.txt_nombre_profesional.Text = "";
-            this.txt_apellido_profesional.Text = "";
-            this.txt_especialidad.Text = "";
+            this.lbl_error_pro.Visible = false;
+            this.lbl_error_esp.Visible = false;
+            this.cmb_especialidades.Visible = false;
+            this.lbl_especialidades.Visible = false;
+            this.txt_profesional.Text = "";
+            this.cmb_especialidades.SelectedIndex = -1;
             ManipulacionComponentes.vaciarGrid(this.dgv_turnos);
             this.lbl_nro_pagina.Text = "";
             this.lbl_nro_turnos.Text = "";
@@ -77,51 +96,58 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void btn_buscar_Click(object sender, EventArgs e)
         {
-            try
-            {
-                //Inicializamos los componentes antes de realizar la búsqueda
-                ManipulacionComponentes.vaciarGrid(this.dgv_turnos);
-                ManipulacionComponentes.deshabilitarComponentes(new List<Control>(){this.btn_primera,this.btn_anterior,this.btn_siguiente,this.btn_ultima,
-                                                                              this.btn_aceptar});
-                this.lbl_nro_pagina.Text = "";
-                this.lbl_nro_turnos.Text = "";
+            this.lbl_error_pro.Visible = false;
+            this.lbl_error_esp.Visible = false;
 
-                ManipulacionComponentes.habilitarComponentes(new List<Control>(){this.btn_primera,this.btn_anterior,this.btn_siguiente,this.btn_ultima,
-                                                                              this.btn_aceptar});
-                armarQuery();
-                pagingDS = new DataSet();
-                //Llenamos la grilla con el resultado de la búsqueda
-                ManipulacionComponentes.llenarGrid(this.dgv_turnos, sql.ToString(), pagingDS, scrollVal, CANT_POR_PAGINA, "Turnos");
-                this.dgv_turnos.DataSource = pagingDS;
-                this.dgv_turnos.DataMember = "Turnos";
-                //Obtenemos el total de turnos devuelto por la búsqueda 
-                cantTurnos = calcularFilasTotal();
-                lbl_nro_turnos.Text = cantTurnos.ToString();
-                //Si no hay turnos, hay una sóla página y no se puede seleccionar ninguno
-                if (cantTurnos == 0)
+            if (validar_profesional())
+            {
+                try
                 {
-                    cantPaginas = 1;
+
+                    //Inicializamos los componentes antes de realizar la búsqueda
+                    ManipulacionComponentes.vaciarGrid(this.dgv_turnos);
                     ManipulacionComponentes.deshabilitarComponentes(new List<Control>(){this.btn_primera,this.btn_anterior,this.btn_siguiente,this.btn_ultima,
                                                                               this.btn_aceptar});
-                }
-                //Si hay turnos, obtenemos el total de páginas para mostrar
-                else
-                {
-                    cantPaginas = cantTurnos / CANT_POR_PAGINA;
-                }
-                nroPagina = 1;
-                if (cantTurnos % CANT_POR_PAGINA > 0)
-                {
-                    cantPaginas = cantPaginas + 1;
-                }
-                lbl_nro_pagina.Text = "Página " + nroPagina + " de " + cantPaginas;
+                    this.lbl_nro_pagina.Text = "";
+                    this.lbl_nro_turnos.Text = "";
 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                MessageBox.Show("Se ha producido un error al buscar turnos: " + ex.Message, "Error inesperado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                    ManipulacionComponentes.habilitarComponentes(new List<Control>(){this.btn_primera,this.btn_anterior,this.btn_siguiente,this.btn_ultima,
+                                                                              this.btn_aceptar});
+                    armarQuery();
+                    pagingDS = new DataSet();
+                    //Llenamos la grilla con el resultado de la búsqueda
+                    ManipulacionComponentes.llenarGrid(this.dgv_turnos, sql.ToString(), pagingDS, scrollVal, CANT_POR_PAGINA, "Turnos");
+                    this.dgv_turnos.DataSource = pagingDS;
+                    this.dgv_turnos.DataMember = "Turnos";
+                    //Obtenemos el total de turnos devuelto por la búsqueda 
+                    cantTurnos = calcularFilasTotal();
+                    lbl_nro_turnos.Text = cantTurnos.ToString();
+                    //Si no hay turnos, hay una sóla página y no se puede seleccionar ninguno
+                    if (cantTurnos == 0)
+                    {
+                        cantPaginas = 1;
+                        ManipulacionComponentes.deshabilitarComponentes(new List<Control>(){this.btn_primera,this.btn_anterior,this.btn_siguiente,this.btn_ultima,
+                                                                              this.btn_aceptar});
+                    }
+                    //Si hay turnos, obtenemos el total de páginas para mostrar
+                    else
+                    {
+                        cantPaginas = cantTurnos / CANT_POR_PAGINA;
+                    }
+                    nroPagina = 1;
+                    if (cantTurnos % CANT_POR_PAGINA > 0)
+                    {
+                        cantPaginas = cantPaginas + 1;
+                    }
+                    lbl_nro_pagina.Text = "Página " + nroPagina + " de " + cantPaginas;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    MessageBox.Show("Se ha producido un error al buscar turnos: " + ex.Message, "Error inesperado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
         }
 
@@ -155,10 +181,10 @@ namespace ClinicaFrba.Cancelar_Atencion
             //Armamos el where
             sqlWhere.Clear();
             sqlWhere.Append(" WHERE");
-            sqlWhere.Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.profesional.apellido"].Replace("{1}", this.txt_apellido_profesional.Text));
-            sqlWhere.Append(" AND").Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.profesional.nombre"].Replace("{0}", this.txt_nombre_profesional.Text));
-            sqlWhere.Append(" AND").Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.especialidad.descripcion"].Replace("{0}", this.txt_especialidad.Text));
-            sqlWhere.Append(" AND").Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.afiliado"].Replace("{1}", Program.user));
+            sqlWhere.Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.profesional.apellido"].Replace("{1}", this.profesional.Apellido));
+            sqlWhere.Append(" AND").Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.profesional.nombre"].Replace("{0}", this.profesional.Nombre));
+            sqlWhere.Append(" AND").Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.especialidad.descripcion"].Replace("{0}", this.cmb_especialidades.Text));
+            sqlWhere.Append(" AND").Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.afiliado"].Replace("{1}", this.afiliado.getDocumento()));
             sqlWhere.Append(" AND").Append(ConfigurationManager.AppSettings["query.obtener.turnos.where.not.cancelacion"]);
             if (this.dtp_fecha_turno.Enabled)
             {
@@ -224,6 +250,22 @@ namespace ClinicaFrba.Cancelar_Atencion
             return validacion;
         }
 
+        private bool validar_profesional()
+        {
+            bool validacion = true;
+            if (!ValidacionComponentes.comboBoxSeleccionoOpcion(this.cmb_especialidades) && cmb_especialidades.Visible==true)
+            {
+                this.lbl_error_esp.Visible = true;
+                validacion = false;
+            }
+            if (!ValidacionComponentes.textBoxLlenoCampo(this.txt_profesional))
+            {
+                this.lbl_error_pro.Visible = true;
+                validacion = false;
+            }
+            return validacion;
+        }
+
         private bool insertarCancelacion(String motivo, int idTipoCancelacion, int nroTurno, String fechaActual)
         {
             using (SqlConnection cx = Connection.getConnection())
@@ -255,6 +297,89 @@ namespace ClinicaFrba.Cancelar_Atencion
         private void btn_atras_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
+        }
+
+        private Afiliado obtenerAfiliadoConUsername()
+        {
+            StringBuilder query = new StringBuilder(ConfigurationManager.AppSettings["query.abm.afiliado.select"].ToString());
+            query.Append(" AND usu.usu_username='" + Program.user + "'");
+            Afiliado afiliado = new Afiliado();
+            using (SqlConnection cx = Connection.getConnection())
+            {
+                try
+                {
+                    SqlCommand sqlCmd = new SqlCommand(query.ToString(), cx);
+                    cx.Open();
+                    SqlDataReader sqlReader = sqlCmd.ExecuteReader();
+                    while (sqlReader.Read())
+                    {
+                        afiliado.setApellido(sqlReader["Apellido"].ToString());
+                        afiliado.setUsername(sqlReader["Usuario"].ToString());
+                        afiliado.setNombre(sqlReader["Nombre"].ToString());
+                        afiliado.setDocumento(sqlReader["Documento"].ToString());
+                        afiliado.setNroAfiliado(sqlReader["Nro Afiliado"].ToString());
+                        afiliado.setDireccion(sqlReader["Direccion"].ToString());
+                        afiliado.setTelefono(sqlReader["Telefono"].ToString());
+                        afiliado.setMail(sqlReader["Mail"].ToString());
+                        afiliado.setFechaNac(sqlReader["Fecha de Nacimiento"].ToString());
+                        afiliado.setEstadoCivil(sqlReader["Estado Civil"].ToString());
+                        afiliado.setPlan(sqlReader["Plan"].ToString());
+                        afiliado.setNroConsultas(sqlReader["Nro Consulta"].ToString());
+                        afiliado.setHabilitado(sqlReader["Activo"].ToString().Equals("SI") ? true : false);
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    throw ex;
+                }
+
+                return afiliado;
+            }
+        }
+
+        private void btn_buscarAfiliado_Click(object sender, EventArgs e)
+        {
+            using (BuscarAfiliado buscarAfi = new BuscarAfiliado("Seleccionar"))
+            {
+                if (buscarAfi.ShowDialog().Equals(DialogResult.OK))
+                {
+                    this.afiliado = buscarAfi.AfiliadoReturn;
+                    if (this.afiliado.getHabilitado())
+                    {
+                        this.txt_idAfiliado.Text = this.afiliado.getNroAfiliado();
+                        this.pan_canAfiliado.Visible = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("El afiliado seleccionado no se encuentra habilitado para realizar esta operacion", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        this.Close();
+                    }
+                }
+
+            }
+        }
+
+        private void btn_buscar_profesional_Click(object sender, EventArgs e)
+        {
+            using (BuscarProfesionales buscarProfesional = new BuscarProfesionales())
+            {
+                if (buscarProfesional.ShowDialog().Equals(DialogResult.OK))
+                {
+                    this.profesional = buscarProfesional.ProfesionalReturn;
+                    this.txt_profesional.Text = this.profesional.Apellido + ", " + this.profesional.Nombre;
+                    StringBuilder sqlEspecialidadesProfesional = new StringBuilder(ConfigurationManager.AppSettings["query.obtener.especialidades.profesional.select"]);
+                    sqlEspecialidadesProfesional.Append(" WHERE");
+                    sqlEspecialidadesProfesional.Append(ConfigurationManager.AppSettings["query.obtener.profesionales.where.nro.doc"].Replace("{2}", this.profesional.NroDoc.ToString()));
+                    this.cmb_especialidades.Items.Clear();
+                    ManipulacionComponentes.llenarComboBox(this.cmb_especialidades, sqlEspecialidadesProfesional.ToString(), "Especialidad");
+                    this.cmb_especialidades.DropDownWidth = ManipulacionComponentes.obtenerDropDownMaxWidthCombo(this.cmb_especialidades);
+                    this.cmb_especialidades.Visible = true;
+                    this.lbl_especialidades.Visible = true;
+                }
+            }
+
         }
     }
 }

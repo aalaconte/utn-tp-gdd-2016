@@ -1,9 +1,11 @@
 ﻿using ClinicaFrba.Abm_Profesional;
 using ClinicaFrba.BaseDeDatos;
+using ClinicaFrba.Registrar_Agenta_Medico;
 using ClinicaFrba.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -16,10 +18,21 @@ namespace ClinicaFrba.Cancelar_Atencion
 {
     public partial class CancelarAtencionProfesional : Form
     {
-        private Profesional profesional = new Profesional(int.Parse(Program.user));
+        private Profesional profesional;
         public CancelarAtencionProfesional()
         {
             InitializeComponent();
+            profesional=obtenerProfesionalPorUsername();
+            this.txt_profesional.Text = this.profesional.Apellido + ", " + this.profesional.Nombre;
+            this.pan_CancelarPro.Visible = true;
+            this.btn_buscar_profesional.Visible = true;
+        }
+
+        public CancelarAtencionProfesional(string administrador)
+        {
+            InitializeComponent();
+            this.pan_CancelarPro.Visible = false;
+            this.btn_buscar_profesional.Visible = true;
         }
 
         private void CancelarAtencionProfesional_Load(object sender, EventArgs e)
@@ -100,6 +113,51 @@ namespace ClinicaFrba.Cancelar_Atencion
         private void btn_cancelar_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
+        }
+
+        private Profesional obtenerProfesionalPorUsername()
+        {
+            StringBuilder query = new StringBuilder(ConfigurationManager.AppSettings["query.obtener.profesionales.select"].ToString());
+            query.Append(" AND u.usu_username='" + Program.user + "'");
+            Profesional pro = new Profesional();
+            using (SqlConnection cx = Connection.getConnection())
+            {
+                try
+                {
+                    SqlCommand sqlCmd = new SqlCommand(query.ToString(), cx);
+                    cx.Open();
+                    SqlDataReader sqlReader = sqlCmd.ExecuteReader();
+                    while (sqlReader.Read())
+                    {
+                        pro.Apellido=(sqlReader["Apellido"].ToString());
+                        pro.Nombre=(sqlReader["Nombre"].ToString());
+                        pro.NroDoc = Int32.Parse(sqlReader["Nro Documento"].ToString());
+                        pro.Matricula = Int32.Parse(sqlReader["Matrícula"].ToString());
+
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    throw ex;
+                }
+
+                return pro;
+            }
+        }
+
+        private void btn_buscar_profesional_Click(object sender, EventArgs e)
+        {
+            using (BuscarProfesionales buscarProfesional = new BuscarProfesionales())
+            {
+                if (buscarProfesional.ShowDialog().Equals(DialogResult.OK))
+                {
+                    this.profesional = buscarProfesional.ProfesionalReturn;
+                    this.txt_profesional.Text = this.profesional.Apellido + ", " + this.profesional.Nombre;
+                    this.pan_CancelarPro.Visible = true;
+                }
+            }
         }
 
     }
