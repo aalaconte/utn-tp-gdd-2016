@@ -370,7 +370,7 @@ select
 	Turno_Numero
 	,Bono_Consulta_Numero
 	,Turno_Fecha
-	,Turno_Fecha				--ANALIZAR
+	,DATEADD(MINUTE,30,Turno_Fecha)				--ANALIZAR
 	,1 Atendio
 from gd_esquema.Maestra
 where Turno_Numero is not null 

@@ -95,6 +95,7 @@
             this.btn_ListadoEstadistico.Text = "Listado Estadistico";
             this.btn_ListadoEstadistico.UseVisualStyleBackColor = true;
             this.btn_ListadoEstadistico.Visible = false;
+            this.btn_ListadoEstadistico.Click += new System.EventHandler(this.btn_ListadoEstadistico_Click);
             // 
             // btn_RegistroLlegadaAtMedica
             // 
