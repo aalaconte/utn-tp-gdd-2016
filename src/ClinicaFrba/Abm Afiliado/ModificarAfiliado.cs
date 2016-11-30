@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Abm_Afiliado;
+using ClinicaFrba.Validaciones;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
@@ -77,6 +78,9 @@ namespace ClinicaFrba.Abm_Afiliado
                 this.txtUsername.Focus();
                 return;
             }
+            limpiarWarnings();
+            if (validar())
+            {
             SqlConnection cx = null;
             try
             {
@@ -113,5 +117,39 @@ namespace ClinicaFrba.Abm_Afiliado
             }
             this.Close();
         }
+        }
+
+        private bool validar()
+        {
+            bool resultado = true;
+            if (string.IsNullOrWhiteSpace(this.txtDireccion.Text))
+            {
+                this.lbl_warn_dir.Visible = true;
+                resultado = false;
+            }
+            if (string.IsNullOrWhiteSpace(this.txtTelefono.Text) || !ValidacionComponentes.validarNumericoPositivo(txtTelefono))
+            {
+                this.lbl_warn_tel.Visible = true;
+                resultado = false;
+            }
+            if (string.IsNullOrWhiteSpace(this.txtMail.Text))
+            {
+                this.lbl_warn_mail.Visible = true;
+                resultado = false;
+            }
+            if (chbCambiarPlan.Checked && string.IsNullOrWhiteSpace(this.txtMotivo.Text))
+            {
+                this.lbl_warn_motivo.Visible = true;
+                resultado = false;
+            }
+            return resultado;
+        }
+
+        private void limpiarWarnings()
+        {
+
+            ManipulacionComponentes.ocultarComponentes(new List<Control> {this.lbl_warn_dir, this.lbl_warn_motivo, this.lbl_warn_mail,this.lbl_warn_tel});
+        }
+
     }
 }

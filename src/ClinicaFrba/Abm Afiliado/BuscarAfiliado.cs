@@ -223,6 +223,38 @@ namespace ClinicaFrba.Abm_Afiliado
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
+                else if (btn_seleccionar.Text.Equals("Dar de Baja/Reactivar"))
+                {
+                    Afiliado afi = new Abm_Afiliado.Afiliado(this.dgv_Afiliados.SelectedRows[0].Cells[0].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[4].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[2].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[1].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[3].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[5].Value.ToString(),
+                    this.dgv_Afiliados.SelectedRows[0].Cells[6].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[7].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[8].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[10].Value.ToString(), (bool)(this.dgv_Afiliados.SelectedRows[0].Cells[12].Value.ToString().Equals("SI")));
+                    
+                    SqlConnection cx = null;
+                    try
+                    {
+                        cx = Connection.getConnection();
+                        cx.Open();
+
+                        SqlCommand sqlCmd = new SqlCommand("PICO_Y_PALA.darDeBajaAfiliado", cx);
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        sqlCmd.Parameters.Add("@afi_Doc", SqlDbType.BigInt).Value = Int64.Parse(afi.getDocumento());
+                        sqlCmd.Parameters.Add("@fecha", SqlDbType.SmallDateTime).Value = DateTime.Parse(ConfigurationManager.AppSettings["fechaActualSistema"].ToString());
+                        sqlCmd.ExecuteNonQuery();
+                        sqlCmd.Dispose();
+                        if(afi.getHabilitado())
+                        MessageBox.Show("Afiliado Dado de Baja con exito!");
+                        else
+                        MessageBox.Show("Afiliado reactivado con exito!");
+
+                        cx.Close();
+                    }
+                    catch (Exception exception)
+                    {
+                        cx.Close();
+                        MessageBox.Show(exception.Message);
+                        return;
+                    }
+                    this.Close();
+                }
 
             }
         }

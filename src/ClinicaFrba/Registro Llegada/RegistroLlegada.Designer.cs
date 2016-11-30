@@ -82,7 +82,6 @@
             // dtp_fechaTurno
             // 
             this.dtp_fechaTurno.CustomFormat = "d-M-yyyy HH:mm:ss";
-            this.dtp_fechaTurno.Enabled = false;
             this.dtp_fechaTurno.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtp_fechaTurno.Location = new System.Drawing.Point(488, 45);
             this.dtp_fechaTurno.Name = "dtp_fechaTurno";

@@ -38,6 +38,8 @@
             this.chb_meses = new System.Windows.Forms.CheckBox();
             this.lbl_ano = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.cbPlan = new System.Windows.Forms.ComboBox();
+            this.chb_plan = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_listados)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,6 +59,7 @@
             this.cb_año.Name = "cb_año";
             this.cb_año.Size = new System.Drawing.Size(107, 21);
             this.cb_año.TabIndex = 1;
+            this.cb_año.SelectedIndexChanged += new System.EventHandler(this.cb_año_SelectedIndexChanged);
             // 
             // cb_semestre
             // 
@@ -66,6 +69,7 @@
             this.cb_semestre.Name = "cb_semestre";
             this.cb_semestre.Size = new System.Drawing.Size(107, 21);
             this.cb_semestre.TabIndex = 2;
+            this.cb_semestre.Visible = false;
             this.cb_semestre.SelectedIndexChanged += new System.EventHandler(this.cb_semestre_SelectedIndexChanged);
             // 
             // cb_meses
@@ -114,6 +118,7 @@
             this.chb_semestre.TabIndex = 54;
             this.chb_semestre.Text = "Por Semestre";
             this.chb_semestre.UseVisualStyleBackColor = true;
+            this.chb_semestre.Visible = false;
             this.chb_semestre.CheckedChanged += new System.EventHandler(this.chb_semestre_CheckedChanged);
             // 
             // chb_meses
@@ -146,11 +151,35 @@
             this.label1.TabIndex = 57;
             this.label1.Text = "Seleccionar listado:";
             // 
+            // cbPlan
+            // 
+            this.cbPlan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPlan.Enabled = false;
+            this.cbPlan.Location = new System.Drawing.Point(102, 109);
+            this.cbPlan.Name = "cbPlan";
+            this.cbPlan.Size = new System.Drawing.Size(107, 21);
+            this.cbPlan.TabIndex = 58;
+            this.cbPlan.Visible = false;
+            // 
+            // chb_plan
+            // 
+            this.chb_plan.AutoSize = true;
+            this.chb_plan.Location = new System.Drawing.Point(30, 111);
+            this.chb_plan.Name = "chb_plan";
+            this.chb_plan.Size = new System.Drawing.Size(66, 17);
+            this.chb_plan.TabIndex = 59;
+            this.chb_plan.Text = "Por Plan";
+            this.chb_plan.UseVisualStyleBackColor = true;
+            this.chb_plan.Visible = false;
+            this.chb_plan.CheckedChanged += new System.EventHandler(this.chb_plan_CheckedChanged);
+            // 
             // ListadosEstadisticos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(707, 351);
+            this.Controls.Add(this.chb_plan);
+            this.Controls.Add(this.cbPlan);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lbl_ano);
             this.Controls.Add(this.chb_meses);
@@ -181,5 +210,7 @@
         private System.Windows.Forms.CheckBox chb_meses;
         private System.Windows.Forms.Label lbl_ano;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cbPlan;
+        private System.Windows.Forms.CheckBox chb_plan;
     }
 }

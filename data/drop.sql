@@ -7,6 +7,8 @@ GO
 --Triggers
 drop trigger PICO_Y_PALA.trigger_agregarBonos
 go
+drop TRIGGER PICO_Y_PALA.trigger_liberarTurnos
+go
 
 --Tablas
 drop table pico_y_pala.consulta_enfermedad
@@ -109,6 +111,8 @@ go
 DROP PROCEDURE pico_y_pala.cancelarTurnosFecha
 go
 DROP PROCEDURE pico_y_pala.cancelarTurnosRangoFechas
+go
+DROP PROCEDURE PICO_Y_PALA.darDeBajaAfiliado
 go
 --Functions
 drop function PICO_Y_PALA.cantHorasSemanaProf

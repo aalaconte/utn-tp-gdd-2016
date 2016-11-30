@@ -500,6 +500,27 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE PICO_Y_PALA.darDeBajaAfiliado (@afi_Doc numeric(18,0), @fecha SMALLDATETIME)
+AS
+BEGIN
+	DECLARE @estadoActual BIT
+	SELECT @estadoActual = afi.afi_activo FROM PICO_Y_PALA.afiliado afi WHERE afi.afi_nro_doc=@afi_Doc
+	IF (@estadoActual = 1)
+	BEGIN
+	--Esta activo se lo da de baja y se agrega la fecha.
+		update pico_y_pala.afiliado set afi_activo = 0, afi_fecha_baja=pico_y_pala.fechaActualSistema(@fecha) where afi_nro_doc=@afi_Doc
+		update pico_y_pala.usuario set usu_habilitado = 0 where usu_nro_doc=@afi_Doc
+		RETURN
+	END
+	ELSE
+	--Esta dado de baja hay que reactivarlo
+	BEGIN
+		update pico_y_pala.afiliado set afi_activo = 1, afi_fecha_baja= null where afi_nro_doc=@afi_Doc
+		update pico_y_pala.usuario set usu_habilitado = 1 where usu_nro_doc=@afi_Doc
+	END
+END
+GO
+
 CREATE PROCEDURE PICO_Y_PALA.compraBonos (@afi_NroAfi numeric(18,0), @cantBonos int, @precioBonos int,@fechaSistema SMALLDATETIME)
 AS
 BEGIN
@@ -711,5 +732,34 @@ DECLARE @enfermedadID NUMERIC(18,0)
 INSERT INTO pico_y_pala.enfermedad(enf_desc) values (@enfermedad)
 SET @enfermedadID = SCOPE_IDENTITY()
 INSERT INTO pico_y_pala.consulta_enfermedad (cen_con_id,cen_enf_id) values (@consultaID,@enfermedadID)
+END
+GO
+
+CREATE TRIGGER PICO_Y_PALA.trigger_liberarTurnos ON pico_y_pala.afiliado AFTER UPDATE
+AS
+BEGIN
+DECLARE @turno_baja NUMERIC(18,0), @fechaBaja SMALLDATETIME
+--Si hay algun modificado que cambio su estado
+if(exists(select * from deleted,inserted where inserted.afi_activo!=deleted.afi_activo))
+BEGIN
+--Si ese que cambio su estado fue dado de baja
+if(exists(select * from inserted where afi_activo=0))
+BEGIN
+select @fechaBaja=ins.afi_fecha_baja from pico_y_pala.afiliado afi, inserted ins where afi.afi_nro_doc=ins.afi_nro_doc
+
+DECLARE turnos CURSOR
+FOR select tur.tur_id from inserted ins join pico_y_pala.turno tur on ins.afi_nro_doc = tur.tur_afi_nro_doc where CONVERT(Date,tur.tur_fecha_hora)!=CONVERT(Date,@fechaBaja)
+
+OPEN turnos
+FETCH NEXT FROM turnos into @turno_baja
+WHILE @@FETCH_STATUS=0
+BEGIN
+EXEC pico_y_pala.cancelarTurno 'Baja Usuario', 2, @turno_baja, @fechaBaja
+
+FETCH NEXT FROM turnos into @turno_baja
+END
+
+END
+END
 END
 GO
