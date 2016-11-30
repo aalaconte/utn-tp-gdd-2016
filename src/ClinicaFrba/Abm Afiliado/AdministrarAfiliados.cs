@@ -36,7 +36,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btn_baja_Click(object sender, EventArgs e)
         {
-            BuscarAfiliado bajaAfi = new Abm_Afiliado.BuscarAfiliado("Dar de Baja/Reactivar");
+            BuscarAfiliado bajaAfi = new Abm_Afiliado.BuscarAfiliado("Baja/ Reactivar");
             bajaAfi.ShowDialog();
         }
 

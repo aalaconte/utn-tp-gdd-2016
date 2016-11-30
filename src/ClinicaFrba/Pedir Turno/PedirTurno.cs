@@ -36,7 +36,15 @@ namespace ClinicaFrba.Pedir_Turno
             InitializeComponent();
             this.afiliado = obtenerAfiliadoConUsername();
             Console.WriteLine("Afiliado: " + this.afiliado.getUsername() + " - " + this.afiliado.getApellido() + ", " + this.afiliado.getNombre());
+            this.btnBuscarAfi.Visible = false;
+            this.txtNroAfi.Text = afiliado.getNroAfiliado();
+            this.pan_pedirTurno.Visible = true;
+        }
 
+        public PedirTurno(string administrador)
+        {
+            InitializeComponent();
+            this.btnBuscarAfi.Visible = true;
         }
 
         private void btn_buscar_profesional_Click(object sender, EventArgs e)
@@ -104,46 +112,49 @@ namespace ClinicaFrba.Pedir_Turno
 
         private void cmb_especialidad_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.lbl_error_especialidad.Visible = false;
-            this.dgv_turnos_disponibles.Rows.Clear();
-            this.agendas = obtenerAgendasProfesionalEspecialidad();
-            Console.WriteLine("Cantidad agendas: " + this.agendas.Count());
-            List<DateTime> horariosOcupados = obtenerTurnosOcupados();
-            List<DateTime> diasCancelados = obtenerDiasCancelados();
-            List<DateTime> horariosAOfrecer = new List<DateTime>();
-            DateTime fechaMin;
-            DateTime fechaActualDate = DateTime.Parse(Program.fechaActual).Date;
-
-            //Generamos los turnos a ofrecer por cada agenda disponible para el profesional y especialidad seleccionados
-            foreach (AgendaProfesional agenda in this.agendas)
+            if (this.cmb_especialidad.SelectedIndex != -1)
             {
-                //Si la fechaDesde de la agenda es menor que la actual, tengo que chequear a partir de la actual
-                if (agenda.FechaDesde < fechaActualDate)
+                this.lbl_error_especialidad.Visible = false;
+                this.dgv_turnos_disponibles.Rows.Clear();
+                this.agendas = obtenerAgendasProfesionalEspecialidad();
+                Console.WriteLine("Cantidad agendas: " + this.agendas.Count());
+                List<DateTime> horariosOcupados = obtenerTurnosOcupados();
+                List<DateTime> diasCancelados = obtenerDiasCancelados();
+                List<DateTime> horariosAOfrecer = new List<DateTime>();
+                DateTime fechaMin;
+                DateTime fechaActualDate = DateTime.Parse(Program.fechaActual).Date;
+
+                //Generamos los turnos a ofrecer por cada agenda disponible para el profesional y especialidad seleccionados
+                foreach (AgendaProfesional agenda in this.agendas)
                 {
-                    //La fechaActualDate puede no corresponderse con el día de la semana que se definió en la agenda
-                    // obtengo fecha mínima.
-                    fechaMin = obtenerFechaMin(agenda.Dia.Id, fechaActualDate);
+                    //Si la fechaDesde de la agenda es menor que la actual, tengo que chequear a partir de la actual
+                    if (agenda.FechaDesde < fechaActualDate)
+                    {
+                        //La fechaActualDate puede no corresponderse con el día de la semana que se definió en la agenda
+                        // obtengo fecha mínima.
+                        fechaMin = obtenerFechaMin(agenda.Dia.Id, fechaActualDate);
+                    }
+                    else
+                    {
+                        //La fechaDesde de la agenda puede no corresponderse con el día de la semana que se definió
+                        // obtengo fecha mínima.
+                        fechaMin = obtenerFechaMin(agenda.Dia.Id, agenda.FechaDesde);
+                    }
+
+                    //Generamos los posibles turnos para mostrar los horarios que están disponibles
+                    horariosAOfrecer.AddRange(generarPosiblesTurnosAgenda(fechaMin, agenda, horariosOcupados, diasCancelados));
+
                 }
-                else
+
+                //Cada turnoAOfrecer lo agregamos a la grilla para que le usuario pueda seleccionarlo
+                foreach (DateTime horario in horariosAOfrecer)
                 {
-                    //La fechaDesde de la agenda puede no corresponderse con el día de la semana que se definió
-                    // obtengo fecha mínima.
-                    fechaMin = obtenerFechaMin(agenda.Dia.Id, agenda.FechaDesde);
+                    var culture = new System.Globalization.CultureInfo("es-ES");
+                    this.dgv_turnos_disponibles.Rows.Add(new object[] { culture.DateTimeFormat.GetDayName(horario.DayOfWeek), horario });
                 }
 
-                //Generamos los posibles turnos para mostrar los horarios que están disponibles
-                horariosAOfrecer.AddRange(generarPosiblesTurnosAgenda(fechaMin, agenda, horariosOcupados, diasCancelados));
-
+                this.lbl_error_turno.Visible = this.dgv_turnos_disponibles.RowCount == 0;
             }
-
-            //Cada turnoAOfrecer lo agregamos a la grilla para que le usuario pueda seleccionarlo
-            foreach (DateTime horario in horariosAOfrecer)
-            {
-                var culture = new System.Globalization.CultureInfo("es-ES");
-                this.dgv_turnos_disponibles.Rows.Add(new object[] { culture.DateTimeFormat.GetDayName(horario.DayOfWeek), horario });
-            }
-
-            this.lbl_error_turno.Visible = this.dgv_turnos_disponibles.RowCount == 0;
         }
 
         private DateTime obtenerFechaMin(int idDiaAgenda, DateTime fecha)
@@ -499,6 +510,33 @@ namespace ClinicaFrba.Pedir_Turno
                     MessageBox.Show("Se produjo un error al insertar el turno", "Error al registrar el turno", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void btnBuscarAfi_Click(object sender, EventArgs e)
+        {
+            using (BuscarAfiliado buscarAfi = new BuscarAfiliado("Seleccionar"))
+            {
+                if (buscarAfi.ShowDialog().Equals(DialogResult.OK))
+                {
+                    this.afiliado = buscarAfi.AfiliadoReturn;
+                    if (this.afiliado.getHabilitado())
+                    {
+                        this.txtNroAfi.Text = this.afiliado.getNroAfiliado();
+                        this.pan_pedirTurno.Visible = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("El afiliado seleccionado no se encuentra habilitado para realizar esta operacion", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        this.Close();
+                    }
+                }
+                if (this.cmb_especialidad.SelectedIndex != -1)
+                {
+                    this.cmb_especialidad.SelectedIndex--;
+                    this.cmb_especialidad.SelectedIndex++;
+                }
+            }
+
         }
 
     }

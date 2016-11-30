@@ -20,6 +20,11 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             InitializeComponent();
             this.btn_seleccionar.Text = operacion;
+            if (!btn_seleccionar.Text.Equals("Baja/ Reactivar"))
+            {
+                btn_seleccionar.Height = btn_ultima.Height;
+                btn_seleccionar.Width=btn_ultima.Width;
+            }
         }
 
         private DataSet pagingDS;
@@ -223,7 +228,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
-                else if (btn_seleccionar.Text.Equals("Dar de Baja/Reactivar"))
+                else if (btn_seleccionar.Text.Equals("Baja/ Reactivar"))
                 {
                     Afiliado afi = new Abm_Afiliado.Afiliado(this.dgv_Afiliados.SelectedRows[0].Cells[0].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[4].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[2].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[1].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[3].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[5].Value.ToString(),
                     this.dgv_Afiliados.SelectedRows[0].Cells[6].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[7].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[8].Value.ToString(), this.dgv_Afiliados.SelectedRows[0].Cells[10].Value.ToString(), (bool)(this.dgv_Afiliados.SelectedRows[0].Cells[12].Value.ToString().Equals("SI")));

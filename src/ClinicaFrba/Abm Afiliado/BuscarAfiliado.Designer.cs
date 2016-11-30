@@ -218,7 +218,7 @@
             // 
             this.btn_seleccionar.Location = new System.Drawing.Point(663, 335);
             this.btn_seleccionar.Name = "btn_seleccionar";
-            this.btn_seleccionar.Size = new System.Drawing.Size(75, 23);
+            this.btn_seleccionar.Size = new System.Drawing.Size(74, 35);
             this.btn_seleccionar.TabIndex = 14;
             this.btn_seleccionar.Text = "Seleccionar";
             this.btn_seleccionar.UseVisualStyleBackColor = true;

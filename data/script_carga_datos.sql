@@ -127,7 +127,6 @@ print ('rol ok');
 --FUNCIONALIDAD
 insert into pico_y_pala.funcionalidad (fun_desc) values ('ABM de Rol')
 insert into pico_y_pala.funcionalidad (fun_desc) values ('Abm Afiliado')
-insert into pico_y_pala.funcionalidad (fun_desc) values ('Abm Profesional')
 insert into pico_y_pala.funcionalidad (fun_desc) values ('Registrar Agenda del Medico')
 insert into pico_y_pala.funcionalidad (fun_desc) values ('Comprar Bonos')
 insert into pico_y_pala.funcionalidad (fun_desc) values ('Pedir Turno')
@@ -150,7 +149,7 @@ select
 	from pico_y_pala.rol roles, pico_y_pala.funcionalidad fun
 where
 	roles.rol_nombre = 'Administrador'
-	and fun.fun_desc in ('ABM de Rol','Login y Seguridad','Registro de Usuario','Abm Afiliado','Abm Profesional'
+	and fun.fun_desc in ('ABM de Rol','Login y Seguridad','Registro de Usuario','Abm Afiliado'
 	,'Abm Especialidades Medicas','Abm de Planes','Registro de llegadas para atención médica','Listado Estadistico')
 union
 select 
@@ -159,7 +158,7 @@ select
 	from pico_y_pala.rol roles, pico_y_pala.funcionalidad fun
 where
 	roles.rol_nombre = 'Administrativo'
-	and fun.fun_desc in ('ABM de Rol','Login y Seguridad','Registro de Usuario','Abm Afiliado','Abm Profesional'
+	and fun.fun_desc in ('ABM de Rol','Login y Seguridad','Registro de Usuario','Abm Afiliado'
 	,'Abm Especialidades Medicas','Abm de Planes','Registrar Agenda del Medico', 'Registro de llegadas para atención médica','Listado Estadistico')
 union
 select 

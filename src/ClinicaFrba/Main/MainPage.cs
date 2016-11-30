@@ -153,8 +153,16 @@ namespace ClinicaFrba.Main
 
         private void btn_PedidoTurno_Click(object sender, EventArgs e)
         {
-            PedirTurno pedirTurno = new PedirTurno();
-            pedirTurno.ShowDialog();
+            if (Program.user.Equals("admin"))
+            {
+                PedirTurno pedirTurno = new PedirTurno(Program.user);
+                pedirTurno.ShowDialog();
+            }
+            else
+            {
+                PedirTurno pedirTurno = new PedirTurno();
+                pedirTurno.ShowDialog();
+            }
         }
         
         private void btn_RegistroLlegadaAtMedica_Click(object sender, EventArgs e)
@@ -176,9 +184,14 @@ namespace ClinicaFrba.Main
                 CancelarAtencionAfiliado cancelarAtencion = new CancelarAtencionAfiliado();
                 cancelarAtencion.ShowDialog();
             }
-            else
+            else if (Program.rol.Equals("Profesional"))
             {
                 CancelarAtencionProfesional cancelarAtencion = new CancelarAtencionProfesional();
+                cancelarAtencion.ShowDialog();
+            }
+            else
+            {
+                CancelarAdmin cancelarAtencion = new CancelarAdmin();
                 cancelarAtencion.ShowDialog();
             }
         }

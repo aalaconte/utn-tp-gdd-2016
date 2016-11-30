@@ -748,14 +748,19 @@ BEGIN
 select @fechaBaja=ins.afi_fecha_baja from pico_y_pala.afiliado afi, inserted ins where afi.afi_nro_doc=ins.afi_nro_doc
 
 DECLARE turnos CURSOR
-FOR select tur.tur_id from inserted ins join pico_y_pala.turno tur on ins.afi_nro_doc = tur.tur_afi_nro_doc where CONVERT(Date,tur.tur_fecha_hora)!=CONVERT(Date,@fechaBaja)
-
+FOR select tur.tur_id from inserted ins join pico_y_pala.turno tur on ins.afi_nro_doc = tur.tur_afi_nro_doc where (not exists(select * from pico_y_pala.cancelacion can where can.can_tur_id=tur.tur_id)) 
+--Tomo todos los turnos que no hayan sido cancelados
 OPEN turnos
 FETCH NEXT FROM turnos into @turno_baja
 WHILE @@FETCH_STATUS=0
 BEGIN
-EXEC pico_y_pala.cancelarTurno 'Baja Usuario', 2, @turno_baja, @fechaBaja
-
+	IF EXISTS(SELECT 1 FROM pico_y_pala.cancelacion WHERE can_tur_id=@turno_baja)
+	BEGIN
+		RAISERROR('Ya existe una cancelación para el turno solicitado',16,1)
+		RETURN
+	END
+	INSERT INTO pico_y_pala.cancelacion(can_motivo,can_tca_id,can_tur_id,can_fecha_desde,can_fecha_hasta)
+			VALUES ('Baja Usuario', 2, @turno_baja, @fechaBaja, @fechaBaja)
 FETCH NEXT FROM turnos into @turno_baja
 END
 
