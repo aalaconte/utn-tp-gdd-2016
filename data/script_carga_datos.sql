@@ -29,7 +29,7 @@ print ('especialidad ok');
 
 --USUARIO
 DECLARE @passUsu varchar(64)
-SET @passUsu = CONVERT(varchar(64),HASHBYTES('SHA2_256', 'pwd'))
+SET @passUsu = HASHBYTES('SHA2_256', 'pwd')
 
 insert into pico_y_pala.usuario
 	(
@@ -91,7 +91,7 @@ insert into pico_y_pala.usuario
 	) values
 	(
 	'admin',
-	CONVERT(varchar(64),HASHBYTES('SHA2_256', 'w23e')),
+	HASHBYTES('SHA2_256', 'w23e'),
 	1,
 	0
 	)
