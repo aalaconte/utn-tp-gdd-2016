@@ -28,6 +28,9 @@ from gd_esquema.Maestra
 print ('especialidad ok');
 
 --USUARIO
+DECLARE @passUsu varchar(64)
+SET @passUsu = CONVERT(varchar(64),HASHBYTES('SHA2_256', 'pwd'))
+
 insert into pico_y_pala.usuario
 	(
 	usu_username,
@@ -47,7 +50,7 @@ insert into pico_y_pala.usuario
 select distinct
 	Paciente_Dni USERNAME,
 	Paciente_Dni DNI,
-	HASHBYTES('SHA2_256', 'pwd') PASSWORD,
+	@passUsu PASS,
 	Paciente_Apellido APELLIDO,
 	Paciente_Nombre NOMBRE,
 	'DNI' TIPO_DOC,
@@ -64,7 +67,7 @@ union
 select distinct	
 	medico_dni,
 	medico_dni,
-	HASHBYTES('SHA2_256', 'w23e'),
+	@passUsu,
 	Medico_Apellido,
 	medico_nombre,
 	'DNI' TIPO_DOC,
@@ -88,7 +91,7 @@ insert into pico_y_pala.usuario
 	) values
 	(
 	'admin',
-	'E6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7',
+	CONVERT(varchar(64),HASHBYTES('SHA2_256', 'w23e')),
 	1,
 	0
 	)
