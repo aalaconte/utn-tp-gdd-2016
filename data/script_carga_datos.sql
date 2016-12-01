@@ -47,7 +47,7 @@ insert into pico_y_pala.usuario
 select distinct
 	Paciente_Dni USERNAME,
 	Paciente_Dni DNI,
-	'A1159E9DF3670D549D04524532629F5477CEB7DEEC9B45E47E8C009506ECB2C8' PASSWORD,
+	HASHBYTES('SHA2_256', 'pwd') PASSWORD,
 	Paciente_Apellido APELLIDO,
 	Paciente_Nombre NOMBRE,
 	'DNI' TIPO_DOC,
@@ -64,7 +64,7 @@ union
 select distinct	
 	medico_dni,
 	medico_dni,
-	'A1159E9DF3670D549D04524532629F5477CEB7DEEC9B45E47E8C009506ECB2C8',
+	HASHBYTES('SHA2_256', 'w23e'),
 	Medico_Apellido,
 	medico_nombre,
 	'DNI' TIPO_DOC,
