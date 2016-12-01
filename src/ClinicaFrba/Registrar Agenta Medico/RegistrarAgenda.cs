@@ -415,7 +415,6 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
                                              ComboBox cmbHHDesde, ComboBox cmbHHHasta, ComboBox cmbError, Label lblError)
         {
             List<AgendaProfesional> agendasConflicto = new List<AgendaProfesional>();
-            MessageBox.Show("En procesarRegistrarAgenda el Dia ingresado es: " + unDia.Id.ToString() + " - " + unDia.Nombre);
             if (!insertarAgenda(unDia.Id, this.profesional.NroDoc, espSeleccionada.Id, dtpFechaDesde.Value, dtpFechaHasta.Value, TimeSpan.Parse(cmbHHDesde.Text), TimeSpan.Parse(cmbHHHasta.Text), lblError, cmbError, cx, tx))
             {
                 agendasConflicto = obtenerAgendasConflictoProfesionalDia(this.profesional, unDia, dtpFechaDesde.Value.ToString("yyyy-MM-dd"), dtpFechaHasta.Value.ToString("yyyy-MM-dd"), cmbHHDesde.Text, cmbHHHasta.Text, cx, tx);
@@ -433,7 +432,6 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
         private List<AgendaProfesional> obtenerAgendasConflictoProfesionalDia(Profesional profesional, Dia dia, String fechaDesde, String fechaHasta,
                                                                               String hhDesde, String hhHasta, SqlConnection cx, SqlTransaction tx)
         {
-            MessageBox.Show("En obtenerAgendasConflictoProfesionalDia el Dia ingresado es: " + dia.Id.ToString() + " - " + dia.Nombre);
             List<AgendaProfesional> agendasReturn = new List<AgendaProfesional>();
             StringBuilder query = new StringBuilder(ConfigurationManager.AppSettings["query.obtener.agendas.select"].ToString());
             query.Append(ConfigurationManager.AppSettings["query.obtener.agendas.group.by"].ToString());
@@ -472,7 +470,6 @@ namespace ClinicaFrba.Registrar_Agenta_Medico
                                     TimeSpan hhDesde, TimeSpan hhHasta, Label lblError, ComboBox cmbError, SqlConnection cx, SqlTransaction tx)
         {
 
-            MessageBox.Show("En insertarAgenda el Dia ingresado es: " + idDia);
             SqlCommand sqlCmd = new SqlCommand("PICO_Y_PALA.registrarAgenda", cx, tx);
             sqlCmd.CommandType = CommandType.StoredProcedure;
             sqlCmd.Parameters.Add("@dia", SqlDbType.Int).Value = idDia;
