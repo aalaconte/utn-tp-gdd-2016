@@ -43,6 +43,7 @@
             this.lbl_warn_año = new System.Windows.Forms.Label();
             this.chb_tcan = new System.Windows.Forms.CheckBox();
             this.cb_tcan = new System.Windows.Forms.ComboBox();
+            this.btn_atras = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_listados)).BeginInit();
             this.SuspendLayout();
             // 
@@ -209,11 +210,22 @@
             this.cb_tcan.TabIndex = 61;
             this.cb_tcan.Visible = false;
             // 
+            // btn_atras
+            // 
+            this.btn_atras.Location = new System.Drawing.Point(12, 311);
+            this.btn_atras.Name = "btn_atras";
+            this.btn_atras.Size = new System.Drawing.Size(84, 28);
+            this.btn_atras.TabIndex = 63;
+            this.btn_atras.Text = "Atras";
+            this.btn_atras.UseVisualStyleBackColor = true;
+            this.btn_atras.Click += new System.EventHandler(this.btn_atras_Click);
+            // 
             // ListadosEstadisticos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(707, 351);
+            this.Controls.Add(this.btn_atras);
             this.Controls.Add(this.chb_tcan);
             this.Controls.Add(this.cb_tcan);
             this.Controls.Add(this.lbl_warn_año);
@@ -255,5 +267,6 @@
         private System.Windows.Forms.Label lbl_warn_año;
         private System.Windows.Forms.CheckBox chb_tcan;
         private System.Windows.Forms.ComboBox cb_tcan;
+        private System.Windows.Forms.Button btn_atras;
     }
 }

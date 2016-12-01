@@ -39,12 +39,15 @@ namespace ClinicaFrba.Pedir_Turno
             this.btnBuscarAfi.Visible = false;
             this.txtNroAfi.Text = afiliado.getNroAfiliado();
             this.pan_pedirTurno.Visible = true;
+            this.btn_aceptar.Visible = true;
         }
 
         public PedirTurno(string administrador)
         {
             InitializeComponent();
             this.btnBuscarAfi.Visible = true;
+
+            this.btn_aceptar.Visible = false;
         }
 
         private void btn_buscar_profesional_Click(object sender, EventArgs e)
@@ -476,7 +479,7 @@ namespace ClinicaFrba.Pedir_Turno
 
         private bool validar()
         {
-
+            this.lbl_error_afiliado.Visible = !ValidacionComponentes.textBoxLlenoCampo(this.txtNroAfi);
             this.lbl_error_profesional.Visible = !ValidacionComponentes.textBoxLlenoCampo(this.txt_profesional);
             this.lbl_error_especialidad.Visible = !ValidacionComponentes.comboBoxSeleccionoOpcion(this.cmb_especialidad);
             this.lbl_error_turno.Visible = !this.lbl_error_especialidad.Visible && this.dgv_turnos_disponibles.RowCount == 0;
@@ -484,7 +487,7 @@ namespace ClinicaFrba.Pedir_Turno
 
             //Pasa la validación si no está visible ninguno de los labels de error
             return !(this.lbl_error_turno.Visible || this.lbl_error_profesional.Visible || this.lbl_error_horario.Visible ||
-                        this.lbl_error_especialidad.Visible);
+                        this.lbl_error_especialidad.Visible || lbl_error_afiliado.Visible);
         }
 
         private void insertarTurno(int nroDocAfi, int nroDocProf, int espId, DateTime fechaHoraTurno)
@@ -523,6 +526,7 @@ namespace ClinicaFrba.Pedir_Turno
                     {
                         this.txtNroAfi.Text = this.afiliado.getNroAfiliado();
                         this.pan_pedirTurno.Visible = true;
+                        this.btn_aceptar.Visible = true;
                     }
                     else
                     {

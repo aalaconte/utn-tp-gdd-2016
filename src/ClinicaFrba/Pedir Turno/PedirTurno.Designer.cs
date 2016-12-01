@@ -46,6 +46,7 @@
             this.btnBuscarAfi = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.pan_pedirTurno = new System.Windows.Forms.Panel();
+            this.lbl_error_afiliado = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_turnos_disponibles)).BeginInit();
             this.pan_pedirTurno.SuspendLayout();
             this.SuspendLayout();
@@ -69,7 +70,7 @@
             // 
             // btn_buscar_profesional
             // 
-            this.btn_buscar_profesional.Location = new System.Drawing.Point(123, 42);
+            this.btn_buscar_profesional.Location = new System.Drawing.Point(204, 14);
             this.btn_buscar_profesional.Name = "btn_buscar_profesional";
             this.btn_buscar_profesional.Size = new System.Drawing.Size(75, 23);
             this.btn_buscar_profesional.TabIndex = 2;
@@ -80,7 +81,7 @@
             // lbl_especialidad
             // 
             this.lbl_especialidad.AutoSize = true;
-            this.lbl_especialidad.Location = new System.Drawing.Point(339, 19);
+            this.lbl_especialidad.Location = new System.Drawing.Point(336, 3);
             this.lbl_especialidad.Name = "lbl_especialidad";
             this.lbl_especialidad.Size = new System.Drawing.Size(146, 13);
             this.lbl_especialidad.TabIndex = 3;
@@ -90,7 +91,7 @@
             // 
             this.cmb_especialidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_especialidad.FormattingEnabled = true;
-            this.cmb_especialidad.Location = new System.Drawing.Point(353, 42);
+            this.cmb_especialidad.Location = new System.Drawing.Point(356, 19);
             this.cmb_especialidad.Name = "cmb_especialidad";
             this.cmb_especialidad.Size = new System.Drawing.Size(121, 21);
             this.cmb_especialidad.TabIndex = 4;
@@ -98,7 +99,7 @@
             // 
             // btn_aceptar
             // 
-            this.btn_aceptar.Location = new System.Drawing.Point(495, 328);
+            this.btn_aceptar.Location = new System.Drawing.Point(495, 324);
             this.btn_aceptar.Name = "btn_aceptar";
             this.btn_aceptar.Size = new System.Drawing.Size(75, 23);
             this.btn_aceptar.TabIndex = 8;
@@ -108,7 +109,7 @@
             // 
             // btn_cancelar
             // 
-            this.btn_cancelar.Location = new System.Drawing.Point(414, 328);
+            this.btn_cancelar.Location = new System.Drawing.Point(414, 324);
             this.btn_cancelar.Name = "btn_cancelar";
             this.btn_cancelar.Size = new System.Drawing.Size(75, 23);
             this.btn_cancelar.TabIndex = 9;
@@ -120,7 +121,7 @@
             // 
             this.lbl_error_turno.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_error_turno.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_turno.Location = new System.Drawing.Point(382, 254);
+            this.lbl_error_turno.Location = new System.Drawing.Point(382, 236);
             this.lbl_error_turno.Name = "lbl_error_turno";
             this.lbl_error_turno.Size = new System.Drawing.Size(167, 21);
             this.lbl_error_turno.TabIndex = 13;
@@ -138,7 +139,7 @@
             this.dgv_turnos_disponibles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dia,
             this.fecha});
-            this.dgv_turnos_disponibles.Location = new System.Drawing.Point(8, 91);
+            this.dgv_turnos_disponibles.Location = new System.Drawing.Point(8, 72);
             this.dgv_turnos_disponibles.MultiSelect = false;
             this.dgv_turnos_disponibles.Name = "dgv_turnos_disponibles";
             this.dgv_turnos_disponibles.ReadOnly = true;
@@ -162,7 +163,7 @@
             // 
             this.lbl_error_profesional.AutoSize = true;
             this.lbl_error_profesional.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_profesional.Location = new System.Drawing.Point(56, 68);
+            this.lbl_error_profesional.Location = new System.Drawing.Point(43, 45);
             this.lbl_error_profesional.Name = "lbl_error_profesional";
             this.lbl_error_profesional.Size = new System.Drawing.Size(159, 13);
             this.lbl_error_profesional.TabIndex = 16;
@@ -173,7 +174,7 @@
             // 
             this.lbl_error_especialidad.AutoSize = true;
             this.lbl_error_especialidad.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_especialidad.Location = new System.Drawing.Point(339, 68);
+            this.lbl_error_especialidad.Location = new System.Drawing.Point(336, 45);
             this.lbl_error_especialidad.Name = "lbl_error_especialidad";
             this.lbl_error_especialidad.Size = new System.Drawing.Size(173, 13);
             this.lbl_error_especialidad.TabIndex = 17;
@@ -185,7 +186,7 @@
             this.lbl_error_horario.AutoSize = true;
             this.lbl_error_horario.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.lbl_error_horario.ForeColor = System.Drawing.Color.Red;
-            this.lbl_error_horario.Location = new System.Drawing.Point(8, 254);
+            this.lbl_error_horario.Location = new System.Drawing.Point(5, 236);
             this.lbl_error_horario.Name = "lbl_error_horario";
             this.lbl_error_horario.Size = new System.Drawing.Size(229, 15);
             this.lbl_error_horario.TabIndex = 18;
@@ -233,17 +234,29 @@
             this.pan_pedirTurno.Controls.Add(this.btn_buscar_profesional);
             this.pan_pedirTurno.Controls.Add(this.txt_profesional);
             this.pan_pedirTurno.Controls.Add(this.lbl_profesional);
-            this.pan_pedirTurno.Location = new System.Drawing.Point(12, 38);
+            this.pan_pedirTurno.Location = new System.Drawing.Point(12, 51);
             this.pan_pedirTurno.Name = "pan_pedirTurno";
-            this.pan_pedirTurno.Size = new System.Drawing.Size(558, 284);
+            this.pan_pedirTurno.Size = new System.Drawing.Size(558, 267);
             this.pan_pedirTurno.TabIndex = 66;
             this.pan_pedirTurno.Visible = false;
+            // 
+            // lbl_error_afiliado
+            // 
+            this.lbl_error_afiliado.AutoSize = true;
+            this.lbl_error_afiliado.ForeColor = System.Drawing.Color.Red;
+            this.lbl_error_afiliado.Location = new System.Drawing.Point(73, 35);
+            this.lbl_error_afiliado.Name = "lbl_error_afiliado";
+            this.lbl_error_afiliado.Size = new System.Drawing.Size(141, 13);
+            this.lbl_error_afiliado.TabIndex = 19;
+            this.lbl_error_afiliado.Text = "Debe seleccionar un afiliado";
+            this.lbl_error_afiliado.Visible = false;
             // 
             // PedirTurno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(593, 363);
+            this.ClientSize = new System.Drawing.Size(593, 353);
+            this.Controls.Add(this.lbl_error_afiliado);
             this.Controls.Add(this.pan_pedirTurno);
             this.Controls.Add(this.txtNroAfi);
             this.Controls.Add(this.btnBuscarAfi);
@@ -280,5 +293,6 @@
         private System.Windows.Forms.Button btnBuscarAfi;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel pan_pedirTurno;
+        private System.Windows.Forms.Label lbl_error_afiliado;
     }
 }

@@ -173,8 +173,16 @@ namespace ClinicaFrba.Main
 
         private void btn_RegistroResultadoAtMedica_Click(object sender, EventArgs e)
         {
-            RegistrarResultado regResult = new Registro_Resultado.RegistrarResultado(Program.user);
-            regResult.ShowDialog();
+            if (Program.rol.Equals("Administrador"))
+            {
+                RegistrarResultado regResult = new Registro_Resultado.RegistrarResultado(Program.rol);
+                regResult.ShowDialog();
+            }
+            else
+            {
+                RegistrarResultado regResult = new Registro_Resultado.RegistrarResultado(Program.user);
+                regResult.ShowDialog();
+            }
         }
 
         private void btn_CancelarAtencion_Click(object sender, EventArgs e)

@@ -20,6 +20,7 @@ namespace ClinicaFrba.Registro_Resultado
 {
     public partial class RegistrarResultado : Form
     {
+        Profesional profesional;
         private StringBuilder sqlConsulta = new StringBuilder();
         private StringBuilder sqlCount = new StringBuilder();
         private StringBuilder sqlAnd = new StringBuilder();
@@ -33,10 +34,22 @@ namespace ClinicaFrba.Registro_Resultado
         public RegistrarResultado(String user)
         {
             InitializeComponent();
-            long nroPro = Profesional.buscarNroProPorUser(user);
-            this.lbl_DocProfesional.Text = nroPro.ToString();
             this.dtp_fechaConsulta.Value = DateTime.Parse(ConfigurationManager.AppSettings["fechaActualSistema"].ToString());
-            cargarConsutas();
+            if (user.Equals("Administrador"))
+            {
+                this.lbl_DocProfesional.Text = "";
+                this.pan_regRes.Visible = false;
+                this.btn_seleccionar.Visible = false;
+
+            }
+            else
+            {
+                this.pan_regRes.Visible = true;
+                this.btn_seleccionar.Visible = true;
+                this.lbl_DocProfesional.Text = Profesional.buscarNroProPorUser(user).ToString();
+                cargarConsutas();
+                
+            }
         }
 
 
@@ -346,6 +359,20 @@ namespace ClinicaFrba.Registro_Resultado
         private void btn_ver_Click(object sender, EventArgs e)
         {
             cargarConsutas();
+        }
+
+        private void btn_buscar_profesional_Click(object sender, EventArgs e)
+        {
+            using (BuscarProfesionales buscarProfesional = new BuscarProfesionales())
+            {
+                if (buscarProfesional.ShowDialog().Equals(DialogResult.OK))
+                {
+                    this.profesional = buscarProfesional.ProfesionalReturn;
+                    this.lbl_DocProfesional.Text = profesional.NroDoc.ToString();
+                    this.pan_regRes.Visible = true;
+                    this.btn_seleccionar.Visible = true;
+                }
+            }
         }
 
     }
