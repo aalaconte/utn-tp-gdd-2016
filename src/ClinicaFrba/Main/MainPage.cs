@@ -161,7 +161,7 @@ namespace ClinicaFrba.Main
 
         private void btn_PedidoTurno_Click(object sender, EventArgs e)
         {
-            if (Program.user.Equals("admin"))
+            if (Program.rol.Equals("Administrador") || Program.rol.Equals("Administrador"))
             {
                 PedirTurno pedirTurno = new PedirTurno(Program.user);
                 pedirTurno.ShowDialog();
@@ -181,7 +181,7 @@ namespace ClinicaFrba.Main
 
         private void btn_RegistroResultadoAtMedica_Click(object sender, EventArgs e)
         {
-            if (Program.rol.Equals("Administrador"))
+            if (Program.rol.Equals("Administrador") || Program.rol.Equals("Administrativo"))
             {
                 RegistrarResultado regResult = new Registro_Resultado.RegistrarResultado(Program.rol);
                 regResult.ShowDialog();

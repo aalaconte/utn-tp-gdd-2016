@@ -149,8 +149,8 @@ select
 	from pico_y_pala.rol roles, pico_y_pala.funcionalidad fun
 where
 	roles.rol_nombre = 'Administrador'
-	and fun.fun_desc in ('ABM de Rol','Login y Seguridad','Registro de Usuario','Abm Afiliado'
-	,'Abm Especialidades Medicas','Abm de Planes','Registrar Agenda del Medico', 'Registro de llegadas para atención médica','Listado Estadistico')
+	and fun.fun_desc in ('ABM de Rol','Login y Seguridad','Registro de Usuario','Abm Afiliado','Registrar resultado para atencion medica'
+	,'Abm Especialidades Medicas','Pedir Turno','Comprar Bonos','Cancelar atencion medica','Abm de Planes','Registrar Agenda del Medico', 'Registro de llegadas para atención médica','Listado Estadistico')
 union
 select 
 	roles.rol_id,
@@ -158,8 +158,8 @@ select
 	from pico_y_pala.rol roles, pico_y_pala.funcionalidad fun
 where
 	roles.rol_nombre = 'Administrativo'
-	and fun.fun_desc in ('ABM de Rol','Login y Seguridad','Registro de Usuario','Abm Afiliado'
-	,'Abm Especialidades Medicas','Abm de Planes','Registrar Agenda del Medico', 'Registro de llegadas para atención médica','Listado Estadistico')
+	and fun.fun_desc in ('Login y Seguridad','Registro de Usuario','Registrar resultado para atencion medica'
+	,'Pedir Turno','Comprar Bonos','Cancelar atencion medica','Registrar Agenda del Medico', 'Registro de llegadas para atención médica','Listado Estadistico')
 union
 select 
 	roles.rol_id,

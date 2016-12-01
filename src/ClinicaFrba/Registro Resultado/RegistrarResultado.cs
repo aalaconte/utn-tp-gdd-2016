@@ -35,7 +35,7 @@ namespace ClinicaFrba.Registro_Resultado
         {
             InitializeComponent();
             this.dtp_fechaConsulta.Value = DateTime.Parse(ConfigurationManager.AppSettings["fechaActualSistema"].ToString());
-            if (user.Equals("Administrador"))
+            if (user.Equals("Administrador") || user.Equals("Administrativo"))
             {
                 this.lbl_DocProfesional.Text = "";
                 this.pan_regRes.Visible = false;

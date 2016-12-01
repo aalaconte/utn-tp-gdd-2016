@@ -37,7 +37,6 @@
             this.btn_RegistroResultadoAtMedica = new ClinicaFrba.Main.BotonFuncionalidad();
             this.btn_ComprarBonos = new ClinicaFrba.Main.BotonFuncionalidad();
             this.btn_PedidoTurno = new ClinicaFrba.Main.BotonFuncionalidad();
-            this.btn_ABMProfesional = new ClinicaFrba.Main.BotonFuncionalidad();
             this.btn_ABMAfiliado = new ClinicaFrba.Main.BotonFuncionalidad();
             this.btn_abm_rol = new ClinicaFrba.Main.BotonFuncionalidad();
             this.SuspendLayout();
@@ -64,7 +63,7 @@
             // btn_registrar_agenda
             // 
             this.btn_registrar_agenda.Funcionalidad = null;
-            this.btn_registrar_agenda.Location = new System.Drawing.Point(247, 223);
+            this.btn_registrar_agenda.Location = new System.Drawing.Point(247, 178);
             this.btn_registrar_agenda.Name = "btn_registrar_agenda";
             this.btn_registrar_agenda.Size = new System.Drawing.Size(195, 38);
             this.btn_registrar_agenda.TabIndex = 14;
@@ -76,7 +75,7 @@
             // btn_CancelarAtencion
             // 
             this.btn_CancelarAtencion.Funcionalidad = null;
-            this.btn_CancelarAtencion.Location = new System.Drawing.Point(32, 223);
+            this.btn_CancelarAtencion.Location = new System.Drawing.Point(32, 178);
             this.btn_CancelarAtencion.Name = "btn_CancelarAtencion";
             this.btn_CancelarAtencion.Size = new System.Drawing.Size(195, 39);
             this.btn_CancelarAtencion.TabIndex = 13;
@@ -88,7 +87,7 @@
             // btn_ListadoEstadistico
             // 
             this.btn_ListadoEstadistico.Funcionalidad = null;
-            this.btn_ListadoEstadistico.Location = new System.Drawing.Point(247, 178);
+            this.btn_ListadoEstadistico.Location = new System.Drawing.Point(146, 222);
             this.btn_ListadoEstadistico.Name = "btn_ListadoEstadistico";
             this.btn_ListadoEstadistico.Size = new System.Drawing.Size(195, 39);
             this.btn_ListadoEstadistico.TabIndex = 12;
@@ -100,7 +99,7 @@
             // btn_RegistroLlegadaAtMedica
             // 
             this.btn_RegistroLlegadaAtMedica.Funcionalidad = null;
-            this.btn_RegistroLlegadaAtMedica.Location = new System.Drawing.Point(32, 178);
+            this.btn_RegistroLlegadaAtMedica.Location = new System.Drawing.Point(32, 133);
             this.btn_RegistroLlegadaAtMedica.Name = "btn_RegistroLlegadaAtMedica";
             this.btn_RegistroLlegadaAtMedica.Size = new System.Drawing.Size(195, 39);
             this.btn_RegistroLlegadaAtMedica.TabIndex = 11;
@@ -124,7 +123,7 @@
             // btn_ComprarBonos
             // 
             this.btn_ComprarBonos.Funcionalidad = null;
-            this.btn_ComprarBonos.Location = new System.Drawing.Point(32, 133);
+            this.btn_ComprarBonos.Location = new System.Drawing.Point(32, 88);
             this.btn_ComprarBonos.Name = "btn_ComprarBonos";
             this.btn_ComprarBonos.Size = new System.Drawing.Size(195, 39);
             this.btn_ComprarBonos.TabIndex = 9;
@@ -144,17 +143,6 @@
             this.btn_PedidoTurno.UseVisualStyleBackColor = true;
             this.btn_PedidoTurno.Visible = false;
             this.btn_PedidoTurno.Click += new System.EventHandler(this.btn_PedidoTurno_Click);
-            // 
-            // btn_ABMProfesional
-            // 
-            this.btn_ABMProfesional.Funcionalidad = null;
-            this.btn_ABMProfesional.Location = new System.Drawing.Point(32, 88);
-            this.btn_ABMProfesional.Name = "btn_ABMProfesional";
-            this.btn_ABMProfesional.Size = new System.Drawing.Size(195, 39);
-            this.btn_ABMProfesional.TabIndex = 7;
-            this.btn_ABMProfesional.Text = "ABM Profesional";
-            this.btn_ABMProfesional.UseVisualStyleBackColor = true;
-            this.btn_ABMProfesional.Visible = false;
             // 
             // btn_ABMAfiliado
             // 
@@ -192,7 +180,6 @@
             this.Controls.Add(this.btn_RegistroResultadoAtMedica);
             this.Controls.Add(this.btn_ComprarBonos);
             this.Controls.Add(this.btn_PedidoTurno);
-            this.Controls.Add(this.btn_ABMProfesional);
             this.Controls.Add(this.btn_ABMAfiliado);
             this.Controls.Add(this.btn_logout);
             this.Controls.Add(this.lbl_username);
@@ -212,7 +199,6 @@
         private System.Windows.Forms.Label lbl_username;
         private System.Windows.Forms.Button btn_logout;
         private BotonFuncionalidad btn_ABMAfiliado;
-        private BotonFuncionalidad btn_ABMProfesional;
         private BotonFuncionalidad btn_ComprarBonos;
         private BotonFuncionalidad btn_PedidoTurno;
         private BotonFuncionalidad btn_RegistroLlegadaAtMedica;
