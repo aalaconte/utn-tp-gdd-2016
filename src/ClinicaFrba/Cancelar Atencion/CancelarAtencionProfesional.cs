@@ -89,6 +89,7 @@ namespace ClinicaFrba.Cancelar_Atencion
                             sqlCmd.ExecuteNonQuery();
                             sqlCmd.Dispose();
                             Mensajes.operacionExitosa();
+                            this.Close();
                         }
                         catch (Exception ex)
                         {
@@ -99,7 +100,6 @@ namespace ClinicaFrba.Cancelar_Atencion
                                 ex.Message, "Error al Cancelar turnos", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
-                    this.Close();
                 }
             }
         }
