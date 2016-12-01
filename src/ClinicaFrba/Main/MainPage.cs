@@ -31,14 +31,14 @@ namespace ClinicaFrba.Main
         {
             ABMRol = 1,
             ABMAfiliado = 2,
-            ABMProfesional = 3,
-            RegistrarAgenda = 4,
-            ComprarBonos = 5,
-            PedidoTurno = 6,
-            RegistroLlegadaAtMedica = 7,
-            RegistroResultadoAtMedica = 8,
-            CancelarAtencion = 9,
-            ListadoEstadistico = 10
+            //ABMProfesional = 3,
+            RegistrarAgenda = 3,
+            ComprarBonos = 4,
+            PedidoTurno = 5,
+            RegistroLlegadaAtMedica = 6,
+            RegistroResultadoAtMedica = 7,
+            CancelarAtencion = 8,
+            ListadoEstadistico = 9
         };
 
         public MainPage()
@@ -70,7 +70,7 @@ namespace ClinicaFrba.Main
         {
             btn_abm_rol.Funcionalidad = (int)funcionalidades.ABMRol;
             btn_ABMAfiliado.Funcionalidad = (int)funcionalidades.ABMAfiliado;
-            btn_ABMProfesional.Funcionalidad = (int)funcionalidades.ABMProfesional;
+            //btn_ABMProfesional.Funcionalidad = (int)funcionalidades.ABMProfesional;
             btn_ComprarBonos.Funcionalidad = (int)funcionalidades.ComprarBonos;
             btn_PedidoTurno.Funcionalidad = (int)funcionalidades.PedidoTurno;
             btn_RegistroLlegadaAtMedica.Funcionalidad = (int)funcionalidades.RegistroLlegadaAtMedica;
@@ -128,8 +128,16 @@ namespace ClinicaFrba.Main
 
         private void btn_registrar_agenda_Click(object sender, EventArgs e)
         {
-            RegistrarAgenda registrarAgenda = new Registrar_Agenta_Medico.RegistrarAgenda();
-            registrarAgenda.ShowDialog();
+            if (Program.rol.Equals("Administrativo") || Program.rol.Equals("Administrador"))
+            {
+                RegistrarAgenda registrarAgenda = new Registrar_Agenta_Medico.RegistrarAgenda();
+                registrarAgenda.ShowDialog();
+            }
+            else
+            {
+                RegistrarAgenda registrarAgenda = new Registrar_Agenta_Medico.RegistrarAgenda(Program.user);
+                registrarAgenda.ShowDialog();
+            }
         }
 
         private void MainPage_FormClosed(object sender, FormClosedEventArgs e)
